@@ -17,7 +17,8 @@ Config.SkilledConnections = "as the game has it"
 Config.MasterConnections = "as the game has it"
 
 -- ---- Lock picks ----
--- The numbers below are then not used.
+-- The numbers below are then not used. A worn pick is still lost when you leave
+-- a lock unopened (the game's rule).
 Config.PicksNeverBreak = false
 -- 0 = the game's (2). 1 to 99.
 Config.UntrainedWrongMoves = 0

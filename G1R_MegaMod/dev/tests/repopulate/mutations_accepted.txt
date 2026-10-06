@@ -1,0 +1,14 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/repopulate/Scripts/main.lua --suite repopulate,repopulate_engine --accept dev/tests/repopulate/mutations_accepted.txt
+# that were looked at: the change makes no difference to what the code does, or only to a value nothing reads.
+and->or|if ok and type(src) == "string" then|debug.getinfo never fails here; the result is always a text
+drop-return|return "./"|the function always returns a folder before this line in the game and in the harnesses (main.lua is loaded by a full path)
+num+1|local LoadingUntil = 0|any value below the clock at load: os.clock() is far past 1 s when UE4SS starts the mods (the harness starts at 1000 s)
+le->lt|if seconds <= 0 then return end|settle(0) would only move the end of the hold to now, a time already past at the next update: nothing is held either way
+drop-return|if seconds <= 0 then return end|settle(s <= 0) would only move the end of the hold to a time already past: nothing is held either way
+gt->ge|if realNow + seconds > SettleUntil then SettleUntil = realNow + seconds end|when both are equal the same value is set
+num+1|local function status() return statusLines(U.gameSeconds() or 0) end|without a readable clock 0 s and 1 s print the same (day 0 00:00; "next in" rounded to a tenth of an hour)
+gt->ge|if now + 3 > LoadingUntil then LoadingUntil = now + 3 end|when both are equal the same value is set
+num+1|if now + 3 > LoadingUntil then LoadingUntil = now + 3 end|LoadingUntil is only ever set to a hook's clock + 3 s, so it is never between now + 3 and now + 4 with another value than now + 3
+gt->ge|if seconds > 30 then seconds = 30 end|when both are equal the same value is set
+false->true|State.seen, State.chests, State.recent, State.dirty = {}, {}, {}, false|without a progress file (StatePath nil) saveState returns at once: dirty decides nothing

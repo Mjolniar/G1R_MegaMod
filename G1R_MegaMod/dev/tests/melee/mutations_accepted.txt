@@ -1,0 +1,8 @@
+# Mutations of modules/melee/Scripts/main.lua that the suite does not notice and that were looked at:
+#   python3 dev/tools/mutate.py modules/melee/Scripts/main.lua --suite melee --quiet --accept dev/tests/melee/mutations_accepted.txt
+# Lines: <operator>|<the original line, without its indentation>|<why the change makes no difference>
+and->or|if ok and type(src) == "string" then|debug.getinfo does not fail; the two forms differ only when it does
+drop-return|return "./"|the fall-back folder is only reached when the chunk has no path, which UE4SS and the tests always give
+le->lt|same = function(a, b) return abs(a - b) <= max(0.000001, abs(b) * 0.0001) end,|a value that stayed comes back equal or rounded to single precision, far inside the slack; a difference of exactly the slack does not occur
+lt->le|if now < S.nextLook then return end|the next look is set a thousandth of a second before a tick: a tick never falls exactly on it
+num+1|local count = S.count[name] or 0            -- a table in hand has been counted|the numbers are only shown for tables in hand, and those have been counted: the fall-back value is never shown

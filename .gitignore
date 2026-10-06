@@ -1,0 +1,12 @@
+# this PC's places for the deploy scripts (deploy/deploy_settings.example.json shows the keys)
+deploy/deploy_settings.json
+# the game's own data, made from the player's game (app/tools/make_startup_screen.py)
+app/src/StartupLoadingScreen.txt
+# build output
+app/src/bin/
+app/src/obj/
+app/filetests/bin/
+app/filetests/obj/
+G1R_MegaMod/dev/out/
+__pycache__/
+*.pyc

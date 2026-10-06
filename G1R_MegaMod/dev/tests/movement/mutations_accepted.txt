@@ -1,0 +1,23 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/movement/Scripts/main.lua --suite movement --accept dev/tests/movement/mutations_accepted.txt
+# that were looked at (format: operator|original line without indentation|reason).
+and->or|if ok and type(src) == "string" then|debug.getinfo never fails here; the result is always a text
+num+1|local p = src:gsub("^@", ""):gsub(string.char(92), "/")|in the game the path of main.lua has backslashes (Windows), in the tests only slashes: they cannot tell; every module turns them this way and loads in the game (its load line in every session)
+drop-return|return "./"|the function always returns a folder before this line (main.lua is loaded by a full path)
+false->true|swim = { own = nil, applied = nil, left = false, retake = false, fails = 0, off = false },|retake at the first look: the game's own values were taken from the table in that same look, there is nothing to take again
+false->true|mount = { own = nil, applied = nil, left = false, retake = false, fails = 0, off = false, set = nil },|left and retake at the first look: it always meets a new set of attributes there (set is nil), which clears left and takes the own value in that same look
+lt->le|local function same(a, b) return abs(a - b) < SAME end|only two values exactly 0.0005 apart are told apart otherwise
+num+1|local count, trouble = 0, nil|count names an entry only when its key is not a number (any numbering that is the same in every walk does) and is returned only to say that the walk went through
+plus->minus|count = count + 1|count names an entry only when its key is not a number (any numbering that is the same in every walk does) and is returned only to say that the walk went through
+num+1|count = count + 1|count names an entry only when its key is not a number (any numbering that is the same in every walk does) and is returned only to say that the walk went through
+or->and|local fine, why = pcall(function() visit(KIT.number(KIT.unwrap(key)) or count, value) end)|the place in the walk instead of the key's number: the same in every walk, and sorted the same way for the text
+plus->minus|n = n + 1|n only says whether the table had an entry
+num+1|n = n + 1|n only says whether the table had an entry
+num+1|local ours = p.own * (p.applied or 1)|with applied nil the value is the own one or one somebody else set; only a foreign value of exactly twice the own one would be told apart otherwise
+num+1|return same(wanted("swim"), 1) and S.swim.applied == nil and same(wanted("mount"), 1) and S.mount.applied == nil|idle() only spares two calls: with a multiplier at 1.00 and nothing applied swimLook and mountLook return at their first line - the game is not looked at either way (the load case counts it)
+drop-return|return same(wanted("swim"), 1) and S.swim.applied == nil and same(wanted("mount"), 1) and S.mount.applied == nil|idle() only spares two calls: with a multiplier at 1.00 and nothing applied swimLook and mountLook return at their first line - the game is not looked at either way (the load case counts it)
+drop-return|if idle() then return end|idle() only spares two calls: with a multiplier at 1.00 and nothing applied swimLook and mountLook return at their first line - the game is not looked at either way (the load case counts it)
+num+1|LoopInGameThreadWithDelay(250, function()|the test model runs every loop at every update: 250 or 251 ms makes no difference there, and in the game one millisecond does not change what is looked at
+false->true|hero = { own = nil, applied = nil, left = false, retake = false, fails = 0, off = false, set = nil },|the first look at the hero sees attributes the part has not seen yet (set is nil): it is fresh either way, and fresh clears retake
+num+1|if not fresh and not same(base, OWN * (p.applied or 1)) and not same(base, OWN) then|applied is nil on a look that is not fresh only after a failed write of that set; a value of exactly 2.0 then is the target of a multiplier of 2 (taken as written by the next lines) or a foreign one - nothing the module does differs in what it shows
+num+1|and same(wanted("hero"), 1) and S.hero.applied == nil|idle() only spares calls: with the hero's multiplier at 1.00 and nothing applied heroLook returns at its first line - the game is not looked at either way (the load case counts it)

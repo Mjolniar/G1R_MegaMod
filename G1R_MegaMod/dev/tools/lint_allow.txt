@@ -1,0 +1,37 @@
+# Exceptions to the hazard rules of lint.py (python dev/tools/lint.py --explain).
+# One line per exception: rule, start of the file's path inside the mod, the
+# function the code is in (as written in the source, `main chunk`, or *).
+# Text after # says why. An entry that matches nothing is reported.
+
+# --- the functions that wrap StaticFindObject (one per module) ---------------
+# Modules written for the loader's kit search through G1R_KIT (findOnce, findClass,
+# findDefault, firstOf, hookOnce), which keeps every answer: they need no entry here.
+helper          modules/repopulate/Scripts/             U.findStatic
+helper          modules/markers/Scripts/                findStatic findStaticOnce
+direct-lookup   modules/repopulate/Scripts/util.lua     U.findStatic        # the wrapper itself
+direct-lookup   modules/markers/Scripts/main.lua        findStatic          # the wrapper itself
+direct-lookup   Scripts/core/kit.lua                    Kit.findOnce        # the kit's wrapper; Found keeps every answer
+direct-lookup   Scripts/core/kit.lua                    Kit.warm            # the first map load: each path once; found ones go into Found
+hook-in-function Scripts/core/kit.lua                   Kit.hookOnce        # the kit's wrapper; Hooks keeps every answer, found or not
+
+# --- places that search by path; each keeps its answer for the run -----------
+# (the harnesses count the searches: dev/tests/repopulate, dev/tests/markers)
+lookup-site     modules/repopulate/Scripts/util.lua       U.findOnce        # Once: the answer is kept per path, found or not
+lookup-site     modules/repopulate/Scripts/creatures.lua  classFor          # ClassCache: false when not found
+lookup-site     modules/repopulate/Scripts/creatures.lua  lookUp            # Confirm.lookup: once per run, false when not there; put off while no walk is due
+lookup-site     modules/repopulate/Scripts/crime.lua      classFor          # NotFound: once per class name and run
+lookup-site     modules/repopulate/Scripts/crime.lua      applyGate         # st.missing: once per gate and run
+lookup-site     modules/markers/Scripts/main.lua          loadTexture       # through findStaticOnce
+lookup-site     modules/markers/Scripts/main.lua          findNpcState      # through findStaticOnce
+lookup-site     modules/markers/Scripts/main.lua          newWidget         # through findStaticOnce
+
+# --- the bounded class-learning pass reads this name on purpose --------------
+logged-property modules/repopulate/Scripts/chests.lua     m_ItemDefinition  # learnInventory: once per container kind
+
+# --- file writes --------------------------------------------------------------
+file-write      Scripts/core/diag.lua                     *                 # everything below Scripts/diagnostics/
+file-write      modules/repopulate/Scripts/util.lua       U.writeFile       # the progress file below Scripts/state/ (.tmp, .bak next to it)
+file-write      modules/repopulate/Scripts/util.lua       U.readTable       # puts a complete .tmp of a cut-off write in the progress file's place
+file-write      modules/repopulate/Scripts/util.lua       U.keepBad         # an unreadable progress file becomes <file>.bad (one is kept)
+file-write      Scripts/core/settings.lua                 writeText         # a module's own config.lua (its path comes from the module; .tmp, .bak next to it)
+file-write      Scripts/core/settings.lua                 recover           # puts a complete config.lua.tmp of a cut-off write in config.lua's place

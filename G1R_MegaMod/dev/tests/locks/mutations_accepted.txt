@@ -1,0 +1,18 @@
+# Mutations of modules/locks/Scripts/main.lua that the suite does not notice and that were looked at:
+#   python3 dev/tools/mutate.py modules/locks/Scripts/main.lua --suite locks --accept dev/tests/locks/mutations_accepted.txt
+# Lines: <operator>|<the original line>|<why the change makes no difference>
+and->or|if ok and type(src) == "string" then|debug.getinfo does not fail; the two forms differ only when it does
+drop-return|return "./"|the fall-back folder is only reached when the chunk has no path, which UE4SS and the tests always give
+num+1|nextLook = 0,                       -- the clock value of the next look|any value before the first clock reading is the same: the first tick looks
+gt->ge|if current ~= nil and abs(current - mark) > SAME then|the two attributes hold whole numbers: a difference of exactly 0.01 does not occur
+le->lt|if abs(current - tier.game[a.name]) <= SAME then return tier end|whole numbers: a difference of exactly 0.01 does not occur
+le->lt|if abs(current - own) <= SAME then|whole numbers: a difference of exactly 0.01 does not occur
+le->lt|elseif want ~= nil and abs(current - want) <= SAME then|whole numbers: a difference of exactly 0.01 does not occur
+gt->ge|if between and want == nil and S.mark[a.name] == nil and abs(current - own) > SAME then|whole numbers: a difference of exactly 0.01 does not occur
+gt->ge|if abs(current - target) > SAME then|whole numbers: a difference of exactly 0.01 does not occur
+gt->ge|S.mark[a.name] = (want ~= nil and abs(want - own) > SAME) and want or nil|whole numbers: a difference of exactly 0.01 does not occur
+true->false|if owner == nil or not owner:find("PlayerState", 1, true) then return end       -- somebody else's|the text searched for has no pattern characters: a plain search and a pattern search find the same
+num+1|if owner == nil or not owner:find("PlayerState", 1, true) then return end       -- somebody else's|a full name starts with the class name; PlayerState stands in the path behind it and is found from the second character as well
+num+1|S.nextLook = 0              -- the next tick looks whether the lock has started|any value in the past is the same: the next tick looks
+lt->le|if now < S.nextLook then return end|the time of the next look is set a thousandth of a second before a tick's time: the two are never equal
+num+1|S.nextLook = 0|any value in the past is the same: the next tick looks

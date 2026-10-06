@@ -1,0 +1,7 @@
+# Mutations of modules/wait/Scripts/main.lua that the suite does not notice and that were looked at:
+#   python3 dev/tools/mutate.py modules/wait/Scripts/main.lua --suite wait --accept dev/tests/wait/mutations_accepted.txt
+# Lines: <operator>|<the original line, without its indentation>|<why the change makes no difference>
+and->or|if ok and type(src) == "string" then|debug.getinfo does not fail; the two forms differ only when it does
+drop-return|return "./"|the fall-back folder is only reached when the chunk has no path, which UE4SS and the tests always give
+num+1|local SINGLE = 16777216                 -- 2^24: up to here single precision (SkipTime rounds to it) is exact to the second|one more in sixteen million changes a margin of a second or two by less than a millionth
+num+1|{ n = 4, name = "wait until evening", key = "EveningKey", hour = "EveningHour", button = "SkipEvening" },|the number only names the key binding and puts it after the third: 5 does that as well as 4

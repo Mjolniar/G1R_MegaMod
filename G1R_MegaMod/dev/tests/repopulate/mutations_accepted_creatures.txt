@@ -1,0 +1,7 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/repopulate/Scripts/creatures.lua --suite repopulate,repopulate_engine --accept dev/tests/repopulate/mutations_accepted_creatures.txt
+# that were looked at (format: operator|original line without indentation|reason).
+false->true|Confirm.lookup = U.findStatic("/Script/G1R.Default__GothicNPCState") or false|true is not a valid object either (U.valid(true) is false): the next line answers "not available" all the same
+num+1|local minD = numCfg(Cfg.MinPlayerDistance, 4000)|config.lua sets MinPlayerDistance (4000); the default is for a file without that line, and 4000 or 4001 cm is one centimetre
+lt->le|if not px or U.dist2(p.x, p.y, px, py) < minD * minD then|only a player exactly MinPlayerDistance away (to the fraction of a millimetre, in floating-point world coordinates) is treated otherwise
+num+1|if job.tries <= cfg("MaxDeferrals", 90) then|the default when config.lua has no MaxDeferrals (the shipped file has none): 90 or 91 waits of 20 s, half an hour either way; the cap itself is tested with MaxDeferrals = 2

@@ -1,0 +1,28 @@
+# Facts: module keys
+
+The list of keys in the pause menu. Sources: the property layout of build `Build83_CL174209` (`usmap.py`), the
+native function table of the game's program (`re-tools/params.py`), the other mods' settings files on the PC
+(read only, 2026-10-06), the megamod's own sessions. Nothing of this module has run in the game yet.
+
+| # | What | Where | Status | Note key |
+|---|---|---|---|---|
+| KL1 | The pause menu is a `/Script/G1R.PauseMenuWidget` (a CommonUI activatable widget: `bIsActive`). It is shown in the stack `Stack_PauseMenu` of the player's main widget (`PlayerWidget`, which also holds `Stack_GeneralMenu` and `Stack_GeneralPopup`); the player's controller holds its main widget in `m_Widget` (`GothicPlayerControllerBase`). A stack's `DisplayedWidget` is the widget it shows. The module reads controller -> `m_Widget` -> `Stack_PauseMenu` -> `DisplayedWidget` -> `bIsActive` afresh at every look (the controller from the kit, each object from a property of the one before: FACTS U17) and asks the widget `IsA(PauseMenuWidget)` (an Options page on the same stack does not count). In the game `m_Widget` is a `Player_Widget_C` (before the first map: `PC_Menus_C`, no pause stack). | `main.lua` `pauseMenuOpen`, `isPauseMenu` | SOURCE (usmap: `GothicPlayerControllerBase.m_Widget`, `PlayerWidget.Stack_PauseMenu`, `CommonActivatableWidgetContainerBase.DisplayedWidget`, `CommonActivatableWidget.bIsActive`); IN-GAME 2026-10-06 (0.3.0: `keys.player_widget = found (Player_Widget_C)`, `keys.pause_stack = found (CommonActivatableWidgetStack)`, `keys.pause_menu = open (W_PauseMenu_C)`) | `keys.player_widget`, `keys.pause_stack`, `keys.pause_menu`, `keys.pause_class` |
+| KL2 | The mod's loop runs while the game is paused, and the game's menus pause it. | `main.lua` `tick` | IN-GAME (kit K6: `regen.engine_pause = seen` in 4854 looks of the module regen) | - |
+| KL3 | The list is a box of the kit (`Kit.panel`, kit K18) at the top left, 32 / 32 from the corner, on the screen's layer 1000 so that it stands above the pause menu; it takes no clicks (visibility 3). | `main.lua` `BOX` | IN-GAME 2026-10-06 (the player saw the list in the pause menu; `kit.panel = shown`) | `kit.panel` |
+| KL4 | Which other mods run: the loader's read-only look (`G1R_MODS.runs`: `Scripts/main.lua` or `dlls/main.dll` in the folder, and `enabled.txt` there or `<name> : 1` in `mods.txt`, as UE4SS's `start_mods` reads it). Mods that are only enabled by `enabled.txt` and are not named in `mods.txt` are not found unless the table below names them. PLuaModLoader starts a folder below its `Scripts/Mods` when an `enabled.txt` lies in it. | `main.lua` `otherLines`, `namesInModsTxt`; `Scripts/main.lua` `separateModRuns` | SOURCE (UE4SS `UE4SSProgram.cpp`; PLuaModLoader `Scripts/Core/ModHub.lua` `isModEnabledDir`); OFFLINE | `keys.other_mods` |
+| KL5 | SharedModMenu: `Scripts/config.lua`, `menuKey = "F2"` opens the mod menu; an empty or unknown name means F2 (the file's own comment). The keys inside the menu (numpad) are not listed. | `main.lua` `OTHERS` | SOURCE (the file on the PC, 2026-10-06) | `keys.other_mods` |
+| KL6 | HUDMap: `config.txt` with `key = value` lines (`#` and `;` start a comment): `hotkeyworld` (the HUD map on / off; N on the PC), `hotkeyregion` (region maps off / on; empty on the PC), `hotkeymenu` (its settings window; Ctrl+N on the PC). | `main.lua` `OTHERS` | SOURCE (the file on the PC) | `keys.other_mods` |
+| KL7 | FocusNearbyPickups (in PLuaModLoader): `FocusNearbyPickups.ini`: `toggleKey` (F6 on the PC: shows what lies nearby), `corpsesKey`, `chestsKey` (empty on the PC), `quickLootKey` (V) only while `quickLoot=true` (false on the PC). A key can also be a pad button (`Gamepad_*`): listed as written. | `main.lua` `OTHERS` | SOURCE (the file on the PC) | `keys.other_mods` |
+| KL8 | G1R_AutoPickUpItemNative: `G1R_AutoPickUpItemNative.ini`: `HoldHotkey` (R: hold to pick up items nearby), `HoldHotkey_Stealing`, `ToggleHotkey` (X: picking up by itself on / off), `ToggleHotkey_Stealing` (both empty on the PC). | `main.lua` `OTHERS` | SOURCE (the file on the PC) | `keys.other_mods` |
+| KL10 | F3 is free: the game's keyboard mappings (`G1R/Content/Inputs/Mappings/IMC_*_KBM`, 23 assets) use F5 and F9 of the function keys (and letters, mouse, digits); the other mods of the table use F2, F6, V, R, X, N, Ctrl+N, T; the megamod Y and OEM_SIX on the PC. The list's key is F3 by default (`ListKey`). | `schema.lua` `ListKey` | SOURCE (the game's paks, read with CUE4Parse on 2026-10-06; the files on the PC) | - |
+| KL9 | G1R_PutAwayTorchRedux: `G1R_PutAwayTorchRedux.ini`: `Hotkey=T` (tap: draw or put away the torch; hold 500 ms: drop it). BystanderXP, G1R_RenderBridge and G1R_ShowItemValueNative have no keys. | `main.lua` `OTHERS` | SOURCE (the files on the PC) | `keys.other_mods` |
+
+## Diagnostics notes
+
+| Note key | Expected | If it differs / what it settles |
+|---|---|---|
+| `keys.player_widget` | `found` (detail: its class) | KL1: not found = the controller's `m_Widget` is not there (in the main menu it may be missing) |
+| `keys.pause_stack` | `found` | KL1: not found = the main widget has no `Stack_PauseMenu`: the list does not come up with the pause menu |
+| `keys.pause_menu` | `open` (detail: the pause menu's class) after the pause menu was opened | KL1: never noted while the pause menu was opened = the stack shows something else, or `bIsActive` is not set |
+| `keys.pause_class` | `found` else `not found`, `not asked` | KL1: not found = every widget of the pause stack counts; not asked = `IsA` cannot be asked of the widget |
+| `keys.other_mods` | the number of other mods listed (detail: their names) else `not available` | KL4 - KL9 |

@@ -1,0 +1,14 @@
+# Mutations of Scripts/core/settings.lua that the suite does not notice and that were looked at:
+#   python dev/tools/mutate.py Scripts/core/settings.lua --suite core/test_settings --accept dev/tests/core/mutations_accepted_settings.txt
+# Lines: <operator>|<the original line>|<why the change makes no difference>
+false->true|if not ok then return false, tostring(err) end|os.rename failing after the temporary file was written cannot be provoked in the tests
+drop-return|if not ok then return false, tostring(err) end|os.rename failing after the temporary file was written cannot be provoked in the tests
+le->lt|if decimals <= 0 then|with 0 places both branches give the same whole number
+drop-return|if type(text) ~= "string" then return nil, "config.lua not found" end|parse is only called with a text; the callers deal with a missing file before
+true->false|local newline = text:find("\r\n", 1, true) and "\r\n" or "\n"|the text searched for has no pattern characters: plain or not is the same
+num+1|local newline = text:find("\r\n", 1, true) and "\r\n" or "\n"|differs only for a file that starts with its only CRLF
+drop-return|return nil                          -- texts and keys cannot be edited in the menu|a function that ends without return gives nil as well
+drop-return|return "n1"|a choice's value is always one of its options: the line is not reached
+lt->le|if a.order ~= b.order then return a.order < b.order end|only reached with two different numbers
+lt->le|if a.module ~= b.module then return a.module < b.module end|only reached with two different names
+drop-return|return fit(list, HINT_MAX)|a choice's value is always one of its options (every value is checked against the schema): the line is not reached

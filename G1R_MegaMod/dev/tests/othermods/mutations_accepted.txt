@@ -1,0 +1,6 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/othermods/Scripts/main.lua --suite othermods --accept dev/tests/othermods/mutations_accepted.txt
+# that were looked at (format: operator|original line without indentation|reason).
+and->or|if ok and type(src) == "string" then|debug.getinfo never fails here; the result is always a text
+num+1|local p = src:gsub("^@", ""):gsub(string.char(92), "/")|in the game the path of main.lua has backslashes (Windows), in the tests only slashes: they cannot tell; every module turns them this way and loads in the game (its load line in every session)
+drop-return|return "./"|the function always returns a folder before this line (main.lua is loaded by a full path)

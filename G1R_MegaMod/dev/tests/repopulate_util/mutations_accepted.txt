@@ -1,0 +1,34 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/repopulate/Scripts/util.lua --suite repopulate_util,files,pointers,world --accept dev/tests/repopulate_util/mutations_accepted.txt
+# that were looked at: the change makes no difference to what the code does.
+drop-return|if o == nil then return false end|U.valid: asking nil whether it is valid fails inside pcall, which gives false as well
+drop-return|if type(v) == "number" then return v end|U.num: tonumber of a number is that number
+drop-return|if o == nil then return nil end|U.address: asking nil for its address fails inside pcall, which gives nil as well
+drop-return|if v == nil then return nil end|U.fname / U.vec3: reading from nil fails inside pcall, which gives nil as well
+drop-return|if e == nil then return nil end|U.unwrap: asking nil for :get() fails inside pcall, and then the value itself (nil) is returned
+gt->ge|if t > QuietUntil then QuietUntil = t end|differs only when the two are equal: the same value is written again
+false->true|if o == false then return nil end|U.findOnce: without this line a kept `false` falls into the next branch, where it is not valid, and nil comes back as well
+drop-return|if o == false then return nil end|U.findOnce: without this line a kept `false` falls into the next branch, where it is not valid, and nil comes back as well
+false->true|Once[path] = o or false|U.findOnce: a kept `true` is no valid object either: nil comes back and nothing is searched again, as with `false`
+true->false|return n ~= nil and n:find("Default__", 1, true) ~= nil|the text has no pattern characters: found the same way with and without a plain search
+num+1|return n ~= nil and n:find("Default__", 1, true) ~= nil|a full name begins with the class name: the word is never at its first character
+or->and|if o == nil or not U.valid(o) then return end|U.setEngine: an object that is nil or gone has no name, and the check of the name two lines below returns as well
+drop-return|if o == nil or not U.valid(o) then return end|U.setEngine: an object that is nil or gone has no name, and the check of the name two lines below returns as well
+true->false|if not class or name:find("Default__", 1, true) or not class:find("Engine", 1, true) then return end|the texts have no pattern characters: found the same way with and without a plain search
+num+1|if not class or name:find("Default__", 1, true) or not class:find("Engine", 1, true) then return end|a full name never begins with Default__; a class whose name begins with the word Engine is the engine's abstract base class, of which there is no object
+drop-return|if Engine == nil then return nil end|U.engine: nil is not valid, so the lines below return nil as well
+drop-return|if not e then return nil end|U.engineWorld: reading the game window of nil gives nil, and so does the world of that
+drop-return|if not statics then return nil end|U.paused: a call on nil gives nil
+drop-return|if c == nil then return nil end|kept(): nil is not valid, so the lines below return nil as well
+true->false|if not name or name:find("Default__", 1, true) then c, name = nil, nil end|the text has no pattern characters: found the same way with and without a plain search
+num+1|if not name or name:find("Default__", 1, true) then c, name = nil, nil end|a full name begins with the class name: the word is never at its first character
+true->false|if name and not name:find("Default__", 1, true) then|the text has no pattern characters: found the same way with and without a plain search
+num+1|if name and not name:find("Default__", 1, true) then|a full name begins with the class name: the word is never at its first character
+drop-return|if not p then return nil end|U.playerPos: a call on nil gives nil, and no position is read from nil
+num+1|local pause = TimeSearchMisses == 0 and 0 or math.min(TIME_SEARCH_FIRST * 2 ^ (TimeSearchMisses - 1), TIME_SEARCH_MAX)|a pause of 1 s instead of none after a clock that was found is lost: two walks are a second apart anyway (WALK_GAP)
+drop-return|if not sub then return nil end|U.gameSeconds: reading from nil and calling nil give nil, and so no seconds
+ge->gt|if p >= 1 then return 1 end|differs only at exactly 1: 1 - (1 - 1) ^ k is 1 as well (k is above 0 here)
+le->lt|if p <= 0 then return 0 end|differs only at exactly 0: 1 - (1 - 0) ^ k is 0 as well
+drop-return|if not chunk then return nil, "unreadable" end|loadTable: calling nil fails inside pcall, and the line below returns nil, "unreadable" as well
+num+1|local MAX_DEPTH, Dropped = 12, 0|U.serialize sets Dropped to 0 before every use: its first value is never read
+drop-return|if not looked then return true end|when the lookup itself failed, method holds its error (a text): calling that fails as well, and the object counts as gone all the same

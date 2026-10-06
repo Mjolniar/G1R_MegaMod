@@ -1,0 +1,27 @@
+# Facts: module movement
+
+How fast the hero swims and how fast the scavenger he rides runs. Sources: the game's scripts (`as-src`), the
+property layout of build `Build83_CL174209` (`usmap.py`), the facts of the modules melee and mount, the megamod's own
+sessions. Nothing of this module has run in the game yet.
+
+| # | What | Where | Status | Note key |
+|---|---|---|---|---|
+| MV1 | The hero's swimming speeds are the map `m_Speeds` (`Map<EWalkSpeed, float>`: walking 100, running 150, sprinting 220) of the script class `ULocomotionSpeedSettings_Swim_Laying_Player` (base `LocomotionSpeedSettings_WalkSpeed : GothicBaseConfig`). The player's speed configuration names that class (`TSubclassOf`) for the swimming stance (`ULocomotionSpeedSettings_Swim_Player`, `EMovementState(2)`), so the game takes the speeds from the class's default object `/Script/Angelscript.Default__LocomotionSpeedSettings_Swim_Laying_Player`. | `main.lua` `swimTable`, `readSwim` | SOURCE (`as-src/Player/SpeedConfig_Player.as` lines 40-77; usmap: `m_Speeds Map<Enum<EWalkSpeed:Byte>,Float>`) | `movement.swim_table` |
+| MV2 | The map is walked with `ForEach` (the whole callback inside `pcall`, melee M12), an entry written with `value:set(x)`, and the values are read back after the write. Whether the game's movement uses a changed table at once, or keeps a copy made when the hero was made, is not known. | `main.lua` `walk`, `writeSwim` | Walking such a map: IN-GAME (melee M11); `value:set` of a float entry: SOURCE (UE4SS parameter wrappers) and OFFLINE; that the game uses the new values: UNKNOWN (the first session with the setting decides) | `movement.swim_write` |
+| MV3 | The scavenger's speed factor is `AttributeSet_Movement.SpeedModifier` (a `GameplayAttributeData`, 1.0: the game's character definitions set it; the hero's tiredness `GA_Fatigue` raises and lowers it by percentages). It is found in the scavenger state's own list of attribute sets (`AbilitySystemComponent.SpawnedAttributes`, the kit's `attributeSetOf`) and written as base and current value, read back (`KIT.writeAttribute`). Whether the game's movement uses the new value at once is not known. | `main.lua` `mountLook` | SOURCE (`as-src/GAS/GASCharacterStateMixins.as:917`, `AI/AIAgent/Creature/CharacterDefinition_Creature.as:60`, usmap) and OFFLINE; writing both values sticks for `Experience` (FACTS X3); that the game uses it: UNKNOWN | `movement.mount_set`, `movement.mount_write` |
+| MV4 | The scavenger is found through the game's lookup by unique name (`Scavenger_Adult_Rideable`, the default object of `GothicNPCState`), as the module mount finds it. | `main.lua` `mountState` | IN-GAME for the module mount (`mount.lookup = works`, sessions of 2026-10-05 21:08 and 22:40) | `movement.lookup` |
+| MV5 | A value that is neither the game's own nor the module's (another mod, the game itself) is left alone - said once - until the next change of the setting or new attributes; a value back at the game's own (the game set it anew) gets the multiplier again. New attributes (a summon of the scavenger, a loaded save, another map) are set to the game's own 1.0 times the multiplier: a summon carries the written value over - version 1.0.0 read it anew as the game's own and multiplied it again at every summon (IN-GAME report of 2026-10-06). | `main.lua` `swimLook`, `factorLook` | the summon carrying the value over: IN-GAME (the player's report); the rest OFFLINE | `movement.left_alone` |
+| MV6 | The hero's speed factor is his own `AttributeSet_Movement.SpeedModifier` (1.0: `Player/PlayerCharacter.as:104`), in the player state's list of attribute sets. The game's tiredness changes it with infinite effects (`GE_FatigueDebuff_Threshold_0` +5% in his own bed, `_3` and `_4` -5% each, `GA_Fatigue.as`), i.e. on the current value; the module writes base and current value (`KIT.writeAttribute`), so right after a write the current value is the plain product until the game works the attribute out again (when one of those effects changes). | `main.lua` `heroLook`, `factorLook` | SOURCE (as-src) and OFFLINE; that the game's walking uses it: UNKNOWN (the first session with the setting decides) | `movement.hero_set`, `movement.hero_write` |
+
+## Diagnostics notes
+
+| Note key | Expected | If it differs / what it settles |
+|---|---|---|
+| `movement.swim_table` | `found` else `not found`, `not readable`, `fails` | MV1: the class or its table is not there, or cannot be read, in this build: the swimming speeds stay the game's |
+| `movement.swim_write` | `works` else `fails` | MV2: the table could not be written or did not keep the values: the swimming speeds stay the game's |
+| `movement.lookup` | `works` else `not available`, `fails` | MV4: the scavenger cannot be found: its speed stays the game's |
+| `movement.mount_set` | `found` else `not found`, `not readable`, `fails` | MV3: the scavenger has no readable movement attributes: its speed stays the game's |
+| `movement.mount_write` | `works` else `fails` | MV3: the speed factor could not be written or did not stay |
+| `movement.hero_set` | `found` else `not found`, `not readable`, `fails` | MV6: the hero has no readable movement attributes: his speed on foot stays the game's |
+| `movement.hero_write` | `works` else `fails` | MV6: the hero's speed factor could not be written or did not stay |
+| `movement.left_alone` | any | MV5: somebody else changed the swimming speeds, the hero's or the scavenger's factor |

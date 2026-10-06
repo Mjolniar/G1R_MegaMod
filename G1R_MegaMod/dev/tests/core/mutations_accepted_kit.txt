@@ -1,0 +1,69 @@
+# Mutations of Scripts/core/kit.lua that the suite does not notice and that were looked at:
+#   python dev/tools/mutate.py Scripts/core/kit.lua --suite core/test_kit --accept dev/tests/core/mutations_accepted_kit.txt
+# Lines: <operator>|<the original line>|<why the change makes no difference>
+drop-return|if o == nil then return false end|without the line the question to nil fails inside pcall, which gives false as well
+true->false|local function isDefaultName(name) return name == nil or name:find("Default__", 1, true) ~= nil end|the text searched for has no pattern characters
+num+1|local function isDefaultName(name) return name == nil or name:find("Default__", 1, true) ~= nil end|a full name never starts with Default__ (the class name comes first)
+drop-return|if e == nil then return nil end|without the line :get() on nil fails inside pcall and nil comes back as well
+drop-return|if array == nil then return nil end|without the line the call on nil fails inside pcall, which gives nil as well
+or->and|if array == nil or type(f) ~= "function" then return nil end|either of the two alone fails inside pcall further down, which gives nil as well
+drop-return|if array == nil or type(f) ~= "function" then return nil end|either of the two alone fails inside pcall further down, which gives nil as well
+false->true|if known == false then return nil end|a remembered miss is no valid object: the next line answers nil for it as well
+drop-return|if known == false then return nil end|a remembered miss is no valid object: the next line answers nil for it as well
+false->true|if Found[path] == nil then Found[path] = false end|any value that is no valid object stands for "not found"
+drop-return|if o == nil then return nil end|without the line the question to nil fails inside pcall and nil comes back as well
+false->true|local World = { loading = false, since = 0, listeners = {}, havePost = false, seen = false }|loading: with since = 0 the 20 second limit ends a load that never began at the first question; havePost and seen are covered by the tests
+num+1|local World = { loading = false, since = 0, listeners = {}, havePost = false, seen = false }|the start value is replaced when a load begins
+num+1|e = { searchAt = 0 }|any start value before the first clock reading is the same
+and->or|if ok and valid(o) then|a search that raised gives an error text, which is no valid object either
+num+1|for _, e in pairs(First) do e.object, e.name, e.searchAt = nil, nil, 0 end|any value before the current clock reading is the same
+num+1|Hero = { controller = nil, controllerName = nil, searchAt = 0, askAt = 0, engineAnswers = false, engineAsked = false,|any start value before the first clock reading is the same
+false->true|Hero = { controller = nil, controllerName = nil, searchAt = 0, askAt = 0, engineAnswers = false, engineAsked = false,|both are set by the first question to the engine, which is put at the first call (askAt lies before any clock reading)
+num+1|Hero.controller, Hero.controllerName, Hero.searchAt, Hero.statelessSince = nil, nil, 0, nil|any value before the current clock reading is the same
+num+1|Hero.askAt, Hero.engineAnswers, Hero.engineAsked = 0, false, false|any value before the current clock reading is the same
+false->true|Hero.askAt, Hero.engineAnswers, Hero.engineAsked = 0, false, false|both are set by the next question to the engine, which is put at the next call (askAt lies before the clock)
+or->and|if o == nil or not valid(o) then return end|an object that is not valid has no name that can be read: the next lines end there as well
+drop-return|if o == nil or not valid(o) then return end|an object that is not valid has no name that can be read: the next lines end there as well
+true->false|if not class or isDefaultName(name) or not class:find("Engine", 1, true) then return end|the text searched for has no pattern characters
+true->false|World.seen = true|after the first time every one of the kit's paths has its answer, found or not: another pass looks nothing up and notes nothing new
+false->true|e = { askAt = 0, freshUntil = 0, doubted = false }|doubted is set by the first question to the engine, which is put at the first call
+num+1|e = { askAt = 0, freshUntil = 0, doubted = false }|any start value before the first clock reading is the same (freshUntil is only read with an object)
+false->true|e.object, e.name, e.freshUntil, e.askAt, e.doubted = o, name, now + SUBSYSTEM_FRESH, 0, false|doubted is only read after a question to the engine, which sets it; with askAt before the clock the next call without a fresh object asks first
+num+1|e.object, e.name, e.freshUntil, e.askAt, e.doubted = o, name, now + SUBSYSTEM_FRESH, 0, false|any value before the current clock reading is the same
+false->true|for _, e in pairs(Subsystems) do e.object, e.name, e.askAt, e.freshUntil, e.doubted = nil, nil, 0, 0, false end|doubted is set by the next question to the engine, which is put at the next call
+num+1|for _, e in pairs(Subsystems) do e.object, e.name, e.askAt, e.freshUntil, e.doubted = nil, nil, 0, 0, false end|any value before the current clock reading is the same (freshUntil is only read with an object)
+drop-return|if not c then return nil end|get and call answer nil for no object: the lines that follow end at nil as well
+drop-return|if not statics then return false end|call answers nil for no object, which is not true
+drop-return|if not subsystem then return nil end|get and call answer nil for no object: no time is read
+drop-return|if sets == nil then return nil end|ForEach on nil fails inside pcall: nothing is found
+true->false|return true     -- ends the loop|a list holds one set per class: going on finds no second one
+drop-return|return true     -- ends the loop|a list holds one set per class: going on finds no second one
+true->false|if name and not isDefaultName(name) and name:find("PlayerState", 1, true) then|the text searched for has no pattern characters
+num+1|if name and not isDefaultName(name) and name:find("PlayerState", 1, true) then|a full name never starts with PlayerState (the class name of the set comes first)
+num+1|if owner and name:find("." .. owner .. ".", 1, true) then return o, name end|a full name never starts with a point
+num+1|e = { stateName = stateName, tries = 0, tryAt = 0, scanAt = 0, scanEvery = SCAN_FIRST }|any start value before the first clock reading is the same
+num+1|e.tries, e.tryAt = 0, 0|one try less after a set was lost, or any time before the current clock reading: the list is asked at once either way
+num+1|e.scanAt, e.scanEvery = 0, SCAN_FIRST|any value before the current clock reading is the same
+drop-return|if a == nil then return nil end|get answers nil for no object: no value is read
+drop-return|if current == nil then return nil end|without the line the first value returned is nil as well; callers go by the first value
+gt->ge|if current == nil or base == nil or abs(current - value) > slack or abs(base - value) > slack then|a difference of exactly the slack is not provoked: it is a rounding bound, not a rule of the game
+drop-return|if not set then return nil end|readAttribute answers nil for no set
+drop-return|if not library then return nil end|call answers nil for no object
+false->true|local Toast = { widget = nil, widgetName = nil, text = nil, shown = false, lines = {}, givenUp = false, why = nil }|with no widget, shown only decides whether a widget call is tried, and there is none to call
+false->true|Toast.widget, Toast.text, Toast.shown, Toast.lines = nil, nil, false, {}|with no widget, shown only decides whether a widget call is tried, and there is none to call
+false->true|if not Kit.prepareToast() then return false end|the box is given up at that point: drawing fails at its next step and answers false as well
+false->true|return false|the box is given up before this return: drawing fails at its next step and answers false as well
+false->true|Toast.widget, Toast.widgetName, Toast.text, Toast.shown = widget, fullName(widget), text, false|drawing sets shown right after building
+true->false|return true|the callers of draw with nothing to show do not use its answer
+false->true|Toast.widget, Toast.text, Toast.shown = nil, nil, false|with no widget, shown only decides whether a widget call is tried, and there is none to call
+drop-return|if Toast.givenUp then return false end|without the line drawing fails at its first step and answers false as well
+drop-return|return|with no lines left the loop below removes nothing and the function ends
+false->true|Kit.onWorldChange(function() Toast.widget, Toast.text, Toast.shown, Toast.lines = nil, nil, false, {} end)|with no widget, shown only decides whether a widget call is tried, and there is none to call
+drop-return|if #Toast.lines == 0 then return end|with no lines nothing has run out: the function ends two lines further down
+drop-return|if Toast.givenUp then return end|a box that was given up is not drawn: draw answers false at its first step
+drop-return|if not e then return nil end|get answers nil for no object: no world is read
+drop-return|if not valid(state) then return nil end|without it inList asks get(), which reads nothing of an object that is not valid either: nil all the same
+drop-return|if not Kit.prepareToast() then return false end|prepareToast gives the box up when a path is missing; buildBox then finds the same path missing and gives it up again with the same words (said once, noted once)
+false->true|p = { id = id, widget = nil, name = nil, text = nil, shown = false, givenUp = false, why = nil, lines = nil, size = panelSize(options.size) or 12 }|shown only decides whether hide() asks the widget, and a box that was never shown has none (alive() is false); lines nil never lets a show be skipped
+false->true|p.widget, p.name, p.text, p.shown, p.lines, p.givenUp, p.why = nil, nil, nil, false, nil, true, why|a box that was given up has no widget: hide() asks nothing either way, and show() answers false at its first line
+false->true|p.widget, p.name, p.text, p.shown, p.lines = nil, nil, nil, false, nil|with lines nil the show goes on to set the text whatever shown says; hide() of a box without a widget asks nothing

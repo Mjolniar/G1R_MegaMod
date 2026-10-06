@@ -1,0 +1,17 @@
+# Mutations of modules/xp/Scripts/main.lua that the suite does not notice and that were looked at:
+#   python dev/tools/mutate.py modules/xp/Scripts/main.lua --suite xp --accept dev/tests/xp/mutations_accepted.txt
+# Lines: <operator>|<the original line>|<why the change makes no difference>
+and->or|if ok and type(src) == "string" then|debug.getinfo does not fail; the two forms differ only when it does
+drop-return|return "./"|the fall-back folder is only reached when the chunk has no path, which UE4SS and the tests always give
+num+1|armedAt = 0,                -- gains count from this moment on (settle time after the attributes were found)|the start value is replaced at the first look
+false->true|settleMoved = false,        -- the number changed during the wait|the start value is replaced at the first look
+num+1|unreadableUntil = 0,|any start value before the first clock reading is the same
+ge->gt|if ledger ~= nil and (S.ownLedger == nil or abs(ledger - S.ownLedger) >= 0.5)|experience is a whole number: a difference of exactly 0.5 does not occur
+ge->gt|and (S.ledgerAtStart == nil or abs(ledger - S.ledgerAtStart) >= 0.5) then|experience is a whole number: a difference of exactly 0.5 does not occur
+drop-return|if S.other then return end|standDown is not reached a second time: once standing down, the loop ends before it
+lt->le|if now < S.unreadableUntil then return end|a quarter second more or less of waiting
+drop-return|return|after rest() the lines that follow do what a first look does: take the value and stop
+le->lt|if experience <= last + 0.001 then return end       -- unchanged, or less (a loaded save)|an unchanged number ends a few lines further down as nothing to add
+plus->minus|if experience <= last + 0.001 then return end       -- unchanged, or less (a loaded save)|an unchanged number ends a few lines further down as nothing to add
+lt->le|if abs(target - experience) < 0.5 then return end        -- nothing to add (a multiplier of 1, or after rounding)|both are whole numbers: a difference of exactly 0.5 does not occur
+or->and|S.last, S.total = actual, actual or S.total|after a failed write the number read back is the number of this look, which S.total already holds

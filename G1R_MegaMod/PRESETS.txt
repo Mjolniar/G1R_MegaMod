@@ -1,0 +1,139 @@
+G1R_MegaMod - the five presets of the settings app
+==================================================
+
+Above its pages the settings app has a box "Preset" with five sets of
+settings, from the game itself to as easy as the settings allow. "Apply
+preset" sets everything that makes the game easier or harder, on all pages
+at once; nothing is written until you press Save. The box stands on the
+preset your settings are at ("- in use"), or on "Your own settings" when
+they are at none of the five.
+
+  1 - Base game (hardest)   The game as it is: nothing comes back, nothing
+                            regenerates, every number is the game's own.
+  2 - Relaxed               A little of everything.
+  3 - Easy                  The pace the mod is usually played at.
+  4 - Very easy
+  5 - Easiest               Every setting at the end of its range that makes
+                            the game easier.
+
+A preset does not touch: keys, notes on screen and log switches, the melee
+clean-ups, waiting, the map markers, respawn settings of single species,
+the technical settings (page "Advanced") and what is not in the app. It
+switches the parts it sets on (a module that was switched off in its own
+settings is on again).
+
+Below: the name of each setting as it stands in the module's config.lua,
+and its value in the five presets.
+
+Respawn and crime (module repopulate)
+                                1         2         3         4         5
+  Creatures.Enabled             no        yes       yes       yes       yes
+  Creatures.NormalChance        35 %      15 %      35 %      60 %      100 %
+  Creatures.NormalEveryHours    24        48        24        24        12
+  Creatures.EliteChance         15 %      5 %       15 %      30 %      100 %
+  Creatures.EliteEveryHours     24        72        24        24        12
+  Herbs.Enabled                 no        yes       yes       yes       yes
+  Herbs.RegrowHours             24        72        24        12        1
+  WorldItems.Enabled            no        yes       yes       yes       yes
+  WorldItems.DailyChance        15 %      5 %       15 %      30 %      100 %
+  Chests.Enabled                no        yes       yes       yes       yes
+  Chests.SettlementDailyChance  30 %      10 %      30 %      50 %      100 %
+  Chests.WildDailyChance        10 %      3 %       10 %      25 %      100 %
+  Crime: theft                  crime     crime     crime     crime     allowed
+  Crime: trespassing            crime     crime     crime     allowed   allowed
+  Crime: drawn weapons          crime     crime     allowed   allowed   allowed
+  On in every preset: Chests.IncludeLootObjects (loot spots restock with
+  the containers) and Crime.ForgetOldCrimes (what was done of the kinds a
+  preset allows is forgotten).
+  In preset 1 the chances and hours are the mod's usual ones; they count
+  again when a part is switched on by hand. In preset 5 creatures come back
+  twice a day: the shortest interval the settings allow (1 hour) would only
+  crowd the paths again.
+
+Combat (module regen)
+                                1         2         3         4         5
+  ManaPercent                   0         1         2         5         100
+  ManaSeconds                   3         5         3         2         0.5
+  ManaUpTo                      100       50        75        100       100
+  ManaPause                     10        20        15        5         0
+  ManaArmedPercent              100       0         50        100       100
+  HealthPercent                 0         0.5       1         3         100
+  HealthSeconds                 5         10        5         3         0.5
+  HealthUpTo                    100       30        50        100       100
+  HealthPause                   20        30        30        10        0
+  HealthArmedPercent            100       0         50        100       100
+  In preset 1 nothing regenerates (0 per step); the seconds, limits and
+  waits there are the mod's defaults and count when an amount is set by
+  hand.
+  Put back to their defaults by every preset: Enabled, ManaEnabled,
+  ManaFlat, ManaByCircle, ManaCircleNone, ManaCircleNovice and 4 more -
+  every setting of the module that is not listed above, except its notes
+  and log switches.
+
+Combat (module magic)
+                                1         2         3         4         5
+  Damage                        1         1.25      1.5       2.5       10
+  ManaCost                      1         0.9       0.75      0.5       0
+  CastTime                      1         0.9       0.8       0.6       0.1
+  ProjectileSpeed               1         1         1.25      1.5       5
+  Range                         1         1         1.25      1.5       4
+  Stagger                       1         1.25      1.5       2.5       20
+  HealAmount                    1         1.25      1.5       2.5       10
+  IceBoltFreeze                 no        no        no        no        yes
+  IceBlockFreeze                no        no        no        yes       yes
+  IceWaveFreeze                 no        no        no        no        yes
+  CircleCosts                   no        no        yes       yes       yes
+  CircleCostBasics              5         5         4         3         0
+  CircleCost1                   10        10        8         5         0
+  CircleCost2                   15        15        12        8         0
+  CircleCost3                   20        20        16        10        0
+  CircleCost4                   25        25        20        13        0
+  CircleCost5                   30        30        24        15        0
+  CircleCost6                   40        40        32        20        0
+  The CircleCost numbers are learning points and count while CircleCosts is
+  on (presets 3 to 5); 0 = a circle is learned for nothing.
+  Put back to their defaults by every preset: Enabled, WholeMana,
+  SchoolFire, SchoolIce, SchoolEnergy, SchoolWind and 56 more - every
+  setting of the module that is not listed above, except its notes and log
+  switches.
+
+Resources (module mining)
+                                1         2         3         4         5
+  YieldEnabled                  no        yes       yes       yes       yes
+  BaseAmount                    3         3         4         6         100
+  StrengthPerOre                0         0         0         0         1
+  DexterityPerOre               0         0         0         0         1
+  TrainedBonus                  0         1         2         3         100
+  MasterBonus                   0         2         4         6         100
+  ExtraChance                   0         25        50        100       100
+  MinAmount                     1         1         2         3         100
+  MaxAmount                     100       100       100       100       1000
+  LowVeinRule                   yes       yes       no        no        no
+  EndlessVeins                  no        no        no        no        yes
+  VeinLastsTimes                1         2         3         10        50
+  In preset 1 the numbers are not used (YieldEnabled is off): the game
+  gives 3 ore a swing. StrengthPerOre / DexterityPerOre: one more ore for
+  every so many points, 0 = the attribute does not count.
+  Put back to their defaults by every preset: Enabled.
+
+Experience (module xp)
+                                1         2         3         4         5
+  Multiplier                    1         1.5       2         4         10
+  Put back to their defaults by every preset: Enabled, LargeGainFrom,
+  LargeGainMultiplier.
+
+Lock picking (module locks)
+                                1         2         3         4         5
+  UntrainedConnections          game      1         2         2         all
+  SkilledConnections            game      2         2         all       all
+  MasterConnections             game      game      safe      all       all
+  PicksNeverBreak               no        no        no        no        yes
+  UntrainedWrongMoves           0         4         6         10        99
+  SkilledWrongMoves             0         6         8         15        99
+  MasterWrongMoves              0         8         10        20        99
+  (game = as the game has it)
+  Wrong moves: 0 = the game's own number (2 untrained, 4 skilled, 6
+  master). The presets use fixed numbers of connections, which count for
+  doors and chests alike; "safe" (as many as the lock stays openable with)
+  is only used for the master, where the game's own number is the floor.
+  Put back to their defaults by every preset: Enabled.

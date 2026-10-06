@@ -1,0 +1,4 @@
+# Survivors of `python dev/tools/mutate.py modules/repopulate/Scripts/world.lua --suite world --accept dev/tests/world/mutations_accepted.txt`
+# that were looked at: the change makes no difference to what the code does.
+num+1|local WindowAt, WindowCount, PrevCount = -1e9, 0, 0|the first end of play starts a span and sets both counts (WindowAt is far in the past); W.calm answers before it reads them while no span was started
+num+1|local Mark = { begin = 0, finish = 0, before = 0 }|all three are set by the first map load before W.check reads them (before that, W.check only says that it waits for a map load); a `before` of -1 instead of 0 is below the threshold all the same

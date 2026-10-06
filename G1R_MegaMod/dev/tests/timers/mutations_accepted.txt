@@ -1,0 +1,13 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/timers/Scripts/main.lua --suite timers --accept dev/tests/timers/mutations_accepted.txt
+# that were looked at (format: operator|original line without indentation|reason).
+and->or|if ok and type(src) == "string" then|debug.getinfo never fails here; the result is always a text
+num+1|local p = src:gsub("^@", ""):gsub(string.char(92), "/")|in the game the path of main.lua has backslashes (Windows), in the tests only slashes: they cannot tell; every module turns them this way and loads in the game (its load line in every session)
+drop-return|return "./"|the function always returns a folder before this line (main.lua is loaded by a full path)
+true->false|local function has(n, part) return n:find(part, 1, true) ~= nil end|the names looked for hold no magic character of a pattern ("_" is none): plain or not, the same
+false->true|lookAt = -1e9, lines = nil, shown = false,|shown only decides whether hide() asks the box, and there is no box before the first lines
+le->lt|if not duration or duration <= 0 or not start then return end|an effect of length 0 has no time left (its start is not after now), so the next line drops it as well
+false->true|S.shown = false|the next lines set shown to the box's own answer; a box that cannot be shown has nothing to hide
+and->or|if S.shown and S.box then S.box.hide() end|hiding a box that is not shown does nothing (Kit.panel: hide returns at once)
+drop-return|if not KIT.controller() then return hide() end|without a hero every part finds nothing of him (no player state, no pawn, no attributes) and the box stays hidden; the line only spares the reads
+false->true|S.shown, S.lines, S.light, S.lookAt = false, nil, nil, -1e9      -- (the kit forgets the box itself)|after a map change the kit has forgotten the box: hide() asks it nothing (its own shown is false), and the next lines set shown to its answer

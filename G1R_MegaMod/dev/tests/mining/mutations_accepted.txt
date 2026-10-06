@@ -1,0 +1,6 @@
+# Mutations of modules/mining/Scripts/main.lua that the suite does not notice and that were looked at:
+#   python3 dev/tools/mutate.py modules/mining/Scripts/main.lua --suite mining --accept dev/tests/mining/mutations_accepted.txt
+# Lines: <operator>|<the original line>|<why the change makes no difference>
+and->or|if ok and type(src) == "string" then|debug.getinfo does not fail; the two forms differ only when it does
+drop-return|return "./"|the fall-back folder is only reached when the chunk has no path, which UE4SS and the tests always give
+true->false|if kind and kind:find(CONTAINER, 1, true) then found = found or module end|the class name has no pattern characters: a plain find and a pattern find give the same

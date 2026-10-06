@@ -1,0 +1,34 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/markers/Scripts/main.lua --suite markers --lines 360-505 --accept dev/tests/markers/mutations_accepted.txt
+#   python dev/tools/mutate.py modules/markers/Scripts/main.lua --suite markers --lines 2120-2245 --accept dev/tests/markers/mutations_accepted.txt
+# (the pictures and what shows them; how map screens are found, the update, map loads) that were looked at: the change
+# makes no difference to what the code does. The rest of the file has not been put through the mutation check.
+num+1|local TexSerial = 0             -- counts loadings|a loading's number only has to differ from every other loading's
+num+1|local ScreenGen = 0             -- counts map screens (pictures that are not kept alive belong to one)|the number is only compared with the number a picture was loaded under
+plus->minus|TexSerial = TexSerial + 1|a loading's number only has to differ from every other loading's
+num+1|TexSerial = TexSerial + 1|a loading's number only has to differ from every other loading's
+plus->minus|ScreenGen = ScreenGen + 1|the number only has to differ from the one before
+num+1|ScreenGen = ScreenGen + 1|the number only has to differ from the one before
+plus->minus|MainGen[key] = (MainGen[key] or 0) + 1|the number only has to differ from the one the address had before
+num+1|MainGen[key] = (MainGen[key] or 0) + 1|the number only has to differ from the one the address had before
+drop-return|if not ctrl then return nil end|without a controller the next line finds no world and returns nothing as well
+drop-return|if t.okAt == now then return true end|the answer of this update is kept so that the object is not asked again in it; asking again gives the same answer
+lt->le|if TextureFail[rel] and now - TextureFail[rel] < 30.0 then return nil end|differs only at exactly 30.0 seconds
+plus->minus|if DIAG then Obs.texGen, Obs.texAt = Obs.texGen + 1, now end|diagnostics: the count is only compared with the count last noted
+num+1|if DIAG then Obs.texGen, Obs.texAt = Obs.texGen + 1, now end|diagnostics: the count is only compared with the count last noted
+plus->minus|Obs.texGen, Obs.texAt = Obs.texGen + 1, now|diagnostics: the count is only compared with the count last noted
+num+1|Obs.texGen, Obs.texAt = Obs.texGen + 1, now|diagnostics: the count is only compared with the count last noted
+num+1|local w = num(call(tex, "Blueprint_GetSizeX")) or 64|a stand-in for a picture that does not tell its size (every picture of the mod does): no size is the right one then
+num+1|local h = num(call(tex, "Blueprint_GetSizeY")) or 64|a stand-in for a picture that does not tell its size (every picture of the mod does): no size is the right one then
+and->or|local names = shown ~= nil and valid(shown) and addrOf(shown) == addrOf(t.tex)|differs only for a brush object that is not valid and has the address of the picture just set - the picture was valid a moment before, in the same call
+true->false|if n:find("Default__", 1, true) then return end|the text has no pattern characters: found the same way with and without a plain search
+num+1|if n:find("Default__", 1, true) then return end|a full name begins with the class name: the word is never at its first character
+num+1|local DiscoveryBase, DiscoveryStep, NextDiscover = nil, 1, 0|the first search is set by scheduleDiscovery before the value is read
+num+1|DiscoveryBase, DiscoveryStep, NextDiscover = nil, 1, 0|the first search is set by scheduleDiscovery before the value is read
+lt->le|if now - LoadingSince < 30.0 then return end|differs only at exactly 30.0 seconds
+false->true|Loading = false -- failsafe if the post-load hook never fires|with the flag left set the same branch is taken at every update and goes on, since the 30 seconds stay over
+gt->ge|if #Pending > 0 then|with nothing waiting the loop below runs over an empty list
+ge->gt|if not any and now >= NextDiscover then|differs only at exactly the moment the search is due
+ge->gt|if DIAG and Obs.texGen ~= Obs.texNoted and now - Obs.texAt >= 2.0 then Obs.textures() end|diagnostics: differs only at exactly 2.0 seconds
+num+1|tostring(cfg("AreaPinSize", cfg("PinSize", 23))), tostring(cfg("WorldPinSize", 16)),|the line the mod prints when it is loaded: the sizes are the settings' (config.lua has both), the numbers here only stand in for a file without them
+drop-return|if not rel then return rel end|look(nil) gives nil as well: a person without a name picture gets none either way

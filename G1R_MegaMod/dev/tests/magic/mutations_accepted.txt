@@ -1,0 +1,8 @@
+# Mutations of modules/magic/Scripts/main.lua that the suite does not notice and that were looked at:
+#   python3 dev/tools/mutate.py modules/magic/Scripts/main.lua --suite magic --quiet --accept dev/tests/magic/mutations_accepted.txt
+# Lines: <operator>|<the original line>|<why the change makes no difference>
+and->or|if ok and type(src) == "string" then|debug.getinfo does not fail; the two forms differ only when it does
+drop-return|return "./"|the fall-back folder is only reached when the chunk has no path, which UE4SS and the tests always give
+le->lt|if abs(v - whole) <= SNAP then return whole end|0.025 has no exact binary form: a product never misses a whole number by exactly that much
+false->true|if not pcall(f, element, index) then good = false end|no step of these walks can raise - every read and write inside is guarded already; the guard is for what the model does not know of UE4SS
+num+1|local cost = floor(orig * times + 0.5 + 1e-9)|the amount only has to lie far above the error of the multiplication (about 1e-13 here) and far below a thousandth of a point: 1e-10 does that as well as 1e-9

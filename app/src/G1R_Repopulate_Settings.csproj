@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>G1RRepopulateSettings</RootNamespace>
+    <AssemblyName>G1R_Repopulate_Settings</AssemblyName>
+    <Version>2.1.1</Version>
+    <ApplicationIcon>megamod.ico</ApplicationIcon>
+    <Product>G1R_Repopulate Settings</Product>
+    <Description>Settings editor for the G1R_Repopulate UE4SS mod (Gothic 1 Remake)</Description>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationVisualStyles>true</ApplicationVisualStyles>
+    <RollForward>Major</RollForward>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <DebugType>none</DebugType>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)=.</PathMap>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- what the game's own code gives for the test inputs (filetests/gen_fixtures.sh writes it); read by SelfTest -->
+    <EmbeddedResource Include="SelfTestFixtures.txt.gz" LogicalName="SelfTestFixtures" />
+    <!-- the app's icon once more, with all its sizes: read by the window (title bar, task bar); the exe's own icon is ApplicationIcon -->
+    <EmbeddedResource Include="megamod.ico" LogicalName="AppIcon" />
+    <!-- the settings of the module "markers" (the map pins), which has no schema.lua: described by the app (AppSchemas in NavModel.cs) -->
+    <EmbeddedResource Include="MapPinsSchema.lua" LogicalName="MapPinsSchema" />
+    <EmbeddedResource Include="MapPinsConfig.lua" LogicalName="MapPinsConfig" />
+    <!-- the module "intro": the game's own start screen with the three logos left out, written into the game's Game.ini (GameStart.cs) -->
+    <EmbeddedResource Include="StartupLoadingScreen.txt" LogicalName="StartupLoadingScreen" />
+  </ItemGroup>
+
+  <!-- StartupLoadingScreen.txt is the game's own data: made from the player's game by ../tools/make_startup_screen.py -->
+  <Target Name="NeedsStartupLoadingScreen" BeforeTargets="BeforeBuild" Condition="!Exists('StartupLoadingScreen.txt')">
+    <Error Text="StartupLoadingScreen.txt is missing: make it from your game with app/tools/make_startup_screen.py (see its first lines)." />
+  </Target>
+
+</Project>

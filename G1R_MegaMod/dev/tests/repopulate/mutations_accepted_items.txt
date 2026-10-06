@@ -1,0 +1,7 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/repopulate/Scripts/items.lua --suite repopulate,repopulate_engine --accept dev/tests/repopulate/mutations_accepted_items.txt
+# that were looked at (format: operator|original line without indentation|reason).
+le->lt|if s.changed <= 5 then|the read-back is a sample of the first writes of a pass: whether 4, 5 or 6 of them are read back changes nothing that is written
+num+1|if s.changed <= 5 then|the read-back is a sample of the first writes of a pass: whether 4, 5 or 6 of them are read back changes nothing that is written
+gt->ge|Tries = s.errors > 0 and Tries + 1 or 0|what a pass without errors leaves in Tries is used only when the game replaces its point manager in mid-session (no reset of the module); a spot that then keeps raising is given up after two passes instead of three - the bound only stops endless retries
+num+1|Tries = s.errors > 0 and Tries + 1 or 0|what a pass without errors leaves in Tries is used only when the game replaces its point manager in mid-session (no reset of the module); a spot that then keeps raising is given up after two passes instead of three - the bound only stops endless retries

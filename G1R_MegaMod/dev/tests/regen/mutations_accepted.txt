@@ -1,0 +1,9 @@
+# Mutations of modules/regen/Scripts/main.lua that the suite does not notice and that were looked at:
+#   python3 dev/tools/mutate.py modules/regen/Scripts/main.lua --suite regen --quiet --accept dev/tests/regen/mutations_accepted.txt
+# Lines: <operator>|<the original line, without its indentation>|<why the change makes no difference>
+and->or|if ok and type(src) == "string" then|debug.getinfo does not fail; the two forms differ only when it does
+drop-return|return "./"|the fall-back folder is only reached when the chunk has no path, which UE4SS and the tests always give
+num+1|unreadableUntil = 0,    -- a value that could not be read is not asked for before this clock value|any start value before the first clock reading is the same: the clock counts the seconds since the game started
+ge->gt|if now ~= nil and abs(now - value) >= 0.001 then|a value moves by whole points or not at all: a difference of exactly 0.001 does not occur
+le->lt|if wrote and now ~= nil and nowBase ~= nil and abs(now - target) <= slack and abs(nowBase - newBase) <= slack then|a value that stayed comes back equal or rounded to single precision, far inside the slack: a difference of exactly the slack does not occur
+lt->le|if now < S.nextLook then return end|the next look is set a thousandth of a second before a tick: a tick never falls exactly on it

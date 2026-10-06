@@ -1,0 +1,375 @@
+G1R_MegaMod - changes
+=====================
+
+0.3.3 (2026-10-06)
+  mount 1.1.0 (asked for: "a way to rename the scavenger in game to a
+  custom name in the settings app"): setting Name - the name shown over
+  your scavenger instead of the game's ("" = the game's; at most 40
+  letters; settings app page Mount). The game makes that name from its
+  text table by the scavenger's unique name, so the module changes the
+  text of the HUD's name widget over your scavenger (wild scavengers keep
+  theirs) and puts the game's own back when the setting is emptied.
+
+0.3.2 (2026-10-06)
+  markers 2.7 (asked for: "change the appearance of the map pins to
+  something more in-world lore accurate"): the drawn look, the default -
+  the pins inked onto the map by hand (an ink ring around a watercolour
+  wash: woad blue for teachers, ochre for traders, both for both, red
+  ochre for everyone else, verdigris for orcs), the groups' numbers
+  written in ink in a double ring, the names in ink on a patch of cleared
+  paper in the game's own text letters (Noto Serif), the colour key on a
+  strip of parchment; the look of the game's own maps. 469 pictures in
+  Scripts/Assets/Drawn, drawn by dev/tools/drawn/drawn.py with the same
+  sizes as the classic ones. Settings PinLook ("drawn" / "classic") and
+  NameLetters ("game" / "gothic") in config.lua and on the settings
+  app's page Map > Map pins (settings app 2.1.1).
+  movement 1.1.0 (reported: "Every time the scavenger is summoned, he is
+  having his speed multiplied again and again"): a summon gives the
+  scavenger new attributes that carry the written factor over, and 1.0.0
+  took that as the game's own factor and multiplied it again. Now the
+  game's own factor is the 1.0 of the character definition; new
+  attributes are set to 1.0 times the multiplier, and a save that kept a
+  multiplied value is put right at the first look. New (asked for: "a
+  player speed modifier"): HeroSpeed - the hero's own speed factor on foot
+  times a multiplier (0.50 to 3.00), the same way; settings app page
+  Hero > Movement, in-game menu page Movement.
+
+0.3.1 (2026-10-06)
+  In-game mod menu (F2): no text is cut off any more. The menu mod draws
+  every row on one line and cuts a name after 35 characters, a hint after
+  54 and a tab after 28 (its own code says so); every module now gives
+  short texts for the menu (schema fields MenuLabel, Menu, MenuTitle), a
+  choice whose options do not fit shows the one it has ("now: bottom
+  left (4 of 4)"), and a test checks every text of every module.
+  keys 1.1.0 (asked for: "on a toggle with the keybind shown to reveal it,
+  and it needs to be smaller as a whole"): F3 shows and hides the list
+  (in the pause menu and while you play); the pause menu shows only a
+  small line that names the key; letters of size 10 (setting TextSize);
+  the lines say what a key does without the mod's name. The key is the
+  new setting ListKey (the old ShowKey was "" in the files of 1.0.0).
+  timers 1.0.1 (asked for: "casting a spell as burning with a 5 second cast
+  timer"): the mana cost the game puts on you while a spell is cast or
+  held (GE_ManaBurn and its kind) is no effect to show; nor are removals
+  and the abilities of an equipped rune. The Light: when it goes out the
+  game clears its timer and keeps its light 5 s while it fades - that is
+  no failure any more (it made the box count a new Light by itself).
+  markers 2.6 (asked for: "use the game's UI text font, as the gothic ...
+  is too hard to read"): the names on the map in the game's own text
+  letters again; blackletter names with Config.NameLetters = "gothic".
+  general: the setting Letters covers the boxes (notes, list of keys,
+  timers), no longer the map names.
+  kit: panel(id, { size }) and P.resize(n) - a box with letters of its own
+  size (the space around them in step).
+
+0.3.0 (2026-10-06)
+  New module movement: how fast the hero swims and how fast your scavenger
+  runs - the game's three swimming speeds and the scavenger's own speed
+  factor, times a multiplier each (1.00 = as the game has it; 0.50 to
+  3.00). Settings app page Hero > Movement, in-game menu page Movement.
+  Not run in the game yet.
+  kit: attributeSetOf(state, part) - the attributes of another character.
+  Versions: repopulate 1.5.0 (its load line said 1.4.0-local up to now),
+  wait 1.0.1, mount 1.0.1 (their keys say what they do for the list of
+  keys), magic 1.0.1, markers 2.5.0, general 1.1.0; new: movement, intro,
+  keys, timers, othermods 1.0.0.
+  repopulate: a creature is not brought back while it cannot be read where
+  the player is; it waits as when the player stands near its spot.
+  wait: a weapon drawn, a conversation, a cutscene (each as switched on under
+  "When not to wait") and a paused game are asked again right before the
+  clock is moved, not only when the key is pressed.
+  loader: a module whose start fails leaves nothing running - the hooks,
+  keys, console words and loops it registered before the error stay with
+  UE4SS (they cannot be taken back) but do nothing from then on.
+  repopulate, item spots: a spot already set as wanted is not written again;
+  a spot the game raised on is tried again with the whole list ten seconds
+  later, at most three passes in a row.
+  repopulate, respawns: a corpse goes for a respawn only when it is known
+  that the creature came. The first three respawns of a run are looked up
+  by the name the game hands back; once one is found, a corpse goes only for
+  a respawn whose creature was found, and an answer "None" counts as a
+  respawn that did not happen. Without that lookup corpses go at once, as
+  before. The diagnostics say which (creatures.spawn_confirm).
+  repopulate, progress file: read record by record (a record of a wrong
+  shape is left out, said once); a file written by a newer version is left
+  as it is; a profile whose id cannot be read gets no progress file at all
+  (before: profile_default.lua, shared by every such profile); the writer
+  stops at a table inside itself or deeper than 12 levels.
+  repopulate, util: an object whose own validity question fails (or cannot
+  even be asked) counts as gone - nothing of it is read (before: it was
+  read, inside a protected call).
+  magic 1.0.1: the look every CheckSeconds that finds every number in place
+  no longer writes a line into the diagnostics (one a minute pushed
+  everything else out of the report's last lines).
+  README: the settings app's page list is the one of the app 2.0.
+  New module intro: what plays when the game starts. "Skip the logos when the
+  game starts" (Alkimia, THQ Nordic, the legal screen; they are the start
+  list of the game's loading screen plugin): the settings app writes the
+  game's own start list without them into the game's Game.ini when it saves
+  with the game closed, and takes exactly those lines out again; it counts
+  from the next start. "Skip the film of a new game": when a new game is
+  started, the module has the game show its usual loading screen instead.
+  Both off. Settings app page Interface > Game start; not in the in-game
+  menu. The module itself only reads Game.ini. Not run in the game yet.
+  New module keys: the list of your keys. While the pause menu is open, a
+  small box at its top left lists the keys of this mod's modules (each with
+  what it does) and of the other mods it knows, read from their settings
+  files each time the list comes up (SharedModMenu, HUDMap,
+  FocusNearbyPickups, G1R_AutoPickUpItemNative, G1R_PutAwayTorchRedux;
+  another mod that runs is named with "keys not known"). A key of its own
+  shows and hides it during play (none by default). On by default; settings
+  app page Interface > Key list, in-game menu page Key list. Not run in the
+  game yet.
+  kit: panel(id, options) - a box of lines of a module's own in the notes'
+  look (the notes' box is built by the same code); describeKey / keyList -
+  what each key does. wait and mount describe their keys.
+  loader: G1R_MODS for the modules - the Mods folder and whether a mod
+  there runs (the same read-only look as for the separate mods).
+  Letters (general 1.1.0; asked for: "the gothic text"): a new setting
+  "Letters of the mod's texts" - "gothic" (default: the game's blackletter
+  face of its headlines), "book" (the game's running text) or "plain" (the
+  engine's letters, as before). It covers every box of the mod (the notes,
+  the list of keys) at once; the names on the map screens (markers 2.5.0)
+  get pictures in a blackletter of their own (Old English Text MT), the
+  plain ones stay for "book" and "plain". When the game's font is not found
+  the boxes keep the engine's letters.
+  New module timers (asked for: "On you: heal / mana over time from food and
+  potions, alcohol, swampweed, burning, frozen, electrified, wind, slowed"):
+  a small box with what is on the hero and how long it still lasts - the
+  game's effects with a duration (read from the hero's ability system),
+  the Light spell (its engine timer, else a count of the module's own),
+  alcohol and swampweed (level / rate). A switch per kind, every other
+  timed effect optional; corner and distances of your choice (bottom left,
+  24 / 200 by default). Settings app page Interface > Effect timers,
+  in-game menu page Effect timers. Not run in the game yet.
+  New module othermods (asked for: "the distance of auto highlight and auto
+  loot"): how far FocusNearbyPickups highlights things (maxRadius) and how
+  far G1R_AutoPickUpItemNative picks items up (AreaLootingRadius). The
+  settings app writes exactly that one line into each mod's own file when it
+  saves with the game closed (first version of the file kept next to it);
+  a switch that is off leaves the file alone. Settings app page Other mods;
+  not in the in-game menu (the mods read their files at the start only).
+
+0.2.3
+  New module mount: the scavenger you ride. Reported 2026-10-05: sometimes
+  it does not come when whistled for, and only a restart of the game puts
+  that right. Nothing in this mod acts on the mount; the game's own follow
+  routine stops when the hero carries the riding block (set inside camps,
+  taken off on leaving - a missed exit leaves it), when the scavenger fears
+  him (one of his own hits), or when the whistle reached nobody. The module
+  writes one line per whistle (riding block, mounted, the scavenger's
+  distance, dead, fears you) and another a few seconds later; when it has
+  not come, it takes the riding block off the hero, the fear off the
+  scavenger and puts it back to its idle routine ("full"; "safe" leaves the
+  riding block; "off" only writes down). Key, console words mount / mount
+  report / mount fix, two buttons in the in-game menu. Settings app and
+  in-game menu page "Mount". Not run in the game yet.
+
+  repopulate 1.4.1
+  - A search among all objects that was put off while the game freed many
+    objects, and that nobody came back for, no longer lets a later search
+    through at once (the wait for a calm moment is counted anew).
+
+  Dev kit
+  - Suites repopulate_util (149 checks: util.lua on its own) and mount (83);
+    the repopulate harness has a second scenario file (main_cases.lua:
+    settings file, progress file, waits, switches, console, status, missing
+    parts). Mutation checks: util.lua and mount/main.lua 0 unexplained;
+    mutate.py takes several suites (--suite a,b) and --only. 22 suites.
+
+0.2.2
+  Stability. No setting, no value and no feature has changed; what changed
+  is how the mod deals with objects of the game.
+
+  Why: between 2026-10-04 and 2026-10-05 the game crashed several times
+  while riding or shortly after mounting. Three of those crashes ended in a
+  call of the module repopulate on an object the game had already unloaded,
+  or in a search it made among all objects of the game; one ended in the
+  game painting a map pin whose picture was gone. Version 0.2.2 removes
+  these causes (dev\FACTS.md, section 6, has the list).
+
+  repopulate 1.4
+  - Mounting, dismounting and getting up from a bed no longer make the
+    module start over. Before, each of them had all containers looked at
+    again, 3974 item spots gone through again and everything searched for
+    again - 76 times in seven sessions, and three crashes came 1 to 20
+    seconds after one. The module starts over only at a map load (loading a
+    save is one), when the game clock goes back, or when the profile changes.
+  - The hero, the game clock, the profile, the crime rule sets and the
+    game's list of item spots are asked from the engine instead of being
+    searched for among all objects. Where a search is left (the creature
+    count, once per roll), it waits after a map load and while the game is
+    unloading many objects.
+  - Containers and creatures are followed through the game's own begin and
+    end of play calls: an object is dropped the moment the game takes it out
+    of the world, and nothing of it is touched afterwards.
+  - Nothing is done while the game is paused, and the game is not asked
+    for anything but that.
+  - In the main menu, where there is no game clock, the clock is looked
+    for at growing pauses (2 seconds to 2 minutes) instead of at every
+    update: one logged session of 0.2.1 searched for it 9325 times among
+    all objects in 40 minutes of menu.
+  - A corpse whose distance to the hero cannot be read stays where it is.
+  - The progress file (Scripts\state\profile_<n>.lua) is written to a
+    .tmp file first, read back, and only then put in place; the file before
+    it is kept as .bak and used if the newest one cannot be read.
+
+  markers 2.4
+  - The pictures of the pins are kept alive for the whole game run, so a
+    pin can no longer be painted with a picture the game has thrown away.
+  - A pin or a name is only shown once its image has taken its picture (2.3
+    could leave a white box and go on).
+  - The name list of a crowded spot is built over several updates instead
+    of in one.
+  - The map screen is no longer searched for among all objects: UE4SS
+    announces every new one (in a logged session of 140 minutes the search
+    ran about 95 times and never found a screen the announcement had not
+    brought). People the game does not know right after a map load are no
+    longer searched for among all objects either.
+
+  mining
+  - The search for the hero's mining ability among all objects is repeated
+    at pauses that grow to ten minutes instead of one (the hero of the main
+    menu has no such ability: 43 searches in the same 40 minutes). His own
+    list of abilities is read as often as before.
+
+  Loader and shared parts
+  - The modules ask the engine for the hero and for the game's subsystems
+    (the engine object is handed to the mod at every map load). If such a
+    question is not answered within 10 seconds, the search of 0.2.1 does the
+    work, and the diagnostics say so.
+  - Objects of the game that are asked for by path are looked up at the
+    first map load, on the game's own thread and before there is a world to
+    play in. Loading the mod searches nothing.
+  - A setting changed in the in-game menu is written to a .tmp file, read
+    back, and only then put in place; config.lua.bak is the file before the
+    change. A write that was cut off is completed at the next start.
+  - Diagnostics: an operations file per session (Scripts\diagnostics\
+    session-...ops) names the step a module was in when the game ended, and
+    the report of every session is kept, not only the newest.
+  - Scripts\config.lua: Config.Engine.FreeObjectsOnGameThread (off). It
+    would tell the engine to free the memory of destroyed objects on the
+    game's own thread. Not tried in the game; leave it off unless asked.
+
+  Not changed: every setting and its value, the presets, the settings app
+  (1.5.0), what the modules do in the game. Offline tests: 19 suites and the
+  lint, about 6200 checks. Not run in the game yet.
+
+0.2.1
+  - Presets: five sets of settings for the settings app's "Preset" box, from
+    "1 - Base game" (the game itself) to "5 - Easiest" (every setting at the
+    end of its range that makes the game easier), replacing the four respawn
+    presets. A preset sets all pages at once: respawn and crime,
+    regeneration, magic, mining, experience, lock picking. The values of the
+    modules regen, magic, mining, xp and locks stand in their schema.lua
+    (the new field Tiers of a setting); PRESETS.txt lists them all.
+  - Nothing the game runs has changed: the game does not read the new field.
+
+0.2.0
+  Seven new modules. Each ships neutral (it changes nothing and does not
+  look at the game until a setting is changed), has a switch of its own, and
+  is not loaded while the mod of another author that does the same job is
+  enabled.
+  - general: how notes on screen look (box in a corner, the game's own line,
+    off), where the box sits, how long a note stays.
+  - regen: mana and health regeneration - amount per step as a share of the
+    maximum and / or in points, seconds between steps, the part of the
+    maximum it stops at, the wait after a loss, by magic circle, slower or
+    off while a weapon is drawn. (Stays out while G1R_RegenMana is enabled.)
+  - magic: multipliers for damage, mana cost, casting time, flight speed,
+    reach and stagger - for all spells, per kind and per spell; damage steps
+    of the fire and ice bolt by circle; heal amount; price of the magic
+    circles; ice spells that freeze with every hit. (G1R_MageBalance)
+  - melee: the game's mirrored follow-up swings held off or on, hit stop
+    length in percent, camera shake on melee hits off.
+  - mining: ore per swing from a base amount, Strength, Dexterity and the
+    mining skill, lowest and highest amount, chance of one more; veins that
+    never run out or last several times as long. (BetterMining)
+  - xp: experience multiplier 0 to 10, a multiplier of its own for large
+    gains, a note on screen. (EXPModifier; a copy of that mod under another
+    folder name is noticed by its announcements, and then this module adds
+    nothing.)
+  - locks: per skill level, how many connections of a lock are taken away
+    (as the game has it, none, 1, 2, half, safe, all) and how many wrong
+    moves a pick takes, or picks that never break. The table behind "half"
+    and "safe" was computed from the game's own lock data. (SkillfulLocks)
+  - wait: four waits (two by minutes, two until an hour) with keys of your
+    choice, buttons in the in-game menu and console words; not while
+    fighting, talking, in a cutscene or with the clock standing, unless
+    allowed. (G1R_WaitOnT)
+
+  Settings
+  - One description per module (modules\<name>\Scripts\schema.lua) from
+    which its config.lua, its page in the settings app and its entry in the
+    in-game mod menu (SharedModMenu) are made.
+  - A changed config.lua is picked up while the game runs (about 5 seconds);
+    a change in the in-game menu counts at once and is written into the
+    file. Only the changed lines of a file are rewritten: comments and
+    anything else in it stay.
+  - Settings app: pages General, Combat, Resources, Experience, Lock picking
+    and Time next to the pages of repopulate.
+
+  Loader
+  - The modules are listed in one place (Scripts\core\modules.lua), with the
+    folder names of the mods that do the same job.
+  - A separate mod is also recognised when its script folder is written
+    "scripts", and when it is a native mod (dlls\main.dll).
+  - A shared kit for the modules: every search for an object runs once per
+    path and run, kept objects are checked before use, the hero and his
+    attributes are found without a search among all objects, keys are
+    registered once, notes on screen are drawn in one place.
+  - Scripts\config.lua: Config.Modules has a switch for every module (a
+    file from an earlier version without the new ones keeps working: a
+    module that is not named there is on).
+
+0.1.1
+  - Loader: mods.txt is read exactly as UE4SS reads it when deciding whether
+    the same thing runs as a separate mod (a line with a ";" anywhere is
+    skipped, only spaces are ignored, the text after the last colon decides,
+    a byte order mark at the start of the file is skipped). 0.1.0 could leave
+    a job to a separate mod that UE4SS does not start from such a line.
+
+0.1.0
+  First version: the two mods G1R_Repopulate 1.3 and NPCMarkers 2.3 as
+  modules of one mod, with a common loader and diagnostics.
+
+  Loader
+  - Each module runs in an environment of its own; a module that fails to
+    load does not stop the other one.
+  - Modules can be switched off in Scripts\config.lua.
+  - A module is not loaded while the same thing is installed and enabled as
+    a separate mod (G1R_Repopulate, NPCMarkers).
+  - Console command g1r (status, diag, dump, help).
+
+  Diagnostics (Scripts\diagnostics\)
+  - Session log of everything the modules print, errors with their
+    traceback, and breadcrumbs written to disk before a step that could
+    take the game down (first search for an object by its path).
+  - Report every 5 minutes and on "g1r diag": module status, what the
+    modules found out about the game, counters (searches, callbacks, slow
+    calls), errors.
+  - "g1r dump": what the modules know right now, as a Lua table.
+  - Level "off" in Scripts\config.lua: nothing is written, the modules run
+    exactly as separate mods.
+
+  Module repopulate (since G1R_Repopulate 1.2)
+  - Containers: recognised through the game's own getter (1.1 and 1.2 never
+    recognised a container); item classes are read from the game's data
+    instead of being searched for by name; counting and adding checked,
+    a restock that does not arrive is reported and not repeated.
+  - Crime switch: with theft or trespassing off, people no longer walk over
+    to send you away after hearing you.
+  - No repeated searches for objects by path (such a search by another mod
+    crashed the game); far fewer property reads that this UE4SS build logs.
+  - A kept object is checked for still being the same object before it is
+    used (containers that are unloaded and loaded again, corpses).
+
+  Module markers (since NPCMarkers 2.2)
+  - World map: people standing together are one badge with their number;
+    hover it for the list of names.
+  - World-map pins twice as large (the map is 1600 units wide, not 3840).
+  - Colour key at its intended size, next to or below the game's buttons.
+  - A map screen that the game destroys and rebuilds is handled.
+
+  Dev kit (dev\, not loaded by the game)
+  - Offline tests for loader, modules and tools; lint; log, crash and
+    diagnostics readers; release builder. See dev\AI_GUIDE.md.

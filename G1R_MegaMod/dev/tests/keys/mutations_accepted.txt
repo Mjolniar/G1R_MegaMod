@@ -1,0 +1,16 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/keys/Scripts/main.lua --suite keys --accept dev/tests/keys/mutations_accepted.txt
+# that were looked at (format: operator|original line without indentation|reason).
+and->or|if ok and type(src) == "string" then|debug.getinfo never fails here; the result is always a text
+num+1|local p = src:gsub("^@", ""):gsub(string.char(92), "/")|in the game the path of main.lua has backslashes (Windows), in the tests only slashes: they cannot tell; every module turns them this way and loads in the game (its load line in every session)
+drop-return|return "./"|the function always returns a folder before this line (main.lua is loaded by a full path)
+false->true|dirty = false,          -- the list is made anew at the next look (a setting changed while it was up)|dirty only counts while the list is up, and the first show clears it before it builds the lines
+num+1|tryAt = 0,              -- when the list may be tried again after it could not be shown|the clock of the game (os.clock, the time the process has run) is far past 1 second when the first look comes
+true->false|if not line:find(";", 1, true) and #line > 4 then|";" is no magic character of a pattern: plain or not, the same
+num+1|if not line:find(";", 1, true) and #line > 4 then|a line that starts with ";" would give a name that begins with ";" from the second character on: no mod folder has such a name (runs() says false)
+true->false|S.classLooked = true|the kit keeps the answer of findClass for the run: looking the class up again asks nothing of the game and notes the same value (said once)
+and->or|if ok and type(text) == "string" then return text end|f:read gives nil and the reason instead of raising (a folder, a read error): ok is true then and the text nil, which gives nil both ways; the pcall only guards against the unexpected
+false->true|shown = false,          -- the list is up|shown only matters together with what is shown (showing), which is empty here: the next look shows the box either way, and hide() of a box that is not shown asks it nothing (Kit.panel)
+false->true|S.shown, S.lines, S.showing = false, nil, nil|shown only matters together with what is shown (showing), which is empty here: the next look shows the box either way, and hide() of a box that is not shown asks it nothing (Kit.panel)
+false->true|S.shown, S.lines, S.showing, S.tryAt = false, nil, nil, clock() + RETRY|shown only matters together with what is shown (showing), which is empty here: the next look shows the box either way, and hide() of a box that is not shown asks it nothing (Kit.panel)
+false->true|if key == "TextSize" and Box.resize(Cfg.TextSize) then S.shown, S.lines, S.showing = false, nil, nil end|shown only matters together with what is shown (showing), which is empty here: the next look shows the box either way, and hide() of a box that is not shown asks it nothing (Kit.panel)

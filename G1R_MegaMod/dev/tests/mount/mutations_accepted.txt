@@ -1,0 +1,47 @@
+# Survivors of
+#   python dev/tools/mutate.py modules/mount/Scripts/main.lua --suite mount --accept dev/tests/mount/mutations_accepted.txt
+# that were looked at: the change makes no difference to what the code does, or only to a text of the diagnostics.
+or->and|if type(KIT) ~= "table" or type(SETTINGS) ~= "table" then|the loader always hands both or neither
+and->or|if ok and type(src) == "string" then|debug.getinfo never fails here; the result is always a text
+drop-return|return "./"|the function always returns a folder before this line in the game (the source name is known)
+num+1|local CAME_CLOSER = 100                             -- cm less than at the whistle counts as "on its way"|differs only when it came exactly one metre closer
+num+1|local NEAR = 600                                    -- cm; this close it is here, whatever it does (the routine stops at 3 m, M5)|differs only at exactly six metres
+num+1|S.tagFails = 0|a success resets the count of failures; one instead of none differs only when two failures follow at once
+true->false|S.lookupOff = true|the note and the line are the same; the lookup is tried again instead of given up when the default object is missing (then it fails again at once)
+and->or|note("mount.lookup", "not available", cdo and "no FName" or "GothicNPCState default object not found")|detail text of a diagnostics note
+or->and|note("mount.lookup", "not available", cdo and "no FName" or "GothicNPCState default object not found")|detail text of a diagnostics note
+drop-return|return nil, "lookup not available"|the function returns nil, nothing further down (the call below fails on nil and returns nil as well)
+num+1|S.lookupFails = 0|a success resets the count of failures; one instead of none differs only when two failures follow at once
+drop-return|if not pawn then return nil end|heroPos: a call on nil gives nil, and nothing is read from nil
+and->or|if type(x) == "number" and type(y) == "number" then return x, y end|a place has both numbers or neither
+ne->eq|f.heroSystem = hero ~= nil|a finding that is not shown and not used
+ne->eq|f.mountSystem = system ~= nil|a finding that is not shown and not used
+and->or|note("mount.block_removed", "fails", ok and "still there" or firstLine(result))|detail text of a diagnostics note
+or->and|note("mount.block_removed", "fails", ok and "still there" or firstLine(result))|detail text of a diagnostics note
+num+1|failed[#failed + 1] = "fear could not be taken off the scavenger (" .. (ok and "it is still there" or firstLine(result)) .. ")"|only the order of two failure texts changes
+and->or|note("mount.fear_removed", "fails", ok and "still there" or firstLine(result))|detail text of a diagnostics note
+or->and|note("mount.fear_removed", "fails", ok and "still there" or firstLine(result))|detail text of a diagnostics note
+gt->ge|if #failed > 0 then text = (text ~= "" and (text .. "; ") or "") .. table.concat(failed, "; ") end|with no failure an empty text is appended
+num+1|if Cfg.ShowNotes and why == "report" then KIT.notify("Scavenger: " .. f.text, "mount", 6) end|how long the note stays
+false->true|if KIT.loading() then S.pending, S.whistling = nil, false; return end|a whistle that is on at the very moment a load ends is counted one look later (the flag is written again at every look)
+false->true|if not hero then S.whistling = false; return end|a whistle that is on at the very moment the hero comes back is counted one look later
+ge->gt|if p and now - p.at >= Cfg.WaitSeconds then|differs by one look (a quarter second)
+le->lt|local came = f.found and (f.distance <= NEAR or (p.distance ~= nil and f.distance <= p.distance - CAME_CLOSER))|differs only at exactly six metres / exactly one metre closer
+gt->ge|S.fixed.done and (#S.fixed.done > 0 and ("; last: " .. table.concat(S.fixed.done, ", ")) or "") or "")|with nothing done the status gets "; last: " with nothing behind it (a status text)
+plus->minus|for _, t in ipairs(failed) do lines[#lines + 1] = t end|console fix: the failure texts after the first line (also logged); the order or a lost line of console output
+num+1|for _, t in ipairs(failed) do lines[#lines + 1] = t end|console fix: the failure texts after the first line (also logged); the order or a lost line of console output
+eq->ne|if key == "FixKey" then bindKey() end|the key is bound again when another setting changes: the same key, nothing happens
+false->true|if not Cfg.Enabled then S.pending, S.whistling = nil, false end|the flag is written again at the next look (the watch is off, nothing is counted meanwhile)
+not->|if not Cfg.Enabled then S.pending, S.whistling = nil, false end|when the watch stays on nothing is pending to drop; when it goes off the loop drops it at its next look
+num+1|LoopInGameThreadWithDelay(250, function()|the loop's period, a millisecond
+drop-return|return|without the loader: the next line (DIAG.version) is guarded by pcall and the settings service refuses to open - the module does not start either way
+drop-return|if not ctrl then return nil, "no hero" end|mountState: without a controller the lookup gets nil as context and answers nothing: nil comes back as well (only the text differs)
+drop-return|if whistle == nil then return end|hasTag answered nil (given up): `whistle and not S.whistling` is false and the pending look reads the same nil-answered findings; nothing is done
+num+1|searchAt = 0,|the clock of a run is far past one second when the first look can search (the mod loads at the start of the game); 0 or 1 both mean: search at the first look
+num+1|n.parts, n.written, n.last, n.original, n.searchAt = {}, nil, nil, nil, 0|the clock is far past one second at a map load; 0 or 1 both mean: search at the first look in the new world
+drop-return|if v == nil then return nil end|for nil the pcall around ToString fails and the function returns nil the same way; the line only spares that call
+drop-return|if trouble then return end|the visits of both walks call only guarded kit functions and cannot raise; the line only spares visits after a failure
+drop-return|if trouble then return nil, trouble end|the visits of both walks call only guarded kit functions and cannot raise (trouble is never set)
+drop-return|if found then return end|the HUD's list holds one part of each kind (its keys are the parts' classes); the line only ends the walk's work early
+drop-return|if not ctrl then return end|without a controller namePart finds no HUD (KIT.get of nil is nil) and the look ends the same way; the line spares the calls
+drop-return|if not st then return end|without the scavenger's state its list of addresses is empty and nothing matches; the line spares the walk

@@ -16,7 +16,7 @@
 -- app and the in-game mod menu change them while the game runs.
 -- ============================================================================
 
-local VERSION = "1.0.1"
+local VERSION = "1.0.2"
 local TAG = "G1R_Timers"
 
 local KIT, SETTINGS = G1R_KIT, G1R_SETTINGS
@@ -63,7 +63,7 @@ local KINDS = {
     { label = "Healing", group = "ShowFood", fits = function(n) return has(n, "Heal") and has(n, "Overtime") end },
     { label = "Mana", group = "ShowFood", fits = function(n) return has(n, "Mana") and has(n, "Overtime") end },
     { label = "Burning", group = "ShowElements", fits = function(n) return has(n, "Burn") or has(n, "Fire_Duration") end },
-    { label = "Frozen", group = "ShowElements", fits = function(n) return has(n, "Freeze") or has(n, "IceStack") or has(n, "Frozen") end },
+    { label = "Frozen", group = "ShowElements", fits = function(n) return has(n, "Freeze") or has(n, "Frozen") end },
     { label = "Electrified", group = "ShowElements", fits = function(n) return has(n, "Electrified") or has(n, "Paralyz") end },
     { label = "Wind", group = "ShowElements", fits = function(n) return has(n, "Wind") end },
     { label = "Slowed", group = "ShowElements", fits = function(n) return has(n, "Slow") end },
@@ -74,8 +74,10 @@ local KINDS = {
 }
 -- what only shows something, what only waits, what the levels of alcohol and swampweed tell already, a
 -- spell's mana cost while it is cast or held (GE_ManaBurn and its kind: "Burn" in the name, but no fire),
--- what takes another effect away, and the abilities an equipped rune or scroll brings (TM3)
-local SKIP = { "Visual", "Cooldown", "Depletion", "ManaBurn", "Mana_Channeling", "Mana_Aiming", "Removal", "UnBurn", "EquipAbilities" }
+-- what takes another effect away, the abilities an equipped rune or scroll brings, and the lightning
+-- magnet's protection (TM3)
+local SKIP = { "Visual", "Cooldown", "Depletion", "ManaBurn", "Mana_Channeling", "Mana_Aiming", "Removal", "UnBurn", "EquipAbilities",
+    "NoElectrified" }
 local LOOK_EVERY = 0.5      -- seconds between two looks
 local TRIES = 3             -- failures in a row before a part is given up for this run
 
@@ -134,6 +136,9 @@ local function effectName(def)
     return (class:gsub("_C$", ""))
 end
 local function skipped(name)
+    -- a name that ends in "Stack" counts hits on the way to a state, it is no state itself: GE_FreezeHitsStack
+    -- comes with every hit of any damage, GE_IceStack and GE_FireStack with the hits of ice and fire (TM3)
+    if name:sub(-5) == "Stack" then return true end
     for _, part in ipairs(SKIP) do
         if has(name, part) then return true end
     end

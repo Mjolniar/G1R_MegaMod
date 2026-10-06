@@ -130,14 +130,14 @@ section("load")
 do
     local c = boot("load")
     check(c.ok, "the module loads (" .. tostring(c.err) .. ")")
-    check(printed(c.ue, "[G1R_Timers] v1.0.1 loaded: food, elements, mind, light, drinks; bottom left, 24 / 200") ~= nil, "load line: " .. tostring(printed(c.ue, "loaded:")))
+    check(printed(c.ue, "[G1R_Timers] v1.0.2 loaded: food, elements, mind, light, drinks; bottom left, 24 / 200") ~= nil, "load line: " .. tostring(printed(c.ue, "loaded:")))
     check(c.ue.console.timers ~= nil and c.ue.console.g1r_timers ~= nil and #c.ue.loops == 2 and c.ue.loops[2].ms == 250, "console words; its loop and the loader's")
     local page = T.menuPage(c, "Effect timers")
     check(page ~= nil and #page.items == 10 and page.items[1].name == "Effect timers" and page.items[8].kind == "num" and page.items[8].max == 4,
         "in the in-game menu: the switches, the corner (1 to 4), the distances")
     c.seconds(3)
     check(box(c) == nil and c.ui.created == 0 and c.fake.value("timers.effects") == "readable" and c.fake.value("timers.world_time") == "works", "nothing on the hero: no box; the list and the time read")
-    check(status(c) == "v1.0.1 | food, elements, mind, light, drinks; bottom left, 24 / 200 | nothing on screen", "status: " .. status(c))
+    check(status(c) == "v1.0.2 | food, elements, mind, light, drinks; bottom left, 24 / 200 | nothing on screen", "status: " .. status(c))
     T.stop(c)
 end
 
@@ -203,12 +203,23 @@ do
     effect(c, "GE_FireDemonFireExplosionBurn", 7, c.world.time)
     look(c, 0)
     check(box(c) == "Burning 7 s", "real burning still is: " .. tostring(box(c)))
-    for _, name in ipairs({ "GE_IceStack", "GE_Frozen", "GE_Freeze_5Secs" }) do
+    for _, name in ipairs({ "GE_IceStack_Freeze", "GE_Frozen", "GE_Freeze_5Secs", "GE_Freeze" }) do
         c.world.effects = {}
         effect(c, name, 8, c.world.time)
         look(c, 0)
         check(box(c) == "Frozen 8 s", name .. ": frozen")
     end
+    -- reported 2026-10-06: "Frozen status appearing when struck ... also appearing randomly": every damage puts
+    -- GE_FreezeHitsStack (2 s) on whoever it hits; the hits of ice and fire put GE_IceStack / GE_FireStack (TM3)
+    c.world.effects = {}
+    for _, name in ipairs({ "GE_FreezeHitsStack", "GE_IceStack", "GE_FireStack", "GE_LightingMagnet_NoElectrifiedDamage" }) do
+        effect(c, name, 2, c.world.time)
+    end
+    look(c, 0)
+    check(box(c) == nil, "the counter of every hit, the build-up of ice and fire, the lightning magnet's protection: no line (not 'Frozen', not among the others): " .. tostring(box(c)))
+    effect(c, "GE_IceStack_Freeze", 8, c.world.time)
+    look(c, 0)
+    check(box(c) == "Frozen 8 s", "frozen while the counters run: the freeze's own time: " .. tostring(box(c)))
     c.world.effects = {}
     effect(c, "GE_Damage_Fire_Duration", 1, c.world.time)
     effect(c, false, 50, c.world.time)                      -- an effect whose class cannot be read
@@ -322,7 +333,7 @@ do
     local asks = c.world.calls.timer
     look(c, 10)
     check(c.world.calls.timer == asks and box(c) == "Light 1:30", "the timer is not asked any more")
-    check(status(c) == "v1.0.1 | food, elements, mind, light, drinks; bottom left, 24 / 200 | on screen: Light 1:30 | the Light is counted by the module", "status: " .. status(c))
+    check(status(c) == "v1.0.2 | food, elements, mind, light, drinks; bottom left, 24 / 200 | on screen: Light 1:30 | the Light is counted by the module", "status: " .. status(c))
     check(c.fake.dump[1]().light == 120, "the dump has the Light's length")
     look(c, 90)
     check(box(c) == nil, "counted to exactly its end: no line")
@@ -424,7 +435,7 @@ do
     check(c.fake.value("timers.effects") == "not readable" and c.fake.detail("timers.effects") == "no list of effects" and c.hook.state.effectsOff
         and printedCount(c.ue, "the hero's effects cannot be read (no list of effects); their timers are not shown in this run") == 1, "no list: three times, then given up, said once")
     check(box(c) == "Light 50 s", "the Light is shown all the same")
-    check(status(c) == "v1.0.1 | food, elements, mind, light, drinks; bottom left, 24 / 200 | on screen: Light 50 s | the hero's effects cannot be read in this run", "status: " .. status(c))
+    check(status(c) == "v1.0.2 | food, elements, mind, light, drinks; bottom left, 24 / 200 | on screen: Light 50 s | the hero's effects cannot be read in this run", "status: " .. status(c))
     T.stop(c)
 
     -- failures count in a row
@@ -488,7 +499,7 @@ do
     before = #c.ue.printed
     check(handler("timers reload", nil, nil) == true and T.has(c.ue.printed[before + 1], "settings read: "), "no parameters: the words of the whole line")
     before = #c.ue.printed
-    check(handler("timers", nil, nil) == true and T.has(c.ue.printed[before + 1], "[G1R_Timers] v1.0.1 | "), "no parameters, no word: the status")
+    check(handler("timers", nil, nil) == true and T.has(c.ue.printed[before + 1], "[G1R_Timers] v1.0.2 | "), "no parameters, no word: the status")
     check(#c.fake.versions == 1 and #c.fake.status == 1 and #c.fake.dump == 1 and c.fake.dump[1]().lines[1] == "Burning 8 s", "version, status and dump")
     T.stop(c)
     c = boot("nodiag", { diag = false })

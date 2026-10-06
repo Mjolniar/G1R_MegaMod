@@ -58,7 +58,7 @@ on that PC, `<proj>` its project folder, `<game>` the game folder, `<saves>`, `<
   local session.
 - Tests: `sudo apt-get install -y lua5.4 python3 zip unzip`, then `python3 G1R_MegaMod/dev/run_tests.py` from a path
   without spaces or apostrophes (the harnesses pass paths unquoted to the shell). Expected now:
-  `ALL PASSED: 27 suite(s), 7467 check(s) ok, 0 failed`, lint 187 files 0 errors. One suite:
+  `ALL PASSED: 27 suite(s), 7470 check(s) ok, 0 failed`, lint 187 files 0 errors. One suite:
   `--only <suite>`; mutation: `python3 G1R_MegaMod/dev/tools/mutate.py <file> --suite <suite> --accept
   G1R_MegaMod/dev/tests/<suite>/mutations_accepted.txt --quiet` (run from `G1R_MegaMod/`).
 - `build_release.py --check` works here; it checks what would go into a package.

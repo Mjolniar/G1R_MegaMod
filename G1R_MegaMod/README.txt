@@ -1,4 +1,4 @@
-G1R_MegaMod 0.3.3 - Gothic 1 Remake, UE4SS Lua
+G1R_MegaMod 0.3.4 - Gothic 1 Remake, UE4SS Lua
 ===============================================
 
 One mod folder with ten modules and a small flight recorder. Every module
@@ -157,7 +157,7 @@ Install
   3. The file enabled.txt in the folder switches the mod on. (If you manage
      mods through mods.txt, the line is:  G1R_MegaMod : 1 )
   4. Start the game. UE4SS.log (next to UE4SS.dll) then has a line like
-         [G1R_MegaMod] v0.3.3 loaded: repopulate ok, markers ok, general ok, regen ok, ... | diagnostics normal -> ...
+         [G1R_MegaMod] v0.3.4 loaded: repopulate ok, markers ok, general ok, regen ok, ... | diagnostics normal -> ...
 
   Never twice: a module is NOT loaded while a mod that does the same job is
   installed and enabled (the load line says "left to the separate mod ..."):

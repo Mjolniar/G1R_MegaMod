@@ -1,6 +1,16 @@
 G1R_MegaMod - changes
 =====================
 
+0.3.4 (2026-10-06)
+  timers 1.0.2 (reported: "Frozen status appearing when struck is not
+  right - also appearing randomly"): every hit of any damage puts a
+  2-second counter on whoever it hits (GE_FreezeHitsStack, the game's
+  count of hits that ends a freeze), and 1.0.1 took every name with
+  "Freeze" in it for Frozen. Now only a real freeze is "Frozen"; the
+  counters of hits (every name that ends in "Stack": also the build-up
+  of ice and fire hits) and the lightning magnet's protection are not
+  shown at all.
+
 0.3.3 (2026-10-06)
   mount 1.1.0 (asked for: "a way to rename the scavenger in game to a
   custom name in the settings app"): setting Name - the name shown over

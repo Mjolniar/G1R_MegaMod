@@ -62,7 +62,7 @@ sudo apt-get install -y lua5.4 python3 zip unzip
 python3 G1R_MegaMod/dev/run_tests.py
 ```
 
-Expected: `ALL PASSED: 27 suite(s), 7467 check(s) ok, 0 failed`, lint 187 files with 0 errors.
+Expected: `ALL PASSED: 27 suite(s), 7470 check(s) ok, 0 failed`, lint 187 files with 0 errors.
 
 Read `G1R_MegaMod/dev/AI_GUIDE.md` first (the map of the mod and the work loop), then `dev/MODULES.md` (writing a
 module on the kit) and `dev/SETTINGS.md` (schema.lua -> config.lua -> settings app and in-game menu). Every claim about

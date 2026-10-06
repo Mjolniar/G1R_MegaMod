@@ -6,11 +6,11 @@ are the cloud session's plan and log - history, for looking things up; this file
 
 ## 0. This repository
 
-The work moved from the player's PC into this public repository on 2026-10-06, with megamod 0.3.3 (the scavenger's
-own name) and settings app 2.1.1. `<h>`, `<proj>`, `<game>` and the other placeholders are places on that PC
+The work moved from the player's PC into this public repository on 2026-10-06, with megamod 0.3.4 (0.3.3: the
+scavenger's own name; 0.3.4: no "Frozen" on every hit) and settings app 2.1.1, both installed on the PC. `<h>`, `<proj>`, `<game>` and the other placeholders are places on that PC
 (`docs/CLAUDE-local-pc.md`); what this file names there - packages, backups, session evidence, the game's scripts and
 data - is on that PC only, not here. The deploy scripts read the PC's places from `deploy/deploy_settings.json` (not
-committed). From now on this repository is the source; `<h>\mega` on the PC is the state of 0.3.3.
+committed). From now on this repository is the source; `<h>\mega` on the PC is the state of 0.3.4.
 
 - In the cloud next: P5 (settings app texts); then the parts of P3 that need no game files.
 - Needs the PC (a local session): installs and audits, rehearsals, the app's UI tests, anything that reads the game.
@@ -32,7 +32,15 @@ committed). From now on this repository is the source; `<h>\mega` on the PC is t
 
 ## 2. State now
 
-- **Installed (game folder):** megamod **0.3.2** + settings app **2.1.1** (2026-10-06 10:22, package sha256
+- **Installed (game folder):** megamod **0.3.4** + settings app **2.1.1** (2026-10-06 12:53; package
+  `<proj>\megamod\G1R_MegaMod-0.3.4-dev.zip` sha256 `852fc301...af21`, 6 replaced, rehearsal-0.3.4 47/47, AUDIT OK 29,
+  backup `<proj>\megamod-install-backup-20261006-125340\`; 0.3.3 at 12:46: 9 replaced, rehearsal-0.3.3b 47/47, AUDIT
+  OK 29, backup `...-20261006-124614\`; notes for both `<proj>\G1R_MegaMod-0.3.4-notes.md`). Evidence of the 0.3.2
+  session (10:33-12:44, no mod errors): `<proj>\megamod\session-0.3.2-20261006-1033\end\` - markers 2.7 drawn pictures
+  loaded (`markers.textures = 65 loaded, 0 failed`), `movement.mount_set = found (1.00)` + `mount_write = works` (x1.30;
+  HeroSpeed 1.00: idle), two whistles answered (26 m -> 16 m; 156 m -> mounted), `timers.light_by = engine timer`;
+  the player reported "Frozen" on every hit (fixed in 0.3.4, P4 item 8).
+  Before: megamod **0.3.2** + settings app **2.1.1** (2026-10-06 10:22, package sha256
   `74f3f00d...ada8`, 470 added / 15 replaced, rehearsal-0.3.2 47/47, AUDIT OK 29, backup
   `<proj>\megamod-install-backup-20261006-102210\`, notes `<proj>\G1R_MegaMod-0.3.2-notes.md`). Evidence of the 0.3.1
   session (09:45-10:09, 0 errors): `<proj>\megamod\session-0.3.1-20261006-0946\end\` - `movement.mount_set = found (1.69)`
@@ -69,8 +77,12 @@ committed). From now on this repository is the source; `<h>\mega` on the PC is t
 
 ## 3. Next step
 
-**Install 0.3.3 (P4 item 7, the scavenger's name) once the game is closed** - it ran from 10:32 on; the package was
-ready 11:02. Package `<proj>\megamod\G1R_MegaMod-0.3.3-dev.zip` sha256 `cc388e94...0dcc` (also in `incoming-0.3.3`;
+**P5 (settings app texts), in the cloud** (the repository, P6). Nothing waits on the PC: 0.3.3 and 0.3.4 are
+installed (section 2). The next local session: P3 for the sessions after 0.3.4 (the scavenger's name - notes
+`mount.name_*`; no "Frozen" on hits), and installs of what the cloud makes.
+
+Done before: **0.3.3 (P4 item 7, the scavenger's name)**, waiting from 11:02 while the game ran 10:32-12:44; installed
+12:46. Package `<proj>\megamod\G1R_MegaMod-0.3.3-dev.zip` sha256 `cc388e94...0dcc` (also in `incoming-0.3.3`;
 PACKAGE set in both installer copies); suite 27 / 7467, lint 187 / 0; app 2.1.1 unchanged (`--live` ok: the Mount tab
 takes the new group). `rehearsal-0.3.3` ran with the game open: 36 / 47, the 11 failures are the rollback refusing
 ("Close the game first") - rerun as `rehearsal-0.3.3b` when `Get-Process G1R*` is empty, then install `--check`,
@@ -271,6 +283,10 @@ key list, Gothic font, distances), `mega\research\q3\spell-timers.md` (timers), 
 - After each session of the player's: facts statuses upgraded with the evidence; `mega\research\README.md` current.
   Up to date 2026-10-06 08:37 (no session since 2026-10-05 23:38; README lists the sessions up to 0.2.3 and `q3\`).
 - After each release: `<proj>\megamod\megamod-dev-archive-<version>.zip` (sources + tests + research, no game files).
+  From 0.3.3 on the public repository is that archive (P6).
+- Open for the facts (from `session-0.3.2-20261006-1033\end\`, section 2): markers 2.7 drawn look IN-GAME (65 pictures
+  loaded, 0 failed); movement MV5: the scavenger's factor written once per set (found 1.00, set 1.30) - a re-summon
+  not seen in that session; mount: two more whistles answered.
 
 ### P4 - 0.3.1 (The player's requests of 2026-10-06, during his first 0.3.0 session)
 1. **F2 menu texts** - "In game F2 mod menu needs text formatting to prevent truncating of text". SharedModMenu
@@ -338,7 +354,13 @@ key list, Gothic font, distances), `mega\research\q3\spell-timers.md` (timers), 
    DONE (offline) for 0.3.3: DISASM showed the name is `FText::FromStringTable("AlkimiaLocalization", definition
    m_UniqueName)` (`dev/facts/mount.md` M9) - no source to change; mount 1.1.0 sets the widget's text (HUD list, else a
    search every 2 s; either side of the widget list; state / character / a part of it), puts the game's own back when
-   emptied; harness 159, mutation 410: 361 killed, 0 survived, 48 accepted. Not installed yet (game running).
+   emptied; harness 159, mutation 410: 361 killed, 0 survived, 48 accepted. INSTALLED 2026-10-06 12:46 (0.3.3).
+8. **"Frozen" on every hit** - the player: "Frozen status appearing when struck is not right - also appearing randomly
+   for some reason". Cause (SOURCE): every damage effect puts `GE_FreezeHitsStack` (2 s) on whoever it hits
+   (`GE_Damage.as:17`), and timers 1.0.1 took any name with "Freeze" for Frozen (also `GE_IceStack`, the ice build-up).
+   Fixed in timers 1.0.2: Frozen = "Freeze" / "Frozen" in the name; names ending in "Stack" (hit counters) and
+   `NoElectrified` (the lightning magnet's protection) are skipped. Audit of all effect names: `<h>\scratch\effect_audit.py`.
+   Harness 89, mutation lines 55-150: 42 killed, 0 survived, 2 accepted. INSTALLED 2026-10-06 12:53 (0.3.4).
 
 ### P6 - public GitHub repository, then the session to the cloud (The player 2026-10-06)
 "Make this into a massive github repository when done and move session into the cloud"; answers: **public**, move
@@ -350,6 +372,17 @@ never game files (as-src, tex, usmap, paks extracts, fonts) or other authors' mo
 `release-forbid.txt` + the e-mail over the whole export must be empty; commits with the GitHub no-reply address.
 Then `move_to_cloud` from the repo folder (change the session's directory first). The cloud cannot install or read
 the game: installs need a local session.
+DONE 2026-10-06 11:12: https://github.com/Mjolniar/G1R_MegaMod (public, branch main; commit a8f9273 by
+`Mjolniar <18622548+Mjolniar@users.noreply.github.com>` - the repo's own git config; the global one holds the e-mail).
+Working folder `<home>\Documents\GitHub\G1R_MegaMod\` (with the ignored `deploy\deploy_settings.json` of this PC).
+Made by `<h>\scratch\export_repo.py <new folder>` from the 0.3.3 -dev package + app src / filetests / tools + deploy
+(places -> `deploy_settings.json`; tested: without it both scripts refuse, with it `--check` sees the running game),
+research, scrubbed HANDOFF / CLAUDE (`docs\CLAUDE-local-pc.md`) / plans; the repo's own README.md, CLAUDE.md
+(rules + cloud section), .gitignore, .gitattributes (`* -text`), deploy\README.md from `<h>\scratch\repo-root\`.
+Scan of all 1190 committed files for the forbidden words + e-mail (UTF-8 and UTF-16): 0. Left out: the app's
+`StartupLoadingScreen.txt` (the game's packed config value) - `app\tools\make_startup_screen.py` remakes it from the
+game byte for byte (checked: same sha256); the csproj stops with a clear error without it. From now on the repository
+is the source; this `<h>\mega` is 0.3.3. The repository replaces the dev archives of P3.
 
 ### P5 - settings app texts (queued, the player 2026-10-06)
 "clean up all explanations in the settings app to be shorter and more concise, use very short and clear language and

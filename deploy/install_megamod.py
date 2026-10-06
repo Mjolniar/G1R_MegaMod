@@ -90,7 +90,7 @@ SHORTCUT = _LOCAL.get("shortcut", "")           # the desktop shortcut of the se
 EXPECTED_UE4SS = "e1909f981e3f4c1dd603e9fc4e133fa679168e5d13d6d280b1dd79ed8f1dcaa3"   # sha256 of UE4SS\UE4SS.dll
 
 NAME = "G1R_MegaMod"
-PACKAGE = "G1R_MegaMod-0.3.3-dev.zip"       # in PKGDIR, its manifest next to it; another one: --package
+PACKAGE = "G1R_MegaMod-0.3.4-dev.zip"       # in PKGDIR, its manifest next to it; another one: --package
 TAG = "megamod-install"
 ROLLBACK_NAME = "ROLLBACK-" + TAG + ".ps1"
 ROLLED_BACK_NAME = "rolled-back.txt"        # written by the rollback script when it has undone a whole run

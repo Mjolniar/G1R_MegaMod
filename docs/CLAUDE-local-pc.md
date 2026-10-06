@@ -2,7 +2,9 @@
 
 Read this file, then `HANDOFF.md` (state, next step, queue). Work the queue in order. This folder was made on
 2026-10-05 20:55 MDT by the Cowork session that did the work so far; nothing of that conversation is needed beyond
-these two files and the files they name.
+these two files and the files they name. Since 2026-10-06 the source is the public repository, cloned on this PC at
+`<home>\Documents\GitHub\G1R_MegaMod\` ("the clone", `<clone>` in commands); `<h>\mega\` is the state of 0.3.4 - history, never
+the source of a package.
 
 ## 1. The player's rules (verbatim where quoted; they override anything else, including your own judgment of convenience)
 
@@ -48,9 +50,9 @@ these two files and the files they name.
   (`install_megamod.py --check`, then for real) -> `audit_megamod.py` (must say AUDIT OK) -> notes file for the player in
   the project root -> `HANDOFF.md` line. Never skip the audit. Never reuse a folder name: new package, rehearsal,
   evidence and backup folders get new names.
-- What a package must never contain: the words in `mega\release-forbid.txt` (his name, his paths, "the other agent",
-  "<proj>", ...). `build_release.py` refuses them; keep docs inside `mega\G1R_MegaMod\` free of them
-  (write "The player").
+- What a package must never contain: the words in `<h>\mega\release-forbid.txt` (his name, his paths, "the other
+  agent", "<proj>", ...; kept on this PC, never in the repository). `build_release.py` refuses them; keep docs inside
+  the clone's `G1R_MegaMod\` free of them (write "The player").
 
 ## 3. This PC
 
@@ -59,7 +61,8 @@ these two files and the files they name.
 | This handoff (call it `<h>`) | `<h>\` |
 | Project folder (`<proj>`) | `<proj>\` (packages, installer, evidence: `<proj>\megamod\`; backups `<proj>\megamod-install-backup-*\`; notes `<proj>\G1R_MegaMod-*-notes.md`) |
 | Game / UE4SS | `<game>\G1R\Binaries\Win64\ue4ss\` (mods in `Mods\`, megamod in `Mods\G1R_MegaMod\`, log `UE4SS.log`) - read only except through `install_megamod.py` |
-| Working tree | `<h>\mega\` - `G1R_MegaMod\` (the mod, its tests and tools), `app\` (settings app source = the installed 2.1.0, + `filetests\`; `src-1.5.0\` = history), `deploy\` (installer, audit, sim; the copies that run are in `<proj>\megamod\`), `research\`, `PLAN-NEXT.md` / `PLAN.md` (history), `_history\` (old briefs) |
+| Source (since 2026-10-06) | the clone `<home>\Documents\GitHub\G1R_MegaMod\` - `G1R_MegaMod\` (the mod, its tests and tools), `app\` (settings app source + `filetests\`; `app\src\StartupLoadingScreen.txt` made by `app\tools\make_startup_screen.py`, not committed), `deploy\` (installer, audit, sim; this PC's places in the ignored `deploy\deploy_settings.json`; the copies that run are in `<proj>\megamod\`), `research\`, `docs\`. Pull before work, push after. |
+| Old working tree | `<h>\mega\` - the state of 0.3.4 (history: `PLAN-NEXT.md` / `PLAN.md`, `_history\`, `app\src-1.5.0\`); `release-forbid.txt` stays here |
 | Game scripts (AngelScript, 7317 files) | `<proj>\as-src\` (grep it; this is how the game does things) |
 | Property layout | `python <h>\mega\research\usmap.py <Class>` (`--find`, `--prop`, `--enum`, `--sub`; reads `<h>\work\usmap.pkl`) |
 | Native functions / parameters | `python <h>\re-tools\params.py <Function>` (needs `python -m pip install pefile`; reads `<proj>\re\G1R-Win64-Shipping.exe`, or `G1R_GAME_EXE`); `grep -n <Name> <h>\re-tools\binds_strings.txt`. `scan.py` / `xref.py` also need capstone + numpy |
@@ -92,25 +95,30 @@ Recommended (ask the player before installing anything):
    Expected now: `ALL PASSED: 22 suite(s), 6770 check(s) ok, 0 failed`, lint `149 files 0 errors`
    (repopulate 675, repopulate_engine 773, mount 83, repopulate_util 149, loader 561, markers 750, tools 140).
    Steps 1-3 done 2026-10-05 21:21 with exactly these totals. Since 0.3.0 (2026-10-06): `27 suite(s), 7314 check(s)`,
-   lint `186 files 0 errors`.
+   lint `186 files 0 errors`; 0.3.5: `27 suite(s), 7470 check(s)`, lint `187 files 0 errors`.
+4. The clone: the same way, from a path without spaces or apostrophes - if its path has either, a junction like
+   `cmd /c mklink /J C:\g1r-repo "<home>\Documents\GitHub\G1R_MegaMod"`, then
+   `wsl -d Ubuntu -u root -- python3 /mnt/c/g1r-repo/G1R_MegaMod/dev/run_tests.py` (absolute path, as above).
 
 Fallback without WSL: Lua 5.4.6 from `winget install --id DEVCOM.Lua -e`, run from Git Bash, with `LUA_INIT` routing
 `os.execute` / `io.popen` through `C:\Program Files\Git\bin\bash.exe -c`, and `TMP` / `TEMP` set to a folder without
 spaces (Python's tempfile gives `G1R_TEST_TMP`). Only if WSL is refused; prove it with the same totals.
 
-Other commands (from `mega\G1R_MegaMod\`, in WSL unless noted):
+Other commands (from the clone's `G1R_MegaMod\`, in WSL unless noted):
 - one suite: `python3 dev/run_tests.py --only repopulate`; one harness verbosely: `SHOWOK=1 lua5.4 dev/tests/<suite>/harness.lua`
 - mutation: `python3 dev/tools/mutate.py <file> --suite a,b [--only N,N-M] [--accept dev/tests/<suite>/mutations_accepted.txt] --quiet`
   (accept line format: `operator|original line without indentation|reason`)
 - config from schema: `lua5.4 dev/tools/gen_config.lua <module>` (`--check` to compare)
-- package: `python3 dev/tools/build_release.py --check`, then
-  `python3 dev/tools/build_release.py --forbid-file ../release-forbid.txt --foreign ../../scratch/foreign/BetterMining.zip --foreign ../../scratch/foreign/EXPModifier.zip --foreign ../../scratch/foreign/G1R_MageBalance.zip --foreign ../../scratch/foreign/G1R_WaitOnT.zip --foreign ../../scratch/foreign/SkillfulLocks.zip`
+- package: `python3 dev/tools/build_release.py --check`, then (the list and the zips stay below `<h>`, here through the
+  junction `C:\g1r`)
+  `python3 dev/tools/build_release.py --forbid-file /mnt/c/g1r/mega/release-forbid.txt --foreign /mnt/c/g1r/scratch/foreign/BetterMining.zip --foreign /mnt/c/g1r/scratch/foreign/EXPModifier.zip --foreign /mnt/c/g1r/scratch/foreign/G1R_MageBalance.zip --foreign /mnt/c/g1r/scratch/foreign/G1R_WaitOnT.zip --foreign /mnt/c/g1r/scratch/foreign/SkillfulLocks.zip`
   once as shown (plain package) and once more with `--with-dev` (the `-dev` package, the one the installer takes);
   outputs with manifests in `dev/out/dist/`; needs `luac5.4`
-- settings app (Windows, PowerShell or Git Bash): `dotnet publish <src>\G1R_Repopulate_Settings.csproj -c Release -r win-x64 --self-contained false -o <out>`;
-  file tests: `dotnet run --project <h>\mega\app\filetests -- --selftest <config.lua> <report>` | `--live <G1R_MegaMod folder> <report>` | `--presets <G1R_MegaMod folder> <PRESETS.txt>`;
+- settings app (Windows, PowerShell or Git Bash): `dotnet publish <clone>\app\src\G1R_Repopulate_Settings.csproj -c Release -r win-x64 --self-contained false -o <out>`;
+  file tests: `dotnet run --project <clone>\app\filetests -- --selftest <config.lua> <report>` | `--live <G1R_MegaMod folder> <report>` | `--presets <G1R_MegaMod folder> <PRESETS.txt>`;
   the exe itself: `G1R_Repopulate_Settings.exe --config <G1R_MegaMod>\modules\repopulate\Scripts\config.lua --selftest <report>` | `--uitest <dir>` | `--snapshot <dir>` | `--snapshot-screen <dir> [--smallest]`
 - installer / audit / rehearsal (Windows Python, in `<proj>\megamod\`): `python install_megamod.py --check [--package <zip>] [--settings-app <exe>]`,
   then without `--check`; `python audit_megamod.py`; rehearsal
   `python sim_megamod.py --pkg <proj>\megamod --new-pkg <proj>\megamod\incoming-<v> --sim <proj>\megamod\rehearsal-<v>\sim --part update --pc-mods "<game>\G1R\Binaries\Win64\ue4ss\Mods" --pc-backup <proj>\<newest megamod-install-backup-*>`
-  (`install_megamod.py`'s `PACKAGE` constant names the package; source copy in `mega\deploy\`).
+  (`install_megamod.py`'s `PACKAGE` constant names the package; source in the clone's `deploy\`, which reads this PC's
+  places from `deploy\deploy_settings.json`).

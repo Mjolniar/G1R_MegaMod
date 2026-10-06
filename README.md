@@ -70,7 +70,9 @@ the game carries where it is known from: IN-GAME (a line of a real UE4SS log), D
 game's scripts and data layout), OFFLINE (only the tests), UNKNOWN.
 
 The settings app: `dotnet publish app/src/G1R_Repopulate_Settings.csproj -c Release -r win-x64 --self-contained false
--o <out>`; its file tests: `dotnet run --project app/filetests -- --selftest <config.lua> <report>`.
+-o <out>`; its file tests: `dotnet run --project app/filetests -- --selftest <config.lua> <report>`. On Linux, where the
+app itself does not build: `python3 app/tools/linux_check.py` (needs `dotnet-sdk-8.0`) runs the file tests on copies
+and compiles the whole app.
 
 ## Not in this repository
 

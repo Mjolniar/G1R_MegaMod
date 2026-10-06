@@ -46,7 +46,7 @@ do
     check(notes.style == "off" and notes.seconds == 3 and printed(ue, "[G1R_General] settings changed (config.lua): notes off; gothic letters\n") ~= nil and c.kit.notify("hello", "x") == false,
         "the file changes while the game runs: picked up, said in the log; notes are off")
     T.menuSet(c, "General", "Notes are shown as", 1)
-    T.menuSet(c, "General", "The box sits in the corner", 3)
+    T.menuSet(c, "General", "Corner of the box", 3)
     T.menuSet(c, "General", "A note stays for", 5)
     c.ticks(1)
     check(notes.style == "box" and notes.position == "bottom right" and notes.seconds == 5 and printed(ue, "settings changed (in-game menu): notes in a box, bottom right, 5 s") ~= nil,

@@ -158,7 +158,7 @@ do
     check(status(c) == "v1.1.0 | on foot x1.00, swimming x1.50, your scavenger x1.00 | swimming speeds of the game: 100 / 150 / 220, now 150 / 225 / 330 | speeds changed: 1; put back: 0",
         "status: " .. status(c))
     check(calls(c, "FindNPCByUniqueName") == 0, "the scavenger is not looked up while its multiplier is 1.00")
-    T.menuSet(c, "Movement", "Swimming speed", 1.0)
+    T.menuSet(c, "Movement", "Swimming (times)", 1.0)
     c.ticks(8)
     check(speeds(c) == "100/150/220" and c.hook.state.swim.applied == nil and has(status(c), "put back: 1"), "back to 1.00 in the in-game menu: the game's own speeds are put back")
     walks = calls(c, "swim:ForEach")
@@ -179,7 +179,7 @@ do
     local c = boot("swim-ends", {}, cfg({ "Config.SwimSpeed = 0.5", "Config.LogChanges = true" }))
     c.ticks(1)
     check(speeds(c) == "50/75/110" and printed(c.ue, "swimming speeds 100 / 150 / 220 -> 50 / 75 / 110") ~= nil, "x0.50 (the lowest): 50 / 75 / 110, logged with LogChanges")
-    T.menuSet(c, "Movement", "Swimming speed", 3.0)
+    T.menuSet(c, "Movement", "Swimming (times)", 3.0)
     c.ticks(8)
     check(speeds(c) == "300/450/660" and printed(c.ue, "swimming speeds 50 / 75 / 110 -> 300 / 450 / 660") ~= nil, "x3.00 (the highest): from the game's own values, not from the last ones")
     T.stop(c)
@@ -223,7 +223,7 @@ do
     c.world.mount.speed.BaseValue, c.world.mount.speed.CurrentValue = 0.9, 0.9
     c.seconds(2)
     check(speed(c) == 1.25 and c.hook.state.mount.own == 1.0, "a new set of attributes with 0.90: the game's own 1.0 times 1.25 (the character definition gives 1.0)")
-    T.menuSet(c, "Movement", "Speed of your scavenger", 1.0)
+    T.menuSet(c, "Movement", "Your scavenger", 1.0)
     c.ticks(8)
     check(speed(c) == 1.0 and c.hook.state.mount.applied == nil, "back to 1.00: the game's own 1.0 is put back")
     T.stop(c)
@@ -264,7 +264,7 @@ do
         and c.fake.value("movement.left_alone") == "hero", "another value: left alone, said once")
     check(status(c) == "v1.1.0 | on foot x1.20, swimming x1.00, your scavenger x1.00 | the hero's own speed factor: 1.00, now 1.20 | speeds changed: 2; put back: 0"
         .. " | the hero's speed factor was changed by something else: left as it is", "the status names it: " .. status(c))
-    T.menuSet(c, "Movement", "Speed of the hero", 1.0)
+    T.menuSet(c, "Movement", "Hero on foot", 1.0)
     c.ticks(8)
     check(close(heroSpeed(c), 1.0) and c.hook.state.hero.applied == nil, "back to 1.00: the game's own 1.0")
     local reads = c.fake.count["movement.hero_set"] or 0
@@ -308,7 +308,7 @@ do
         and c.fake.value("movement.left_alone") == "swimming", "another value in the table: left as it is, said once, noted")
     check(status(c) == "v1.1.0 | on foot x1.00, swimming x1.50, your scavenger x1.00 | swimming speeds of the game: 100 / 150 / 220, now 150 / 225 / 330 | speeds changed: 1; put back: 0"
         .. " | the swimming speeds were changed by something else: left as they are", "status names it: " .. status(c))
-    T.menuSet(c, "Movement", "Swimming speed", 2.0)
+    T.menuSet(c, "Movement", "Swimming (times)", 2.0)
     c.ticks(8)
     check(speeds(c) == "300/1998/660" and not c.hook.state.swim.left and not has(status(c), "left as they are"),
         "the next change of the setting takes what is there as the game's own (150 / 999 / 330 x2)")
@@ -334,7 +334,7 @@ do
         and c.fake.value("movement.left_alone") == "scavenger", "the scavenger's factor set by something else: left alone, said once")
     check(status(c) == "v1.1.0 | on foot x1.00, swimming x1.00, your scavenger x1.50 | the scavenger's own speed factor: 1.00, now 1.50 | speeds changed: 1; put back: 0"
         .. " | the scavenger's speed factor was changed by something else: left as it is", "status names it: " .. status(c))
-    T.menuSet(c, "Movement", "Speed of your scavenger", 2.0)
+    T.menuSet(c, "Movement", "Your scavenger", 2.0)
     c.ticks(8)
     check(speed(c) == 2.0 and not has(status(c), "left as it is"), "the next change of the setting takes over again: the game's 1.0 x 2 = 2.00")
     c.world.mount.speed.BaseValue, c.world.mount.speed.CurrentValue = 0.5, 0.5
@@ -507,7 +507,7 @@ do
     local c = boot("mount-own-back", {}, cfg({ "Config.MountSpeed = 1.25" }))
     c.ticks(1)
     c.world.mount.speed.BaseValue, c.world.mount.speed.CurrentValue = 1.0, 1.0
-    T.menuSet(c, "Movement", "Speed of your scavenger", 1.0)
+    T.menuSet(c, "Movement", "Your scavenger", 1.0)
     c.ticks(8)
     local n = calls(c, "FindNPCByUniqueName")
     c.seconds(10)

@@ -71,7 +71,7 @@ internal sealed class MainForm : XpForm
     private readonly NumericUpDown _nChance = Pct(), _eChance = Pct();
     private readonly NumericUpDown _nHours = Hours(), _eHours = Hours();
     private readonly Label _nAvg = Info(), _eAvg = Info();
-    private readonly XpCheckBox _corpses = Chk("Remove a corpse of the same kind from the spot when a creature comes back");
+    private readonly XpCheckBox _corpses = Chk("Remove a corpse of the same kind when a creature comes back");
     private readonly NumericUpDown _minDist = Nud(0, 500, 0, 5, 64);
     private readonly DataGridView _grid = new();
     private readonly XpButton _clearSpecies = Btn("Clear all species settings");
@@ -87,26 +87,26 @@ internal sealed class MainForm : XpForm
     private readonly Label _itemsAvg = Info();
 
     // ---------------------------------------------------------------- containers
-    private readonly XpCheckBox _chestsOn = Chk("Emptied chests, crates and other containers restock their original contents");
+    private readonly XpCheckBox _chestsOn = Chk("Emptied containers restock their original contents");
     private readonly NumericUpDown _settle = Pct(), _wild = Pct();
     private readonly Label _settleAvg = Info(), _wildAvg = Info();
-    private readonly XpCheckBox _loot = Chk("Also corpses, bags and similar loot spots placed in the world");
+    private readonly XpCheckBox _loot = Chk("Also corpses, bags and other loot spots in the world");
     private readonly NumericUpDown _catchUpDays = Nud(1, 30, 0, 1, 64);
     private readonly NumericUpDown _retroDays = Nud(0, 30, 0, 1, 64);
     private readonly NumericUpDown _checkRadius = Nud(1, 200, 0, 5, 64);
 
     // ---------------------------------------------------------------- crime
-    private readonly XpCheckBox _crimeOn = Chk("Crime system on: people react to theft, trespassing and drawn weapons (the game's own rules)");
-    private readonly XpCheckBox _crimeTheft = Chk("Stealing, pickpocketing, lockpicking, using other people's things (chests, beds, ...)");
-    private readonly XpCheckBox _crimeTresp = Chk("Entering other people's huts and areas, sneaking around");
-    private readonly XpCheckBox _crimeWeapons = Chk("Drawn weapons or fists, threatening people, blocking their way");
-    private readonly XpCheckBox _crimeForget = Chk("Also forget what you already did of these kinds");
+    private readonly XpCheckBox _crimeOn = Chk("Crime system on");
+    private readonly XpCheckBox _crimeTheft = Chk("Stealing, pickpocketing, lockpicking, using others' things");
+    private readonly XpCheckBox _crimeTresp = Chk("Entering others' huts and areas, sneaking");
+    private readonly XpCheckBox _crimeWeapons = Chk("Drawn weapons or fists, threats, blocking the way");
+    private readonly XpCheckBox _crimeForget = Chk("Also forget what you already did");
     private readonly Label _crimeState = Info();
 
     // ---------------------------------------------------------------- advanced
-    private readonly XpCheckBox _modOn = Chk("Mod enabled (off = it does nothing; your saves stay as they are)");
+    private readonly XpCheckBox _modOn = Chk("Mod enabled (off: it does nothing)");
     private readonly NumericUpDown _startDelay = Nud(0, 600, 0, 1, 64);
-    private readonly XpCheckBox _verbose = Chk("Detailed log: one line per respawn / restock in UE4SS.log");
+    private readonly XpCheckBox _verbose = Chk("Log every respawn / restock to UE4SS.log");
     private readonly NumericUpDown _reloadSecs = Nud(0, 3600, 0, 5, 64);
     private readonly NumericUpDown _maxSpawns = Nud(1, 2000, 0, 10, 64);
     private readonly NumericUpDown _catchUpCycles = Nud(1, 30, 0, 1, 64);
@@ -236,16 +236,15 @@ internal sealed class MainForm : XpForm
         _preset.SelectedIndex = 0;
         _presetApply.Enabled = false;
         _topBar.Controls.AddRange(new Control[] { Lbl("Preset:"), _preset, _presetApply });
-        string presetTip = "Five sets of settings, from the game itself (1, the hardest) to as easy as the settings allow (5).\n"
-            + "A preset sets everything that makes the game easier or harder, on all pages at once.\n"
-            + "Keys, notes, log switches, melee clean-ups, waiting, the map pins and per-species settings stay as they are.\n"
-            + "The box stands on the preset the settings are at now, or on \"" + OwnName + "\" when they are at none of the five.";
+        string presetTip = "Five sets of settings: 1 = the game itself (hardest), 5 = easiest. Sets every page at once.\n"
+            + "Keys, notes, logs, melee, waiting, map pins and per-species settings stay.\n"
+            + "Shows the preset in use, or \"" + OwnName + "\".";
         _tip.SetToolTip(_preset, presetTip);
         _tip.SetToolTip(_presetApply, presetTip);
         var findBar = new FlowLayoutPanel { AutoSize = true, WrapContents = false, Margin = new Padding(0), Anchor = AnchorStyles.Right };
         var findLabel = Lbl("Find:");
         findBar.Controls.AddRange(new Control[] { findLabel, _find });
-        string findTip = "Type a word: the settings whose name, hint or key contains it are listed with their page.\nEnter or a click opens the page and goes to the setting. Ctrl+F comes here.";
+        string findTip = "Type a word to find a setting by name, hint or key.\nEnter or a click goes to it. Ctrl+F comes here.";
         _tip.SetToolTip(_find, findTip);
         _tip.SetToolTip(_find.Box, findTip);
         _tip.SetToolTip(findLabel, findTip);
@@ -267,8 +266,8 @@ internal sealed class MainForm : XpForm
         _scaleBar.Controls.AddRange(_scaleControls.ToArray());
         _scaleChance.Value = 100;
         _scaleTime.Value = 100;
-        _tip.SetToolTip(_scaleChanceApply, "Multiplies every chance (creatures, species, items, containers). 200 % = twice as likely.");
-        _tip.SetToolTip(_scaleTimeApply, "Multiplies every interval (creatures, species, herbs). 50 % = twice as often.");
+        _tip.SetToolTip(_scaleChanceApply, "Multiplies every chance. 200 % = twice as likely.");
+        _tip.SetToolTip(_scaleTimeApply, "Multiplies every interval. 50 % = twice as often.");
 
         // the pages: one tab control per category; the one of the chosen category is shown
         foreach (var category in _nav.Categories)
@@ -296,7 +295,7 @@ internal sealed class MainForm : XpForm
         foreach (var category in _nav.Categories) _entryOf[category] = _pane.Add(settings, XpTaskPane.Kind.Choice, category.Title, category);
         var tasks = _pane.AddBox("Page tasks");
         _taskDefaults = _pane.Add(tasks, XpTaskPane.Kind.Link, "Defaults for this page");
-        _taskDefaults.Tip = "Sets the settings of the page shown to their default values. Nothing is written until you press Save.";
+        _taskDefaults.Tip = "Defaults for the page shown. Nothing is written until Save.";
         _taskFolder = _pane.Add(tasks, XpTaskPane.Kind.Link, "Open the mod folder");
         var details = _pane.AddBox("Details");
         string version = _mega?.Version() ?? "";
@@ -737,10 +736,10 @@ internal sealed class MainForm : XpForm
         {
             rows.Add(Group("Parts of the mod", Stack(
                 parts,
-                Wrapped(Note("A tick is the part's own switch, the same one as on its page. A part that is switched off does nothing in the game.")))));
+                Wrapped(Note("Each tick is the part's own switch. A part that is off does nothing.")))));
             rows.Add(Group("Difficulty", Stack(
                 _overviewPreset,
-                Wrapped(Note("The box \"Preset\" above sets everything that makes the game easier or harder on all pages at once, from 1 (the game itself) to 5 (as easy as the settings allow).")))));
+                Wrapped(Note("\"Preset\" above sets every page at once: 1 = the game itself, 5 = easiest.")))));
         }
         var folder = Info();
         folder.Text = ModFolder();
@@ -750,8 +749,8 @@ internal sealed class MainForm : XpForm
         rows.Add(Group("Files", Stack(
             folder,
             Row(open),
-            Wrapped(Note("Every page is a part of a plain text file, config.lua, in the folder of its module. Save writes the files that changed; the file before is kept as config.lua.bak. "
-                + "A running game reads a saved change within seconds (the map pins: when the game starts).")))));
+            Wrapped(Note("Settings live in each module's config.lua. Save writes what changed and keeps config.lua.bak. "
+                + "A running game reads it within seconds (map pins: at the next start).")))));
         // in a scroll panel like the module pages: in the smallest window (and with every further part) the page is higher than the tab
         var scroll = new XpScrollPanel { Dock = DockStyle.Fill, BackColor = Xp.Page };
         foreach (var label in wrapped) scroll.Wrap(label, 80);
@@ -790,9 +789,9 @@ internal sealed class MainForm : XpForm
         add(_crOn);
         add(groups);
         add(Row(_corpses));
-        add(Row(Lbl("Creatures only appear, and corpses only vanish, while you are at least"), _minDist, Lbl("m away from the spot")));
-        add(Note("Per species: untick \"Respawns\" to stop a species from coming back; tick \"Own settings\" to give it its own chance and interval. "
-            + "Humans, orcs, named, boss and quest creatures are never in this list and never respawn."));
+        add(Row(Lbl("Only while you are at least"), _minDist, Lbl("m away from the spot")));
+        add(Note("Per species: untick \"Respawns\" to stop it; tick \"Own settings\" for its own chance and interval. "
+            + "Humans, orcs, named, boss and quest creatures never respawn."));
         add(gridPanel, fill: true);
         add(Row(_clearSpecies, _allOn));
         page.Controls.Add(layout);
@@ -806,15 +805,14 @@ internal sealed class MainForm : XpForm
             _herbsOn,
             Row(Lbl("They grow back"), _regrow, Lbl("in-game hours after you picked them")),
             _herbsAvg));
-        var items = Group("Everything else lying in the world (food, drinks, tools, weapons, ore, potions, ...)", Stack(
+        var items = Group("Other items lying in the world", Stack(
             _itemsOn,
-            Row(Lbl("Each emptied spot:"), _itemChance, Lbl("% chance per in-game day to be refilled, at the latest after"), _maxDays, Lbl("days")),
+            Row(Lbl("Refill chance per day:"), _itemChance, Lbl("%, at the latest after"), _maxDays, Lbl("days")),
             _itemsAvg));
         var notes = Stack(
-            Note("Never: quest, unique, key, map and writing items, and items placed by story events."),
-            Note("Items come back the next time you pass by once their time is up. Spots you emptied before installing the mod count too: "
-                + "the game remembers when each spot was emptied."),
-            Note("Turning a group off gives those spots the game's own behaviour back."));
+            Note("Never: quest, unique, key, map and writing items, or story items."),
+            Note("Items come back when you next pass by. Spots emptied before the mod count too."),
+            Note("Off: the game's own behaviour."));
         var layout = Stack(herbs, items, notes);
         page.Controls.Add(layout);
         return page;
@@ -824,19 +822,18 @@ internal sealed class MainForm : XpForm
     {
         var page = new TabPage("Containers") { Padding = new Padding(4), UseVisualStyleBackColor = false, BackColor = Xp.Page };
         var chances = Group("Chance per in-game day for an emptied container", Stack(
-            Row(Lbl("In the camps and mines (Old, New, Swamp and Bandit Camp, Old and Free Mine):"), _settle, Lbl("%")),
+            Row(Lbl("In the camps and mines:"), _settle, Lbl("%")),
             _settleAvg,
             Row(Lbl("Everywhere else:"), _wild, Lbl("%")),
             _wildAvg));
         var more = Group("Details", Stack(
             _loot,
             Row(Lbl("After a long absence, catch up at most"), _catchUpDays, Lbl("days of rolls")),
-            Row(Lbl("Containers already empty when the mod first sees them count as emptied"), _retroDays, Lbl("days ago (0 = start counting then)")),
+            Row(Lbl("Containers already empty at first sight count as emptied"), _retroDays, Lbl("days ago (0 = from then)")),
             Row(Lbl("Containers within"), _checkRadius, Lbl("m of you are checked for missing items"))));
         var notes = Stack(
-            Note("Only the container's original contents come back (without quest, unique, key and map items). Items you put in yourself stay untouched."),
-            Note("Crime: owning a chest is a property of the chest and its area, not of the items. Taking restocked items from an owned chest is theft exactly as in the unmodded game; "
-                + "theft memory still fades after 12-72 in-game hours. The Crime tab can switch theft off."));
+            Note("Only the original contents come back (no quest, unique, key or map items). Your own items stay."),
+            Note("Taking from an owned chest is theft, as in the game. The Crime tab can switch theft off."));
         page.Controls.Add(Stack(_chestsOn, chances, more, notes));
         return page;
     }
@@ -853,12 +850,10 @@ internal sealed class MainForm : XpForm
             _crimeWeapons,
             _crimeForget));
         var notes = Stack(
-            Note("Hitting or killing people always counts, with the crime system on or off. Story fights are not touched."),
-            Note("People who are already hostile or after you when you switch it off carry on until that ends by itself."),
-            Note("A running game follows this within about 15 seconds of saving. The switch is never stored in your save games; "
-                + "the game gets its own rules back whenever the crime system is on, the mod is disabled or removed. "
-                + "Crimes that were forgotten stay forgotten once you save the game."),
-            Note("While the crime system is on, the mod does not touch it at all."));
+            Note("Hitting or killing people always counts. Story fights are not touched."),
+            Note("People already after you carry on until that ends."),
+            Note("Counts within about 15 seconds of saving. Not stored in saves; forgotten crimes stay forgotten once you save."),
+            Note("While the crime system is on, the mod leaves it alone."));
         page.Controls.Add(Stack(main, kinds, notes));
         return page;
     }
@@ -868,15 +863,15 @@ internal sealed class MainForm : XpForm
         var page = new TabPage("Advanced") { Padding = new Padding(4), UseVisualStyleBackColor = false, BackColor = Xp.Page };
         var general = Group("General", Stack(
             _modOn,
-            Row(Lbl("Wait"), _startDelay, Lbl("seconds after a save is loaded before anything runs")),
+            Row(Lbl("Wait"), _startDelay, Lbl("seconds after loading a save")),
             _verbose,
-            Row(Lbl("The game re-reads these settings every"), _reloadSecs, Lbl("seconds while you play (0 = only when the game starts)"))));
+            Row(Lbl("Re-read these settings every"), _reloadSecs, Lbl("seconds (0 = only at game start)"))));
         var creatures = Group("Creature respawning", Stack(
             Row(Lbl("At most"), _maxSpawns, Lbl("respawns per cycle")),
             Row(Lbl("After a long sleep, catch up at most"), _catchUpCycles, Lbl("cycles")),
             Row(Lbl("Seconds between two respawns:"), _spawnInterval),
-            Row(Lbl("Census speed (characters checked per update):"), _censusSpeed),
-            Row(Lbl("Never respawn at spawn points whose name starts with (comma separated):"), _prefixes),
+            Row(Lbl("Characters checked per update:"), _censusSpeed),
+            Row(Lbl("Never respawn at spawn points starting with (comma separated):"), _prefixes),
             _unknownElite));
         var openFolder = Btn("Open the mod folder");
         openFolder.Click += (_, _) => OpenModFolder();
@@ -965,11 +960,11 @@ internal sealed class MainForm : XpForm
         _grid.Columns.Add(TextCol("chance", "Chance %", 10, false, true));
         _grid.Columns.Add(TextCol("hours", "Every (h)", 9, false, true));
         _grid.Columns.Add(TextCol("avg", "Back after (average)", 20, true));
-        _grid.Columns["count"]!.ToolTipText = "Creatures of this species at the mod's spawn points (chapter 2 variants included).";
+        _grid.Columns["count"]!.ToolTipText = "Creatures of this species at the mod's spawn points.";
         _grid.Columns["points"]!.ToolTipText = "Spawn points this species uses.";
-        _grid.Columns["avg"]!.ToolTipText = "Average time from a kill until the creature is back: in-game time, and real play time (the game clock runs 15x).";
+        _grid.Columns["avg"]!.ToolTipText = "Average time until it is back: game time and real time (the clock runs 15x).";
         _grid.Columns["elite"]!.ToolTipText = "Elite species use the elite chance and interval.";
-        _grid.Columns["own"]!.ToolTipText = "Give this species its own chance and interval instead of its group's.";
+        _grid.Columns["own"]!.ToolTipText = "Its own chance and interval instead of its group's.";
     }
 
     private void SyncGridScroll()
@@ -1421,7 +1416,7 @@ internal sealed class MainForm : XpForm
             double days = (1 - Math.Pow(1 - p, _s.MaxDays)) / p;
             _itemsAvg.Text = $"An emptied spot is refilled after {Span(days * 24)} on average, never later than {_s.MaxDays} days.";
         }
-        else _itemsAvg.Text = _s.WorldItemsEnabled ? $"Spots are refilled after {_s.MaxDays} days." : "Items do not come back (game default; some spots refill in the unmodded game).";
+        else _itemsAvg.Text = _s.WorldItemsEnabled ? $"Spots are refilled after {_s.MaxDays} days." : "Items do not come back (game default).";
         _settleAvg.Text = _s.ChestsEnabled ? (_s.SettlementDailyChance > 0 ? $"Restocked after {Span(24 / _s.SettlementDailyChance)} on average." : "Never restocked.") : "Off.";
         _wildAvg.Text = _s.ChestsEnabled ? (_s.WildDailyChance > 0 ? $"Restocked after {Span(24 / _s.WildDailyChance)} on average." : "Never restocked.") : "Off.";
 
@@ -1434,8 +1429,8 @@ internal sealed class MainForm : XpForm
         if (_s.CrimeDisableWeapons) kinds.Add("drawn weapons");
         _crimeForget.Enabled = crimeOff && kinds.Count > 0;
         if (!crimeOff) _crimeState.Text = "On: the game's own rules.";
-        else if (kinds.Count == 0) _crimeState.Text = "Off, but nothing is ticked below: crime stays as the game has it.";
-        else if (!_s.Enabled) _crimeState.Text = "Off for " + string.Join(", ", kinds) + " - but the mod itself is disabled (Advanced), so the game's own rules apply.";
+        else if (kinds.Count == 0) _crimeState.Text = "Off, but nothing ticked below: crime as the game has it.";
+        else if (!_s.Enabled) _crimeState.Text = "Off for " + string.Join(", ", kinds) + " - but the mod is disabled (Advanced): the game's rules apply.";
         else _crimeState.Text = "Off: nobody reacts to " + string.Join(", ", kinds) + ". Hitting or killing people still counts.";
         _crimeState.ForeColor = crimeOff && kinds.Count > 0 && _s.Enabled ? Xp.C(0xB55A00) : Xp.Hint;
 

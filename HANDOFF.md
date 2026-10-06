@@ -1,4 +1,4 @@
-# G1R_MegaMod - handoff, 2026-10-05 20:55 MDT
+# G1R_MegaMod - handoff, 2026-10-06 (cloud)
 
 Rules and commands: `CLAUDE.md` (read it first). This file: what the project is, where it stands, the next step, the
 queue. Keep it current: when a step is done, change its line here (one line). `mega\PLAN-NEXT.md` and `mega\PLAN.md`
@@ -12,7 +12,8 @@ scavenger's own name; 0.3.4: no "Frozen" on every hit) and settings app 2.1.1, b
 data - is on that PC only, not here. The deploy scripts read the PC's places from `deploy/deploy_settings.json` (not
 committed). From now on this repository is the source; `<h>\mega` on the PC is the state of 0.3.4.
 
-- In the cloud next: P5 (settings app texts); then the parts of P3 that need no game files.
+- In the cloud: P5 DONE (0.3.5 + app 2.1.2, committed, not installed); P3 facts of the 0.3.2 session DONE.
+- Next, local session: release 0.3.5 + app 2.1.2 (section 3).
 - Needs the PC (a local session): installs and audits, rehearsals, the app's UI tests, anything that reads the game.
 
 ## 1. The project in short
@@ -77,9 +78,21 @@ committed). From now on this repository is the source; `<h>\mega` on the PC is t
 
 ## 3. Next step
 
-**P5 (settings app texts), in the cloud** (the repository, P6). Nothing waits on the PC: 0.3.3 and 0.3.4 are
-installed (section 2). The next local session: P3 for the sessions after 0.3.4 (the scavenger's name - notes
-`mount.name_*`; no "Frozen" on hits), and installs of what the cloud makes.
+**Local session: release megamod 0.3.5 + settings app 2.1.2** (P5, made in the cloud 2026-10-06; only texts changed,
+no setting / default / range / logic). Cloud checks: suite 27 / 7470 ALL PASSED, lint 187 / 0, `build_release.py
+--check` OK (1033 files); every schema compared field by field with 0.3.4 (only Header / Notes / Hint / Comment /
+Menu / MenuLabel / Label / Unit differ); app fixtures regenerated (`gen_fixtures.sh`). The C# was NOT compiled or run
+(no Windows in the cloud) - only string literals changed. Steps on the PC, game closed where it says so:
+1. Pull the repository; `app/src/StartupLoadingScreen.txt` from `app/tools/make_startup_screen.py` if missing.
+2. Build app 2.1.2; exe `--selftest`, `--uitest`, filetests selftest + `--live` (needs `lua5.4`), `--snapshot` normal +
+   smallest: look at every page (texts shorter: Overview, World pages, Map pins, module pages). Fix if a test pinned a
+   text the cloud missed (strings changed: `GameStart.cs` notes / status, `OtherMods.cs` status, `MainForm.cs` repopulate
+   pages, Overview notes, tool tips; tests updated: `SelfTestGameStart.cs`, `SelfTestModules.cs` Find "Large gain from").
+3. Package the release way (forbid file + foreign packages): `G1R_MegaMod-0.3.5-dev.zip`; installer `PACKAGE` ->
+   0.3.5-dev (both copies); rehearsal 47/47; install mod + app (the player's config.lua files stay byte-identical:
+   only the shipped defaults' comments changed); AUDIT OK; notes `<proj>\G1R_MegaMod-0.3.5-notes.md`.
+Then P3 for the sessions after 0.3.4 (the scavenger's name - notes `mount.name_*`; no "Frozen" on hits; MV5 re-summon
+under movement 1.1.0; MV6 hero speed when the player sets it; how the drawn pins look).
 
 Done before: **0.3.3 (P4 item 7, the scavenger's name)**, waiting from 11:02 while the game ran 10:32-12:44; installed
 12:46. Package `<proj>\megamod\G1R_MegaMod-0.3.3-dev.zip` sha256 `cc388e94...0dcc` (also in `incoming-0.3.3`;
@@ -284,9 +297,10 @@ key list, Gothic font, distances), `mega\research\q3\spell-timers.md` (timers), 
   Up to date 2026-10-06 08:37 (no session since 2026-10-05 23:38; README lists the sessions up to 0.2.3 and `q3\`).
 - After each release: `<proj>\megamod\megamod-dev-archive-<version>.zip` (sources + tests + research, no game files).
   From 0.3.3 on the public repository is that archive (P6).
-- Open for the facts (from `session-0.3.2-20261006-1033\end\`, section 2): markers 2.7 drawn look IN-GAME (65 pictures
-  loaded, 0 failed); movement MV5: the scavenger's factor written once per set (found 1.00, set 1.30) - a re-summon
-  not seen in that session; mount: two more whistles answered.
+- DONE 2026-10-06 (cloud, from section 2's summary of `session-0.3.2-20261006-1033\end\`): FACTS M17 loading IN-GAME
+  (65 loaded, 0 failed; the look not reported); movement MV3 found / written / used IN-GAME, MV5 1.1.0's single set
+  IN-GAME (found 1.00, set 1.30), a re-summon under 1.1.0 not seen yet. Mount: two more whistles answered (no M fact
+  changes: M3-M7 show only when it does not come).
 
 ### P4 - 0.3.1 (The player's requests of 2026-10-06, during his first 0.3.0 session)
 1. **F2 menu texts** - "In game F2 mod menu needs text formatting to prevent truncating of text". SharedModMenu
@@ -384,11 +398,15 @@ Scan of all 1190 committed files for the forbidden words + e-mail (UTF-8 and UTF
 game byte for byte (checked: same sha256); the csproj stops with a clear error without it. From now on the repository
 is the source; this `<h>\mega` is 0.3.3. The repository replaces the dev archives of P3.
 
-### P5 - settings app texts (queued, the player 2026-10-06)
+### P5 - settings app texts (the player 2026-10-06) - DONE in the cloud 2026-10-06 as 0.3.5 + app 2.1.2 (section 3)
 "clean up all explanations in the settings app to be shorter and more concise, use very short and clear language and
 descriptions, and eliminate descriptions where things are self-explanatory": every schema Comment / Hint / Notes /
 Unit, MapPinsSchema, the app's own pages and notes (MainForm, GameStart, OtherMods, NavModel). The config.lua comments
 come from the same Comment texts (his files keep theirs). Keep the facts (ranges, what 0 means) where they matter.
+Done: all 14 module schemas + MapPinsSchema (comments of self-explanatory items dropped; headers two lines), config.lua
+regenerated, menu limits kept (test_settings 9b); harnesses follow the new menu names / hints, and an empty menu hint
+is allowed now (locks / regen "nothing cut off" checks). Group titles and xp / general note+hint counts unchanged (the
+app's UI test pins them). App: GameStart / OtherMods messages, MainForm repopulate pages, Overview notes, tool tips.
 
 ## 5. Open questions for the player (asked once; do not ask again, act on the answer when it comes)
 

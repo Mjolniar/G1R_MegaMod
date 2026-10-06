@@ -2053,9 +2053,9 @@ do
     local long = {}
     for _, i in ipairs(page.items) do
         if has(i.name, "LookSeconds") then check(false, "a hidden setting is in the menu: " .. i.name) end
-        if #i.name > 35 or #i.desc > 54 or i.desc == "" or i.desc:sub(-3) == "..." or i.name:sub(-3) == "..." then long[#long + 1] = i.name end
+        if #i.name > 35 or #i.desc > 54 or i.desc:sub(-3) == "..." or i.name:sub(-3) == "..." then long[#long + 1] = i.name end
     end
-    check(#long == 0, "every item has a name of at most 35 characters and a hint of at most 54, nothing cut off - the menu's columns (" .. table.concat(long, "; ") .. ")")
+    check(#long == 0, "every item has a name of at most 35 characters and a hint of at most 54 (or none), nothing cut off - the menu's columns (" .. table.concat(long, "; ") .. ")")
     local item = T.menuItem(c, "Lock picking", "Skilled")
     check(item.kind == "num" and item.min == 1 and item.max == 7 and item.step == 1 and item.value == 1 and item.section == "Connections taken away"
         and item.desc == "now: as the game has it (1 of 7)", "a choice is a number from 1 to 7 in the menu; its hint names the choice it has (the list of seven does not fit)")
@@ -2063,7 +2063,7 @@ do
     check(item.kind == "num" and item.min == 0 and item.max == 99 and item.step == 1 and item.value == 0 and item.name == "Master: wrong moves per pick"
         and item.desc == "moves before a pick breaks; 0 = the game's (6)", "the wrong moves: a number from 0 to 99, the game's own number in its hint")
     check(T.menuItem(c, "Lock picking", "Lock picking by skill").kind == "bool"
-        and T.menuItem(c, "Lock picking", "Lock picking by skill").desc == "off: locks and picks as the game has them",
+        and T.menuItem(c, "Lock picking", "Lock picking by skill").desc == "Off: locks and picks as the game has them.",
         "the module's switch is a switch, with its short menu text as the hint")
     c.ticks(4)
     check(c.precision() == 1 and sum(w.asked) == 0, "(nothing chosen yet: the game is not looked at)")

@@ -898,7 +898,7 @@ do
     local item = T.menuItem(c, "Experience", "Every gain counts")
     check(item.kind == "num" and item.min == 0 and item.max == 10 and item.step == 0.25 and item.value == 10 and item.name == "Every gain counts (times)",
         "the multiplier: a number from 0 to 10 in steps of 0.25, with its value")
-    check(T.menuItem(c, "Experience", "Multiply experience gains").kind == "bool" and T.menuItem(c, "Experience", "Multiply experience gains").desc == "off: experience as the game gives it",
+    check(T.menuItem(c, "Experience", "Multiply experience gains").kind == "bool" and T.menuItem(c, "Experience", "Multiply experience gains").desc == "Off: experience as the game gives it.",
         "a switch is a switch, with its short menu text as the hint")
     for _, i in ipairs(page.items) do
         if has(i.name, "MaxGain") or has(i.name, "SettleSeconds") or has(i.name, "CheckMilliseconds") then check(false, "a hidden setting is in the menu: " .. i.name) end

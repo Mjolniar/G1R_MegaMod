@@ -154,7 +154,7 @@ do
     check(#c.ue.loops == 3 and c.ue.loops[3].ms == 250, "its loop (four times a second), the kit's loop for keys (its key is bound) and the loader's")
     local page = T.menuPage(c, "Key list")
     check(page ~= nil and #page.items == 4 and page.items[1].name == "List of keys" and page.items[2].name == "Key line in the pause menu"
-        and page.items[3].name == "List the keys of the other mods too" and page.items[4].name == "Size of the letters" and page.items[4].kind == "num"
+        and page.items[3].name == "Keys of other mods too" and page.items[4].name == "Size of the letters" and page.items[4].kind == "num"
         and page.items[4].min == 8 and page.items[4].max == 16, "in the in-game menu: three switches and the size of the letters (keys are set in the settings app or config.lua)")
     check(c.kit.boundKey("keys:show") == "F3" and #c.kit.keyList() == 1 and c.kit.keyList()[1].label == "show or hide this list", "its key by default: F3, which shows or hides the list")
     c.seconds(5)

@@ -1620,12 +1620,12 @@ do
     check(table.concat(titles, "|") == "Melee: clean-ups:4|Melee: on screen:1", "its groups and their items: " .. table.concat(titles, "|"))
     local item = T.menuItem(c, "Combat", "Hit stop")
     check(item.kind == "num" and item.min == 0 and item.max == 300 and item.step == 10 and item.value == 100 and item.name == "Hit stop (% of the game's)"
-        and item.desc == "freeze when a blow lands; 0 = none, 200 = twice", "hit stop: a number from 0 to 300 in steps of 10, with its short name and hint")
+        and item.desc == "100 = unchanged, 0 = none, 200 = twice as long.", "hit stop: a number from 0 to 300 in steps of 10, with its short name and hint")
     item = T.menuItem(c, "Combat", "Mirrored follow-up swings")
     check(item.kind == "num" and item.min == 1 and item.max == 3 and item.step == 1 and item.value == 1 and item.desc == "1 = game, 2 = off, 3 = on",
         "the flow helper: a choice of three, in the menu a number with its meanings")
     check(T.menuItem(c, "Combat", "Camera shake").kind == "bool" and T.menuItem(c, "Combat", "Camera shake").value == true and T.menuItem(c, "Combat", "Melee clean-ups").value == true
-        and T.menuItem(c, "Combat", "Note when one of these changed").desc == "a note when the mod changed or put one back", "switches are switches, with their short menu texts")
+        and T.menuItem(c, "Combat", "Note when one of these changed").kind == "bool", "switches are switches, with their short menu texts")
     for _, i in ipairs(page.items) do
         if #i.desc > 90 or has(i.desc, "...") then long[#long + 1] = i.name end
         if has(i.name, "FlowMethod") or has(i.name, "CheckSeconds") or has(i.name, "VerifySeconds") or has(i.name, "ActWhilePaused") then check(false, "a hidden setting is in the menu: " .. i.name) end

@@ -152,10 +152,10 @@ internal static class GameStart
     public static string Note(bool want)
     {
         var look = Read(IniPath);
-        if (look.Problem != null) return want ? "Game.ini cannot be read (" + look.Problem + "): whether the logos are skipped is not known." : "";
-        if (want && look.Theirs) return "Game.ini sets the start screen of the game itself (not through this app): it is left as it is, and the logos may still play.";
-        if (want && !look.Ours) return "Game.ini does not skip the logos yet: press Save with the game closed.";
-        if (!want && look.Ours) return "Game.ini still skips the logos: press Save with the game closed to take that out.";
+        if (look.Problem != null) return want ? "Game.ini cannot be read (" + look.Problem + ")." : "";
+        if (want && look.Theirs) return "Game.ini has its own start screen line: left alone, the logos may still play.";
+        if (want && !look.Ours) return "Game.ini: logos not skipped yet. Save with the game closed.";
+        if (!want && look.Ours) return "Game.ini: logos still skipped. Save with the game closed.";
         return "";
     }
 
@@ -169,9 +169,9 @@ internal static class GameStart
         var look = Read(path);
         if (look.Problem != null) return want ? ("Game.ini could not be read: " + look.Problem + ".", true) : ("", false);
         if (want == look.Ours)
-            return want && look.Theirs ? ("Game.ini sets the start screen of the game itself as well (not through this app): the logos may still play.", true) : ("", false);
-        if (want && look.Theirs) return ("Game.ini sets the start screen of the game itself (not through this app): it is left as it is.", true);
-        if (GameRuns()) return ("Game.ini is not changed while the game runs: press Save again once it is closed (the logos count from the next start of the game).", true);
+            return want && look.Theirs ? ("Game.ini also has its own start screen line: the logos may still play.", true) : ("", false);
+        if (want && look.Theirs) return ("Game.ini has its own start screen line: left alone.", true);
+        if (GameRuns()) return ("Game.ini not changed while the game runs: Save again once it is closed.", true);
         try
         {
             // the first change of a file the app did not make: that file is kept beside it
@@ -201,9 +201,9 @@ internal static class GameStart
                 SettingsFile.WriteBytes(path, Bytes(look, text));
             }
             var back = Read(path);
-            if (back.Problem != null || back.Ours != want) return ("Game.ini was written, but it does not read back as it should.", true);
-            return want ? ("Game.ini: the logos are skipped from the next start of the game.", false)
-                : ("Game.ini: the app's lines are taken out, the logos play again from the next start of the game.", false);
+            if (back.Problem != null || back.Ours != want) return ("Game.ini was written, but does not read back right.", true);
+            return want ? ("Game.ini: logos skipped from the next start.", false)
+                : ("Game.ini: lines taken out, logos play again from the next start.", false);
         }
         catch (Exception ex)
         {

@@ -2061,7 +2061,7 @@ do
     check(item.kind == "num" and item.min == 0 and item.max == 200 and item.step == 1 and item.value == 0 and item.name == "+1 ore per Strength points" and item.desc == "one more ore for every so many; 0 = none",
         "points of Strength per ore: a number from 0 to 200 with its value, its short name and hint")
     item = T.menuItem(c, "Resources", "A vein lasts")
-    check(item.kind == "num" and item.min == 1 and item.max == 50 and item.value == 1 and item.desc == "this many times the ore before empty; 1 = the game's",
+    check(item.kind == "num" and item.min == 1 and item.max == 50 and item.value == 1 and item.desc == "1 = as in the game",
         "how long a vein lasts: 1 to 50, with its hint (" .. tostring(item.desc) .. ")")
     local cut = {}
     for _, i in ipairs(page.items) do

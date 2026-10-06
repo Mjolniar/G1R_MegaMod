@@ -53,26 +53,26 @@ internal static partial class SelfTest
             // ---- no file, no folder
             r.Check(GameStart.Note(false) == "" && GameStart.Apply(false) == ("", false) && !File.Exists(ini) && !Directory.Exists(dir),
                 "setting off, no file: nothing to say, nothing written, no folder made");
-            r.Check(GameStart.Note(true) == "Game.ini does not skip the logos yet: press Save with the game closed.", "setting on, no file: the page says so");
+            r.Check(GameStart.Note(true) == "Game.ini: logos not skipped yet. Save with the game closed.", "setting on, no file: the page says so");
             runs = true;
             var (t1, w1) = GameStart.Apply(true);
-            r.Check(w1 && t1 == "Game.ini is not changed while the game runs: press Save again once it is closed (the logos count from the next start of the game)." && !File.Exists(ini),
+            r.Check(w1 && t1 == "Game.ini not changed while the game runs: Save again once it is closed." && !File.Exists(ini),
                 "while the game runs: nothing written, said as a warning");
             runs = false;
             var (t2, w2) = GameStart.Apply(true);
-            r.Check(!w2 && t2 == "Game.ini: the logos are skipped from the next start of the game." && File.Exists(ini)
+            r.Check(!w2 && t2 == "Game.ini: logos skipped from the next start." && File.Exists(ini)
                 && latin1.GetString(File.ReadAllBytes(ini)) == block("\r\n") && !File.Exists(backup),
                 "game closed: the folder and the file are made, holding exactly the app's four lines (CRLF); no backup of a file that was not there");
             var look = GameStart.Read(ini);
             r.Check(look.Ours && !look.Theirs && look.Problem == null && GameStart.Note(true) == "" && GameStart.Apply(true) == ("", false),
                 "read back: the app's lines; saving again changes nothing");
-            r.Check(GameStart.Note(false) == "Game.ini still skips the logos: press Save with the game closed to take that out.", "setting off while the lines are there: the page says so");
+            r.Check(GameStart.Note(false) == "Game.ini: logos still skipped. Save with the game closed.", "setting off while the lines are there: the page says so");
             runs = true;
             var (t3, w3) = GameStart.Apply(false);
-            r.Check(w3 && t3.StartsWith("Game.ini is not changed while the game runs", StringComparison.Ordinal) && GameStart.Read(ini).Ours, "taking the lines out waits for the game to be closed, too");
+            r.Check(w3 && t3.StartsWith("Game.ini not changed while the game runs", StringComparison.Ordinal) && GameStart.Read(ini).Ours, "taking the lines out waits for the game to be closed, too");
             runs = false;
             var (t4, w4) = GameStart.Apply(false);
-            r.Check(!w4 && t4 == "Game.ini: the app's lines are taken out, the logos play again from the next start of the game." && !File.Exists(ini),
+            r.Check(!w4 && t4 == "Game.ini: lines taken out, logos play again from the next start." && !File.Exists(ini),
                 "switched off: the file the app made goes again (it held nothing else)");
 
             // ---- a file of the player's: kept byte for byte, its first version kept beside it
@@ -128,8 +128,8 @@ internal static partial class SelfTest
             string theirs = "[/Script/AsyncLoadingScreen.LoadingScreenSettings]\r\nStartupLoadingScreen=(MoviePaths=())\r\n";
             File.WriteAllBytes(ini, latin1.GetBytes(theirs));
             var (t5, w5) = GameStart.Apply(true);
-            r.Check(w5 && t5 == "Game.ini sets the start screen of the game itself (not through this app): it is left as it is." && latin1.GetString(File.ReadAllBytes(ini)) == theirs
-                && !File.Exists(backup) && GameStart.Note(true).StartsWith("Game.ini sets the start screen of the game itself", StringComparison.Ordinal),
+            r.Check(w5 && t5 == "Game.ini has its own start screen line: left alone." && latin1.GetString(File.ReadAllBytes(ini)) == theirs
+                && !File.Exists(backup) && GameStart.Note(true).StartsWith("Game.ini has its own start screen line", StringComparison.Ordinal),
                 "the key set in the plugin's section by somebody else: left as it is, said on the page and the status line");
             r.Check(GameStart.Apply(false) == ("", false) && GameStart.Note(false) == "", "with the setting off it is nothing of the app's");
             File.WriteAllBytes(ini, latin1.GetBytes("[/script/asyncloadingscreen.loadingscreensettings]\r\n  +startuploadingscreen = (x)\r\n"));
@@ -138,7 +138,7 @@ internal static partial class SelfTest
             r.Check(!GameStart.Read(ini).Theirs, "a comment, another key, the key in another section: not the key");
             File.WriteAllBytes(ini, latin1.GetBytes(block("\r\n") + theirs));
             var (t6, w6) = GameStart.Apply(true);
-            r.Check(w6 && t6.StartsWith("Game.ini sets the start screen of the game itself as well", StringComparison.Ordinal), "the app's lines, and the key set again behind them: said");
+            r.Check(w6 && t6.StartsWith("Game.ini also has its own start screen line", StringComparison.Ordinal), "the app's lines, and the key set again behind them: said");
             File.Delete(ini);
 
             // ---- a Begin or End line left alone never takes lines of the player's with it
@@ -222,15 +222,15 @@ internal static partial class SelfTest
 
             r.Check(OtherMods.Apply(mods, values(true, false, 15, false, 7.5), true) == ("", false) && OtherMods.Note(mods, values(true, false, 15, false, 7.5), true) == ""
                 && latin1.GetString(File.ReadAllBytes(fnp)) == fnpText, "both switches off: nothing to say, the files left as they are");
-            r.Check(OtherMods.Note(mods, values(true, true, 15, true, 7.5), true) == "FocusNearbyPickups still reads maxRadius = 1000.0: press Save with the game closed.\nG1R_AutoPickUpItemNative still reads AreaLootingRadius = 500: press Save with the game closed.",
+            r.Check(OtherMods.Note(mods, values(true, true, 15, true, 7.5), true) == "FocusNearbyPickups still has maxRadius = 1000.0: Save with the game closed.\nG1R_AutoPickUpItemNative still has AreaLootingRadius = 500: Save with the game closed.",
                 "switched on with other numbers: the page says what each file still reads");
             runs = true;
             var (t1, w1) = OtherMods.Apply(mods, values(true, true, 15, true, 7.5), true);
-            r.Check(w1 && t1 == "FocusNearbyPickups is not changed while the game runs: press Save again once it is closed. G1R_AutoPickUpItemNative is not changed while the game runs: press Save again once it is closed."
+            r.Check(w1 && t1 == "FocusNearbyPickups not changed while the game runs: Save again once it is closed. G1R_AutoPickUpItemNative not changed while the game runs: Save again once it is closed."
                 && latin1.GetString(File.ReadAllBytes(fnp)) == fnpText, "while the game runs: nothing written, said");
             runs = false;
             var (t2, w2) = OtherMods.Apply(mods, values(true, true, 15, true, 7.5), true);
-            r.Check(!w2 && t2 == "FocusNearbyPickups: maxRadius = 1500.0 from the next start of the game. G1R_AutoPickUpItemNative: AreaLootingRadius = 750 from the next start of the game."
+            r.Check(!w2 && t2 == "FocusNearbyPickups: maxRadius = 1500.0 from the next start. G1R_AutoPickUpItemNative: AreaLootingRadius = 750 from the next start."
                 && latin1.GetString(File.ReadAllBytes(fnp)) == fnpText.Replace("1000.0", "1500.0") && latin1.GetString(File.ReadAllBytes(apu)) == apuText.Replace("=500", "=750")
                 && latin1.GetString(File.ReadAllBytes(fnp + OtherMods.BackupSuffix)) == fnpText && latin1.GetString(File.ReadAllBytes(apu + OtherMods.BackupSuffix)) == apuText,
                 "game closed: exactly the value of the one line changes (its spaces, the CRLF of the other file stay); the first versions are kept as .before-G1R_MegaMod");
@@ -309,16 +309,16 @@ internal static partial class SelfTest
             box.Checked = true;
             runs = true;
             bool saved = form.SaveFile();
-            r.Check(saved && !File.Exists(ini) && form.StatusText.Contains("Game.ini is not changed while the game runs", StringComparison.Ordinal)
-                && NoteLabel().Text == "Game.ini does not skip the logos yet: press Save with the game closed.",
+            r.Check(saved && !File.Exists(ini) && form.StatusText.Contains("Game.ini not changed while the game runs", StringComparison.Ordinal)
+                && NoteLabel().Text == "Game.ini: logos not skipped yet. Save with the game closed.",
                 "saved while the game runs: config.lua is written, Game.ini is not; the status line and the tab say so (" + form.StatusText + ")");
             runs = false;
             saved = form.SaveFile();
-            r.Check(saved && GameStart.Read(ini).Ours && form.StatusText.Contains("Game.ini: the logos are skipped from the next start of the game.", StringComparison.Ordinal)
+            r.Check(saved && GameStart.Read(ini).Ours && form.StatusText.Contains("Game.ini: logos skipped from the next start.", StringComparison.Ordinal)
                 && NoteLabel().Text == "", "saved again with the game closed: Game.ini gets the app's lines; the note on the tab is gone (" + form.StatusText + ")");
             box.Checked = false;
             saved = form.SaveFile();
-            r.Check(saved && !File.Exists(ini) && form.StatusText.Contains("the logos play again from the next start", StringComparison.Ordinal),
+            r.Check(saved && !File.Exists(ini) && form.StatusText.Contains("logos play again from the next start", StringComparison.Ordinal),
                 "switched off and saved: the lines are taken out (" + form.StatusText + ")");
             var enabled = g.Find(GameStart.Module, "Enabled")?.Input as XpCheckBox ?? throw new InvalidOperationException("the page has no box for Enabled");
             box.Checked = true;

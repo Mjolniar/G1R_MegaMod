@@ -9,46 +9,34 @@ Schema.Page = "Combat"
 Schema.PageOrder = 10
 Schema.Header = {
     "Melee clean-ups (module melee of G1R_MegaMod)",
-    "Easiest way to change these: the settings app, page \"Combat\", or the",
-    "in-game mod menu. Changes are picked up while the game is running.",
-    "With the values the mod ships with nothing of the game is changed.",
+    "Set in the settings app or the in-game mod menu; changes count while the game runs.",
 }
 Schema.Notes = {
-    "Melee clean-ups change how a blow looks and feels, not what it does: damage, real combos and their timing stay the game's. What the mod changed is put back when a switch returns to its neutral value or this part is switched off.",
-    "The flow helper is an option of the game itself, kept per profile and stored by the game. While it is set to \"off\" or \"on\" here, the game's own menu entry follows this setting; \"game\" hands it back to the game's menu.",
+    "These change how a blow looks and feels, not what it does. Neutral values or this part off put the game's back.",
+    "Flow helper: the game's own option, kept in your profile. off / on here also set the game's menu entry; game leaves it to that menu.",
 }
 
 Schema.Groups = {
     {
         Title = "Melee: clean-ups",
         Order = 60,
-        Hint = "Three things that make close combat look and feel the way it does. Neutral values: game, 100, on.",
+        Hint = "Neutral values: game, 100, on.",
         Items = {
             { Key = "Enabled", Kind = "bool", Default = true,
-              Label = "Melee clean-ups (this whole part of the mod)",
-              Comment = "false = the module does nothing; what it had changed in the game is put back.",
-              MenuLabel = "Melee clean-ups", Menu = "off: what it changed in the game is put back" },
+              Label = "Melee clean-ups",
+              Comment = "Off: what it changed is put back." },
             { Key = "FlowHelper", Kind = "choice", Default = "game", Options = { "game", "off", "on" }, Needs = "Enabled",
-              Label = "Mirrored follow-up swings (the game's own flow helper)",
-              Comment = { "The game's own option \"fake sloppy combos\" (close combat flow helper). With it on, pressing",
-                          "the same attack direction again while a swing ends starts a mirrored follow-up swing:",
-                          "hammering one direction looks like a chain. With it off the same swing simply starts",
-                          "again, and chains only come from real combos (the right direction at the right moment).",
-                          "\"game\" = the mod leaves the option as the game has it. \"off\" / \"on\" = the mod sets it, and",
-                          "sets it again when the game or its own menu changes it; the game stores it in your profile." },
+              Label = "Mirrored follow-up swings (flow helper)",
+              Comment = { "The game's option \"fake sloppy combos\": on, the same direction again chains mirrored swings.",
+                          "off: only real combos chain. game: left as the game has it." },
               MenuLabel = "Mirrored follow-up swings" },
             { Key = "HitStop", Kind = "number", Default = 100, Min = 0, Max = 300, Step = 10, Decimals = 0, Needs = "Enabled",
-              Label = "Hit stop: the freeze when a blow lands", Unit = "% of the game's",
-              Menu = "freeze when a blow lands; 0 = none, 200 = twice",
-              Comment = { "When a melee blow lands, both fighters stand still for a moment (about a twentieth of a",
-                          "second) and then pick up speed again. This is the length of that stop in percent of the",
-                          "game's own: 100 = unchanged, 0 = no stop at all, 50 = half as long, 200 = twice as long." },
+              Label = "Hit stop: freeze when a blow lands", Unit = "% of the game's",
+              Comment = "100 = unchanged, 0 = none, 200 = twice as long.",
               MenuLabel = "Hit stop (% of the game's)" },
             { Key = "HitShake", Kind = "bool", Default = true, Needs = "Enabled",
-              Label = "Camera shake when a melee blow lands",
-              Comment = { "false = the camera does not jolt when a melee blow lands or the hero is hit by one.",
-                          "Other camera shakes stay (the game's own option \"camera shake\" switches all of them)." },
-              MenuLabel = "Camera shake on melee hits", Menu = "off: no jolt when a blow lands or hits you" },
+              Label = "Camera shake on melee hits",
+              Comment = "Off: no jolt on melee hits. Other shakes stay." },
         },
     },
     {
@@ -56,10 +44,7 @@ Schema.Groups = {
         Order = 70,
         Items = {
             { Key = "ShowMessage", Kind = "bool", Default = true, Needs = "Enabled",
-              Label = "Show a short note when the mod changed one of these in the game",
-              Comment = { "A note on screen when the mod has changed one of the three in the game or put it back.",
-                          "How notes look is set on the page \"General\"." },
-              MenuLabel = "Note when one of these changed", Menu = "a note when the mod changed or put one back" },
+              Label = "Note when one of these changed" },
         },
     },
     {

@@ -1857,7 +1857,7 @@ internal static partial class SelfTest
             var gone = form.GoToFound(0);
             bool went = gone == multiplierUi.Input && form.CurrentPage == Walk.Experience && form.FindText == "" && !form.FindListShown;
             found = form.FindForTest("LARGEGAINFROM");
-            bool byKey = found.Count >= 1 && found[0].StartsWith("A gain counts as large from", StringComparison.Ordinal);       // (its neighbour's hint names the key too)
+            bool byKey = found.Count >= 1 && found[0].StartsWith("Large gain from", StringComparison.Ordinal);
             found = form.FindForTest("count as emptied");
             bool onRepopulatePage = found.Count >= 1 && found[0].StartsWith("Containers already empty", StringComparison.Ordinal) && found[0].EndsWith("   -   World > Containers", StringComparison.Ordinal);
             gone = form.GoToFound(0);

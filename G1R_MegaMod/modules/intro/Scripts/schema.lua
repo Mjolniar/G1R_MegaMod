@@ -7,14 +7,13 @@ Schema.Page = "Game start"
 Schema.PageOrder = 90
 Schema.Header = {
     "Game start settings (module intro of G1R_MegaMod)",
-    'Easiest way to change these: the settings app, page "Interface > Game start".',
-    "Skipping the logos is a line in the game's own Game.ini: the settings app",
-    "writes it when it saves with the game closed; it counts from the next start.",
+    "Set in the settings app. Skipping the logos is a line in the game's Game.ini:",
+    "the app writes it on Save with the game closed; it counts from the next start.",
 }
 Schema.Notes = {
-    "The logos at the start of the game (Alkimia, THQ Nordic, the legal screen) are a list in the game's own settings. Skipping them is a line in the file Game.ini in the game's settings folder (%LOCALAPPDATA%\\G1R\\Saved\\Config\\Windows): this app writes it when you press Save with the game closed, and takes it out again when you switch the setting off. It counts from the next start of the game; the game's loading picture still shows while the menu loads.",
-    "The film of a new game: when you start a new game, the game shows its usual loading screen instead of the film. Loading a save is not touched. (The game itself also lets you skip the film: hold Space, Esc or the left mouse button for a second.)",
-    "These two settings are not in the in-game mod menu: the logos cannot be changed while the game runs.",
+    "Logos: written into the game's Game.ini on Save, with the game closed. Counts from the next start. The loading picture still shows.",
+    "New game film: replaced by the usual loading screen. Loading a save is not touched.",
+    "Not in the in-game mod menu.",
 }
 
 Schema.Groups = {
@@ -22,17 +21,12 @@ Schema.Groups = {
         Title = "What plays at the start",
         Items = {
             { Key = "Enabled", Kind = "bool", Default = true,
-              Label = "Game start (this whole part of the mod)",
-              Comment = "Switches the two settings below on or off." },
+              Label = "Game start (this whole part)" },
             { Key = "SkipLogos", Kind = "bool", Default = false, Needs = "Enabled",
               Label = "Skip the logos when the game starts",
-              Comment = { "The logos at the start of the game (Alkimia, THQ Nordic, the legal screen) are skipped. The",
-                          "settings app writes this into the game's Game.ini when it saves with the game closed; it",
-                          "counts from the next start of the game." } },
+              Comment = "Alkimia, THQ Nordic, the legal screen. Counts from the next start." },
             { Key = "SkipNewGameFilm", Kind = "bool", Default = false, Needs = "Enabled",
-              Label = "Skip the film of a new game",
-              Comment = { "When you start a new game, its film is not played: the game shows its usual loading screen",
-                          "instead. Loading a save is not touched." } },
+              Label = "Skip the film of a new game" },
         },
     },
 }

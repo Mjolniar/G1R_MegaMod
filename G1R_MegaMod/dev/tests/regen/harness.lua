@@ -1770,13 +1770,13 @@ do
     local long = {}
     for _, i in ipairs(page.items) do
         if has(i.name, "Method") or has(i.name, "ManaClearBlock") or has(i.name, "StopWhen") or has(i.name, "SettleSeconds") or has(i.name, "LookSeconds") then check(false, "a hidden setting is in the menu: " .. i.name) end
-        if #i.name > 35 or #i.desc > 54 or i.desc == "" or i.desc:sub(-3) == "..." or i.name:sub(-3) == "..." then long[#long + 1] = i.name end
+        if #i.name > 35 or #i.desc > 54 or i.desc:sub(-3) == "..." or i.name:sub(-3) == "..." then long[#long + 1] = i.name end
     end
-    check(#long == 0, "every item has a name of at most 35 characters and a hint of at most 54, nothing cut off - the menu's columns (" .. table.concat(long, "; ") .. ")")
+    check(#long == 0, "every item has a name of at most 35 characters and a hint of at most 54 (or none), nothing cut off - the menu's columns (" .. table.concat(long, "; ") .. ")")
     local item = T.menuItem(c, "Combat", "Share of the maximum per step")
     check(item.kind == "num" and item.min == 0 and item.max == 100 and item.step == 0.5 and item.value == 0 and item.name == "Share of the maximum per step (%)" and item.section == "Mana regeneration",
         "the mana share: a number from 0 to 100 in steps of 0.5, with its value and unit")
-    check(T.menuItem(c, "Combat", "Regeneration of mana and health").kind == "bool" and T.menuItem(c, "Combat", "Regeneration of mana and health").desc == "off: mana and health as the game handles them",
+    check(T.menuItem(c, "Combat", "Regeneration of mana and health").kind == "bool" and T.menuItem(c, "Combat", "Regeneration of mana and health").desc == "Off: mana and health as the game handles them.",
         "the module's switch is a switch, with its short menu text as the hint")
     local changes = printedCount(ue, "settings changed (config.lua)")
     c.at(2)

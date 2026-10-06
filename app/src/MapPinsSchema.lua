@@ -15,16 +15,16 @@ Schema.Module = "markers"
 Schema.Page = "Map"
 Schema.PageOrder = 60
 Schema.Notes = {
-    "The map pins read their settings when the game starts: a change made here counts from the next start of the game.",
-    "Sizes and distances are in map units. One unit is one pixel on a 1920 x 1080 screen; the world map is 1600 units wide, a camp map 1400.",
-    "Two lists are edited in the file itself (modules\\markers\\Scripts\\config.lua of the mod): Config.HideIds, people who are never shown, and Config.ExtraNPCs, people to add. The app leaves them as they are.",
+    "Counts from the next start of the game.",
+    "Units: one pixel on a 1920 x 1080 screen. The world map is 1600 wide, a camp map 1400.",
+    "Config.HideIds (never shown) and Config.ExtraNPCs (added) are edited in modules\\markers\\Scripts\\config.lua itself.",
 }
 
 Schema.Groups = {
     {
         Title = "Names on the maps",
         Order = 10,
-        Hint = "always: every name, stacked where it is crowded. auto: the names that fit without covering other names or pins; the rest appear when you hover a pin. hover: names only while the mouse is over a pin. off: no names (the lists on hovering still work).",
+        Hint = "always: every name. auto: names that fit; the rest on hover. hover: only on hover. off: none.",
         Items = {
             { Key = "AreaLabels", Kind = "choice", Default = "auto", Options = { "always", "auto", "hover", "off" },
               Label = "Names on the camp maps" },
@@ -32,18 +32,18 @@ Schema.Groups = {
               Label = "Names on the world map" },
             { Key = "LabelScale", Kind = "number", Default = 0.39, Min = 0.1, Max = 2, Decimals = 2, Step = 0.01,
               Label = "Scale of the names",
-              Comment = "The names are images; 0.39 is the size they were made for." },
+              Comment = "0.39 = the size the pictures were made for." },
             { Key = "LabelGap", Kind = "number", Default = 2, Min = 0, Max = 50,
               Label = "Gap between a pin and its name", Unit = "units" },
             { Key = "NameLetters", Kind = "choice", Default = "game", Options = { "game", "gothic" },
               Label = "Letters of the names",
-              Comment = "game: the game's own text letters. gothic: blackletter." },
+              Comment = "game: the game's text letters. gothic: blackletter." },
         },
     },
     {
         Title = "Hovering a pin",
         Order = 20,
-        Hint = "Hovering a pin makes it and every pin around it solid and lists their names under the mouse, teachers and traders first.",
+        Hint = "Hovering a pin lists the names around it, teachers and traders first.",
         Items = {
             { Key = "HoverNames", Kind = "bool", Default = true,
               Label = "List the names around a hovered pin" },
@@ -61,7 +61,7 @@ Schema.Groups = {
         Items = {
             { Key = "PinLook", Kind = "choice", Default = "drawn", Options = { "drawn", "classic" },
               Label = "Look of the pins and names",
-              Comment = "drawn: inked onto the map by hand, in the colours of its watercolours; the names written in ink. classic: coloured dots in black rings, the names on white plates." },
+              Comment = "drawn: ink and watercolour, as the map. classic: coloured dots, names on white plates." },
             { Key = "AreaPinSize", Kind = "number", Default = 23, Min = 4, Max = 128,
               Label = "Teachers and traders on the camp maps", Unit = "units" },
             { Key = "WorldPinSize", Kind = "number", Default = 16, Min = 4, Max = 128,
@@ -82,14 +82,14 @@ Schema.Groups = {
             { Key = "ShowOtherNPCs", Kind = "bool", Default = true,
               Label = "People who are neither teachers nor traders" },
             { Key = "OtherNPCsOnWorldMap", Kind = "bool", Default = true, Needs = "ShowOtherNPCs",
-              Label = "Those people on the world map too (off: on the camp maps only)" },
+              Label = "Those people on the world map too" },
             { Key = "ShowOrcs", Kind = "bool", Default = true,
               Label = "Orcs (Ur-Shak, Tarrok, the orcs of the Free Mine, ...)" },
             { Key = "HideDeadNPCs", Kind = "bool", Default = true,
               Label = "Hide people who are dead or gone" },
             { Key = "ShowFallbackPins", Kind = "bool", Default = true,
-              Label = "A pale pin at the usual place for people the game has not created yet",
-              Comment = "Only for the people whose usual place is known." },
+              Label = "Pale pin at the usual place of people not created yet",
+              Comment = "Only where the usual place is known." },
             { Key = "FallbackOpacity", Kind = "number", Default = 0.55, Min = 0.05, Max = 1, Decimals = 2, Step = 0.05, Needs = "ShowFallbackPins",
               Label = "Opacity of such a pin", Unit = "(1 = solid)" },
         },
@@ -97,7 +97,7 @@ Schema.Groups = {
     {
         Title = "People standing together (world map)",
         Order = 50,
-        Hint = "On the world map people standing close together are drawn as one badge with their number; hovering the badge lists everyone there. A small blue or yellow dot on a badge means a teacher or a trader is among them.",
+        Hint = "One badge with their number; hover it for the list. A blue or yellow dot: a teacher or trader among them.",
         Items = {
             { Key = "WorldPools", Kind = "bool", Default = true,
               Label = "One badge for people standing together" },
@@ -118,15 +118,15 @@ Schema.Groups = {
     {
         Title = "Colour key",
         Order = 60,
-        Hint = "The colour key sits at the bottom left of the map screen, on the row of the game's own buttons when there is room to their left.",
+        Hint = "At the bottom left of the map screen.",
         Items = {
             { Key = "ShowLegend", Kind = "bool", Default = true,
               Label = "Show the colour key" },
             { Key = "LegendScale", Kind = "number", Default = 1.0, Min = 0.25, Max = 3, Decimals = 2, Step = 0.05, Needs = "ShowLegend",
               Label = "Size of the colour key", Unit = "times" },
             { Key = "LegendAvoidButtons", Kind = "bool", Default = true, Needs = "ShowLegend",
-              Label = "Keep clear of the game's buttons (a little smaller, or below their row, when the room is short)",
-              Comment = "Off: always at the two distances below." },
+              Label = "Keep clear of the game's buttons",
+              Comment = "Shrinks or moves below them when short of room. Off: always at the distances below." },
             { Key = "LegendLeft", Kind = "number", Default = 100, Min = 0, Max = 3000, Needs = "ShowLegend",
               Label = "Distance from the left edge", Unit = "units" },
             { Key = "LegendBottom", Kind = "number", Default = 50, Min = 0, Max = 2000, Needs = "ShowLegend",
@@ -141,15 +141,15 @@ Schema.Groups = {
               Label = "While a map is open, positions are read again every", Unit = "seconds" },
             { Key = "MaxNewWidgetsPerTick", Kind = "number", Default = 24, Min = 1, Max = 500,
               Label = "New pins and names made per step",
-              Comment = "Spreads the first opening of a map over a few frames instead of one long hitch." },
+              Comment = "Spreads the first opening of a map over a few frames." },
             { Key = "ApplyCorrection", Kind = "bool", Default = true,
-              Label = "Use the game's correction for its hand-drawn maps (leave this on)" },
+              Label = "Use the game's correction for its drawn maps (leave on)" },
             { Key = "HideOutsideAreaMask", Kind = "bool", Default = true,
               Label = "Camp maps: hide pins that fall outside the drawn parchment" },
             { Key = "HideOnBackgroundMap", Kind = "bool", Default = true,
               Label = "Hide pins on the dimmed world map behind an open camp map" },
             { Key = "Verbose", Kind = "bool", Default = false,
-              Label = "Extra lines in UE4SS.log (who is hidden and why, once per map)" },
+              Label = "Extra lines in UE4SS.log (who is hidden and why)" },
         },
     },
 }

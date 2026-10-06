@@ -930,7 +930,7 @@ do
         .. "|Bolt damage by circle:10|Magic: learning the circles:8|Magic: on screen, log:3", "its sections and their items (a sub-tab of more than 28 characters has a short title): " .. table.concat(titles, "|"))
     local item = T.menuItem(c, "Combat", "Damage of every spell")
     check(item.kind == "num" and item.min == 0.1 and item.max == 10 and item.step == 0.05 and item.value == 2 and item.name == "Damage of every spell (times)"
-        and item.desc == "Damage of every damage spell.", "the damage multiplier: a number from 0.1 to 10 in steps of 0.05, with its value and a short hint")
+        and item.desc == "1.5 = half as much again, 0.5 = half.", "the damage multiplier: a number from 0.1 to 10 in steps of 0.05, with its value and a short hint")
     for _, i in ipairs(page.items) do
         if has(i.name, "SearchesPerLook") or has(i.name, "CheckSeconds") or has(i.name, "LookMilliseconds") then check(false, "a hidden setting is in the menu: " .. i.name) end
         if #i.desc > 90 or i.desc:sub(-3) == "..." then check(false, "the hint of " .. i.name .. " does not fit into 90 characters and is cut: " .. i.desc) end

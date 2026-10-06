@@ -97,7 +97,7 @@ internal static class OtherMods
             {
                 var look = Look(Path.Combine(modsFolder, line.File), line, (double)values[line.Setting]);
                 if (look.Problem != null) said.Add($"{line.Mod}: {look.Problem}.");
-                else if (!look.Same) said.Add($"{line.Mod} still reads {line.Key} = {look.Text!.Substring(look.At, look.Length)}: press Save with the game closed.");
+                else if (!look.Same) said.Add($"{line.Mod} still has {line.Key} = {look.Text!.Substring(look.At, look.Length)}: Save with the game closed.");
             }
             catch (Exception ex) { said.Add($"{line.Mod}: its settings file cannot be read ({ex.Message})."); }
         }
@@ -130,7 +130,7 @@ internal static class OtherMods
                 if (look.Same) continue;
                 if (GameStart.GameRuns())
                 {
-                    said.Add($"{line.Mod} is not changed while the game runs: press Save again once it is closed.");
+                    said.Add($"{line.Mod} not changed while the game runs: Save again once it is closed.");
                     warn = true;
                     continue;
                 }
@@ -140,11 +140,11 @@ internal static class OtherMods
                 Replace(path, Encoding.Latin1.GetBytes(text[..look.At] + target + text[(look.At + look.Length)..]));
                 if (!Look(path, line, metres).Same)
                 {
-                    said.Add($"{line.Mod}: written, but it does not read back as it should.");
+                    said.Add($"{line.Mod}: written, but does not read back right.");
                     warn = true;
                     continue;
                 }
-                said.Add($"{line.Mod}: {line.Key} = {target} from the next start of the game.");
+                said.Add($"{line.Mod}: {line.Key} = {target} from the next start.");
             }
             catch (Exception ex)
             {

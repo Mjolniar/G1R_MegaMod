@@ -51,7 +51,10 @@ on that PC, `<proj>` its project folder, `<game>` the game folder, `<saves>`, `<
 ## 3. In the cloud (this repository on Linux)
 
 - What can be done: the mod's code and docs, its offline tests and mutation checks, the settings app's source (C#;
-  it builds only on Windows), the facts from what is in the repository.
+  the program builds and runs only on Windows), the facts from what is in the repository. App changes:
+  `python3 app/tools/linux_check.py` (needs `sudo apt-get install -y dotnet-sdk-8.0`) builds and runs the app's file
+  tests (`--selftest`, `--live`) and compiles the whole app; expected `LINUX CHECK OK` (the self test's start-screen
+  check fails on its stand-in value and is not counted).
 - What cannot: anything with the game or the player's PC - install, audit, rehearsal, the app's UI tests, reading
   the game's scripts / usmap / executable / paks (not in the repository), release packages (they need the list of
   forbidden words and the other authors' packages, both kept on the PC). Write such steps into `HANDOFF.md` for a

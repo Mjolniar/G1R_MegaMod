@@ -81,8 +81,10 @@ committed). From now on this repository is the source; `<h>\mega` on the PC is t
 **Local session: release megamod 0.3.5 + settings app 2.1.2** (P5, made in the cloud 2026-10-06; only texts changed,
 no setting / default / range / logic). Cloud checks: suite 27 / 7470 ALL PASSED, lint 187 / 0, `build_release.py
 --check` OK (1033 files); every schema compared field by field with 0.3.4 (only Header / Notes / Hint / Comment /
-Menu / MenuLabel / Label / Unit differ); app fixtures regenerated (`gen_fixtures.sh`). The C# was NOT compiled or run
-(no Windows in the cloud) - only string literals changed. Steps on the PC, game closed where it says so:
+Menu / MenuLabel / Label / Unit differ); app fixtures regenerated (`gen_fixtures.sh`). C# checked in the cloud with the
+new `app/tools/linux_check.py`: filetests `--selftest` 176 ok (+1 expected: the stand-in start-screen value), `--live`
+ALL OK, the whole app compiled for net8.0-windows with 0 errors / 0 warnings; not run in the cloud: the exe's own
+`--selftest` / `--uitest` / pictures. Steps on the PC, game closed where it says so:
 1. Pull the repository; `app/src/StartupLoadingScreen.txt` from `app/tools/make_startup_screen.py` if missing.
 2. Build app 2.1.2; exe `--selftest`, `--uitest`, filetests selftest + `--live` (needs `lua5.4`), `--snapshot` normal +
    smallest: look at every page (texts shorter: Overview, World pages, Map pins, module pages). Fix if a test pinned a

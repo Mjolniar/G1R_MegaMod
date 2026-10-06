@@ -2,16 +2,16 @@ Module "movement" - how fast you walk, run and swim, and your scavenger runs (G1
 ==========================================================================================
 
 What it does
-  * Speed of the hero on foot: the hero's own speed factor (his movement
+  * Hero on foot: the hero's own speed factor (his movement
     attribute SpeedModifier; the game's character definition gives him
     1.00, its tiredness lowers it by a few percent on top) times the
     multiplier: walking, running, sneaking.
-  * Swimming speed: the game's three swimming speeds of the hero (slow,
+  * Swimming: the game's three swimming speeds of the hero (slow,
     normal, fast: 100, 150 and 220) times the multiplier. The game keeps
     them in a table of its own (the default object of the script class
     LocomotionSpeedSettings_Swim_Laying_Player); the module multiplies that
     table.
-  * Speed of your scavenger: the scavenger's own speed factor (its movement
+  * Your scavenger: the scavenger's own speed factor (its movement
     attribute SpeedModifier, 1.00; the game's own tiredness moves such a
     factor by a few percent) times the multiplier. It counts whenever the
     scavenger runs: with you on its back, and when it follows you. The
@@ -30,11 +30,12 @@ What it does
   * Nothing is written into your save games.
   * Console: movement (status), movement reload (read config.lua now).
 
-Seen in the game (1.0.0, 2026-10-06)
+Seen in the game (1.0.0 and 1.1.0, 2026-10-06)
   The swimming table and the scavenger's factor found and written; the
   player saw the scavenger faster (too fast after several summons: fixed
-  in 1.1.0). The hero's own factor (1.1.0) has run in the offline tests
-  only.
+  in 1.1.0). 1.1.0 found the scavenger's factor at 1.00 and set 1.30 once
+  (MountSpeed 1.30); a summon under 1.1.0 is not seen yet. The hero's own
+  factor (1.1.0) has run in the offline tests only.
 
 Not tested in the game yet
   Whether the game uses changed swimming speeds and a changed speed factor

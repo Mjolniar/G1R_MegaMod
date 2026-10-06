@@ -299,10 +299,17 @@ What has run in the game
   0.3.1: the in-game menu cut long texts, the list of keys was too big and
   always there, a spell's mana cost showed as "Burning", blackletter names
   on the map were hard to read.
+  Versions 0.3.1 and 0.3.2 ran on 2026-10-06 (24 and 131 minutes, no
+  errors of the mod): the scavenger's speed factor found and set (0.3.1
+  found it multiplied twice in the save; 0.3.2 set the game's 1.00 times
+  the setting once), the 65 drawn pictures of the map screens loaded, the
+  Light's time read from the engine's timer, two more whistles answered.
+  The player's report of "Frozen" on every hit led to 0.3.4.
 
   Not seen in a game yet:
-    - The module movement: how the changed speeds feel (written and read
-      back in the game; nobody has said yet).
+    - The module movement: the hero's speed on foot (HeroSpeed has stayed
+      at 1.00 so far), and a summon of the scavenger under 0.3.2 (up to
+      0.3.1 every summon multiplied its speed again).
     - The module intro (new in 0.3.0): whether the game takes the start
       list from Game.ini (the first start after the app wrote it tells:
       UE4SS.log "this start of the game skipped the logos"), and whether the
@@ -312,17 +319,18 @@ What has run in the game
       from its own code), the list of keys on F3 and its line in the
       pause menu, the timers without the mana cost of a spell and with the
       Light read to its end, the map names in the game's letters.
-    - Of 0.3.2: the drawn pins, badges, names and colour key on the map
-      screens (the same pictures in another look: loaded the way the
-      classic ones are, which works in the game).
+    - Of 0.3.2: how the drawn pins, badges, names and colour key look on
+      the map screens (their pictures load in the game; nobody has said
+      how they look).
     - Of 0.3.3: the scavenger's own name over it (the way to the game's
       name widget is built from its program code and data layout).
+    - Of 0.3.4: "Frozen" only for a real freeze.
     - The module mount: what it puts right when the scavenger does not come
       has not been needed yet.
     - Of 0.2.2: the ways back for when the engine does not answer (the mod
       then searches as 0.2.1 did), an end of play seen for a container,
       pictures kept alive, the operations file after a crash.
-    - What is new in 0.3.1 has run in the offline tests only (about 7400
+    - What is new since 0.3.3 has run in the offline tests only (about 7400
       automatic checks against a model of the game, built from the game's
       scripts, its data layout and its program code).
     - herbs and items actually coming back after their time (the settings
@@ -330,8 +338,7 @@ What has run in the game
     - the crime switch also stopping people who walk over to send you away;
     - a mined vein (module mining: no swing was made in a logged session),
       the module melee (it has only run with nothing to change), and what a
-      changed magic number does in a fight;
-    - the pages in the in-game mod menu.
+      changed magic number does in a fight.
   Each module's README says what exactly it relies on and how it behaves
   if the game differs: a module that cannot do its job says so once in
   UE4SS.log and leaves the game alone.

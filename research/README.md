@@ -67,8 +67,11 @@ setting.
   `first-session-20261003-2044\` (0.2.1, the same as session1 above), `live-session-20261005-1542\` (0.2.1 + a hotfix,
   130 min, 0 errors: how often 0.2.1 searched among all objects - why 0.2.2 asks the engine instead), `first-session-0.2.2-20261005-1824\` (0.2.2, 82 min, the
   engine's own ways seen), `first-session-0.2.3-20261005-2107\` and `session-0.2.3-20261005-2214\` (0.2.3, 58 and
-  84 min, the mount module's whistles). Each has `end\` with UE4SS.log, the session log, the report, the .ops file
-  and a copy of the progress file; HANDOFF.md says what was read from each.
+  84 min, the mount module's whistles), `first-session-0.3.0-20261006-0848\` (0.3.0, interim copies `at-*`: the
+  player's requests of 0.3.1), `session-0.3.1-20261006-0946\` (0.3.1, 24 min, 0 errors: the scavenger's factor kept
+  in the save) and `session-0.3.2-20261006-1033\` (0.3.2, 131 min, no mod errors: the drawn pictures loaded, the
+  scavenger x1.30 set once, the Light by the engine's timer). Each has `end\` with UE4SS.log, the session log, the
+  report, the .ops file and a copy of the progress file; HANDOFF.md says what was read from each.
 - `<proj>/re/crash-20261001-1942/UE4SS.log` (10 minutes of play, ends in a crash
   caused by another mod: U2 in FACTS)
 - `<proj>/re/UE4SS-log-copy.txt`, `UE4SS-log-copy2.txt`

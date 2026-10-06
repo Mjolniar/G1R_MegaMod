@@ -18,11 +18,17 @@ What it does
   second; nothing is written into the game.
   Console: timers (status), timers reload (read config.lua now).
 
+Seen in the game (0.3.0 and 0.3.2, 2026-10-06)
+  The list of effects read from the hero's ability system, with the time
+  left; the Light's time from the engine's timer of the spell. Two effects
+  were shown under the wrong name (a spell's mana cost as "Burning", the
+  counter of hits as "Frozen"): left out since 1.0.1 and 1.0.2.
+
 Not tested in the game yet
-  The list of effects is read straight from the hero's ability system, the
-  Light's time from the engine's timer of the spell. If the box stays empty
-  while you burn or drink, send UE4SS.log and the folder Scripts/diagnostics
-  of G1R_MegaMod (the notes timers.* say which part did not answer).
+  The countdowns of alcohol and swampweed after a drink, and the kinds
+  nobody has had on him in a logged session. If the box stays empty while you burn or drink, send UE4SS.log
+  and the folder Scripts/diagnostics of G1R_MegaMod (the notes timers.* say
+  which part did not answer).
 
 Settings: Scripts/config.lua (the settings app, page "Interface > Effect
   timers", or the in-game mod menu, page "Effect timers")

@@ -295,8 +295,14 @@ key list, Gothic font, distances), `mega\research\q3\spell-timers.md` (timers), 
    notes `<proj>\G1R_MegaMod-0.3.0-notes.md`; dev archive `<proj>\megamod\megamod-dev-archive-0.3.0.zip`.
 
 ### P3 - afterwards
-- After each session of the player's: facts statuses upgraded with the evidence; `mega\research\README.md` current.
-  Up to date 2026-10-06 08:37 (no session since 2026-10-05 23:38; README lists the sessions up to 0.2.3 and `q3\`).
+- After each session of the player's: facts statuses upgraded with the evidence; `research/README.md` current.
+  Up to date 2026-10-06 (cloud): README lists the sessions up to 0.3.2. Facts upgraded from what section 2 and P4
+  record (no logs in the cloud): timers TM1 / TM2 (the player's reports of effects with a time left), TM4
+  (`timers.light_by = engine timer`), kit K18 (the list seen in the pause menu, KL3), FACTS M16 (the blackletter names
+  seen); module READMEs (timers, mod README "seen" / "not seen") in step. For the local session: the mod README says
+  the 0.3.0 session set the blackletter in the boxes and read alcohol, but K19, TM5 and the general README still say
+  not seen - check the notes `kit.letters` / `timers.drinks` in `first-session-0.3.0-20261006-0848\at-*` and set
+  them one way.
 - After each release: `<proj>\megamod\megamod-dev-archive-<version>.zip` (sources + tests + research, no game files).
   From 0.3.3 on the public repository is that archive (P6).
 - DONE 2026-10-06 (cloud, from section 2's summary of `session-0.3.2-20261006-1033\end\`): FACTS M17 loading IN-GAME

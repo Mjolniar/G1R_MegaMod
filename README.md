@@ -1,5 +1,10 @@
 # G1R_MegaMod
 
+> [!WARNING]
+> **Written entirely by AI.** The mod, its settings app and its tools were all written by AI. They are tested offline
+> and in a few play sessions, but may have bugs. Please report any error or problem as an [issue](../../issues): what
+> you did, what happened, and if you can `UE4SS.log` and the folder `G1R_MegaMod/Scripts/diagnostics/`.
+
 Modules for **Gothic 1 Remake**, written in Lua for [UE4SS](https://github.com/UE4SS-RE/RE-UE4SS), and a Windows
 settings app for them. Every module has its own switch, and everything a module does is a setting that can be changed
 while the game runs: in the settings app, in the in-game mod menu, or in the module's `config.lua`.

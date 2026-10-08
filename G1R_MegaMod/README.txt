@@ -1,6 +1,11 @@
 G1R_MegaMod 0.3.5 - Gothic 1 Remake, UE4SS Lua
 ===============================================
 
+Written entirely by AI: it may have bugs. Please report any error or
+problem as an issue on GitHub: https://github.com/Mjolniar/G1R_MegaMod/issues
+(what you did, what happened, and if you can UE4SS.log and the folder
+Scripts/diagnostics).
+
 One mod folder with ten modules and a small flight recorder. Every module
 has its own switch, and everything a module does is a setting that can be
 changed while the game runs. The seven newer modules (general to wait)

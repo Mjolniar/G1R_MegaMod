@@ -15,6 +15,8 @@ committed). From now on this repository is the source; `<h>\mega` on the PC is t
 - In the cloud: P5 DONE (0.3.5 + app 2.1.2, committed, not installed); P3 facts of the 0.3.2 session DONE.
 - Next, local session: release 0.3.5 + app 2.1.2 (section 3).
 - Needs the PC (a local session): installs and audits, rehearsals, the app's UI tests, anything that reads the game.
+- README.md and the mod's README.txt say at the top that everything is written by AI, may have bugs, and ask for
+  issues on GitHub (the player, 2026-10-08).
 
 ## 1. The project in short
 

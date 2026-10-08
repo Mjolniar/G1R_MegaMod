@@ -2,7 +2,7 @@
 
 > [!WARNING]
 > **Written entirely by AI.** The mod, its settings app and its tools were all written by AI. They are tested offline
-> and in a few play sessions, but may have bugs. Please report any error or problem as an [issue](../../issues): what
+> and in a few play sessions, but may have bugs. Please report any error or problem as an [issue](https://github.com/Mjolniar/G1R_MegaMod/issues): what
 > you did, what happened, and if you can `UE4SS.log` and the folder `G1R_MegaMod/Scripts/diagnostics/`.
 
 Modules for **Gothic 1 Remake**, written in Lua for [UE4SS](https://github.com/UE4SS-RE/RE-UE4SS), and a Windows
